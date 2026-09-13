@@ -1,0 +1,85 @@
+{
+  "id": "9nt8-h7nd",
+  "name": "2020 Neighborhood Tabulation Areas (NTAs)",
+  "description": "2020 Neighborhood Tabulation Areas (NTAs) are medium-sized statistical geographies for reporting Decennial Census and American Community Survey (ACS). 2020 NTAs are created by aggregating 2020 census tracts and nest within Community District Tabulation Areas (CDTA). NTAs were delineated with the need for both geographic specificity and statistical reliability in mind. Consequently, each NTA contains enough population to mitigate sampling error associated with the ACS yet offers a unit of analysis that is smaller than a Community District.\n\nThough NTA boundaries and their associated names roughly correspond with many neighborhoods commonly recognized by New Yorkers, NTAs are not intended to definitively represent neighborhoods, nor are they intended to be exhaustive of all possible names and understandings of neighborhoods throughout New York City. Additionally, non-residential areas including large parks, airports, cemeteries, and other special areas are represented separately within this dataset and are assigned codes according to their type (See NTAType field).\n\nAll previously released versions of this data are available on the <a href=\"https://www.nyc.gov/content/planning/pages/resources/datasets/neighborhood-tabulation\">DCP Website: BYTES of the BIG APPLE</a>. Current version: 26b",
+  "attribution": "Department of City Planning (DCP)",
+  "attributionLink": "https://www.nyc.gov/content/planning/pages/resources/datasets/neighborhood-tabulation",
+  "rowsUpdatedAt": 1779981079,
+  "viewLastModified": 1779981077,
+  "retrievedOn": "2026-09-13",
+  "metadataUrl": "https://data.cityofnewyork.us/api/views/9nt8-h7nd.json",
+  "licenseId": null,
+  "columns": [
+    {
+      "name": "BoroCode",
+      "fieldName": "borocode",
+      "description": "Borough of census tract.",
+      "dataTypeName": "number"
+    },
+    {
+      "name": "BoroName",
+      "fieldName": "boroname",
+      "description": "Borough Name.",
+      "dataTypeName": "text"
+    },
+    {
+      "name": "CountyFIPS",
+      "fieldName": "countyfips",
+      "description": "The Census Bureau defined County FIPS code",
+      "dataTypeName": "text"
+    },
+    {
+      "name": "NTA2020",
+      "fieldName": "nta2020",
+      "description": "2020 Neighborhood Tabulation Area Code.",
+      "dataTypeName": "text"
+    },
+    {
+      "name": "NTAName",
+      "fieldName": "ntaname",
+      "description": "2020 Neighborhood Tabulation Area Name",
+      "dataTypeName": "text"
+    },
+    {
+      "name": "NTAAbbrev",
+      "fieldName": "ntaabbrev",
+      "description": "An abbreviation of the 2020 Neighborhood Tabulation Area name.",
+      "dataTypeName": "text"
+    },
+    {
+      "name": "NTAType",
+      "fieldName": "ntatype",
+      "description": "Type of Neighborhood Tabulation Area. One digit code assigned to an NTA to distinguish if it is residential or a non-residential area like a park, airport, cemetery, or other special area.",
+      "dataTypeName": "text"
+    },
+    {
+      "name": "CDTA2020",
+      "fieldName": "cdta2020",
+      "description": "2020 Community District Tabulation Area code.",
+      "dataTypeName": "text"
+    },
+    {
+      "name": "CDTAName",
+      "fieldName": "cdtaname",
+      "description": "2020 Community District Tabulation Area name.",
+      "dataTypeName": "text"
+    },
+    {
+      "name": "Shape_Length",
+      "fieldName": "shape_leng",
+      "description": "Length of feature in internal units.",
+      "dataTypeName": "number"
+    },
+    {
+      "name": "Shape_Area",
+      "fieldName": "shape_area",
+      "description": "Area of feature in internal units squared.",
+      "dataTypeName": "number"
+    },
+    {
+      "name": "the_geom",
+      "fieldName": "the_geom",
+      "dataTypeName": "multipolygon"
+    }
+  ]
+}

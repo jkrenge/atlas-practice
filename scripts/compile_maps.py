@@ -74,15 +74,23 @@ def main():
     verify_sources()
     catalog = []
     admin = {'USA': [], 'DEU': []}
+    # State territories extend into the Great Lakes. Use the source's land-only
+    # variant for US geometry, retaining the original IDs, names, and order.
+    us_land = {row.record.as_dict()['iso_3166_2']: row.shape.__geo_interface__
+               for row in records('ne_10m_admin_1_states_provinces_lakes.zip')
+               if row.record.as_dict()['adm0_a3'] == 'USA'}
     for row in records('ne_10m_admin_1_states_provinces.zip'):
         p = row.record.as_dict()
         if p['adm0_a3'] in admin:
             admin[p['adm0_a3']].append(feature(
-                p['iso_3166_2'], p['name'], row.shape.__geo_interface__,
+                p['iso_3166_2'], p['name'],
+                us_land[p['iso_3166_2']] if p['adm0_a3'] == 'USA' else row.shape.__geo_interface__,
                 nameEnglish=p['name_en'], quizEligible=p['iso_3166_2'] != 'US-DC'))
+    assert set(us_land) == {f['id'] for f in admin['USA']}
     for country, identifier, name in [('USA', 'us-states', 'United States'),
                                       ('DEU', 'germany-states', 'Germany')]:
-        catalog.append(pack(identifier, name, 'state', admin[country], 'natural-earth-admin1'))
+        source = 'natural-earth-admin1-lakes' if country == 'USA' else 'natural-earth-admin1'
+        catalog.append(pack(identifier, name, 'state', admin[country], source))
 
     boroughs = []
     for row in json.loads((SOURCES / 'nyc-boroughs.geojson').read_text())['features']:

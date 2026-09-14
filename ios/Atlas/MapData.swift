@@ -11,12 +11,12 @@ struct MapCatalog: Decodable {
     }
 }
 
-struct Area: Codable, Identifiable, Equatable, Hashable {
+struct Area: Sendable, Codable, Identifiable, Equatable, Hashable {
     let id: String
     let name: String
 }
 
-struct MapManifest: Decodable {
+struct MapManifest: Sendable, Decodable {
     let schemaVersion: Int
     let id: String
     let name: String
@@ -26,7 +26,7 @@ struct MapManifest: Decodable {
     let areas: [Area]
 }
 
-struct Coordinate: Equatable, Decodable {
+struct Coordinate: Sendable, Equatable, Decodable {
     let longitude: Double
     let latitude: Double
     init(_ longitude: Double, _ latitude: Double) {
@@ -35,7 +35,7 @@ struct Coordinate: Equatable, Decodable {
     }
 }
 
-struct AreaGeometry: Decodable {
+struct AreaGeometry: Sendable, Decodable {
     // A polygon contains an outer ring followed by zero or more holes.
     let polygons: [[[Coordinate]]]
     enum CodingKeys: CodingKey { case type, coordinates }
@@ -64,14 +64,14 @@ struct AreaGeometry: Decodable {
     }
 }
 
-struct GeoFeature: Decodable {
+struct GeoFeature: Sendable, Decodable {
     let id: String
     let geometry: AreaGeometry
 }
 
 struct FeatureCollection: Decodable { let features: [GeoFeature] }
 
-struct MapPack: Identifiable {
+struct MapPack: Sendable, Identifiable {
     let manifest: MapManifest
     let features: [GeoFeature]
     var id: String { manifest.id }

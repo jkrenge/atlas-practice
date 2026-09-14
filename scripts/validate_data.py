@@ -5,7 +5,7 @@ import math
 import xml.etree.ElementTree as ET
 
 from shapely import make_valid
-from shapely.geometry import shape, MultiPolygon
+from shapely.geometry import shape, MultiPolygon, Point
 from shapely.ops import unary_union
 from shapely.validation import explain_validity
 
@@ -23,7 +23,7 @@ EXPECTED_COUNTS = {
 }
 GEOMETRY_COUNTS = {'nyc-neighborhoods-focused': 47, 'us-states': 51, 'germany-states': 16, 'nyc-boroughs': 5,
                    'nyc-neighborhoods': 262, 'world-countries': 242}
-SOURCE_IDS = {'nyc-learning-areas', 'natural-earth-admin1', 'natural-earth-countries', 'nyc-boroughs', 'nyc-nta2020'}
+SOURCE_IDS = {'natural-earth-admin1-lakes', 'nyc-learning-areas', 'natural-earth-admin1', 'natural-earth-countries', 'nyc-boroughs', 'nyc-nta2020'}
 
 
 def check(condition, message):
@@ -182,6 +182,12 @@ def main():
         for area in m['areas']:
             check(area['name'] == by_id[area['id']]['properties']['name'], 'Question name mismatch')
         if m['id'] == 'us-states':
+            land = {i: shape(f['geometry']) for i, f in by_id.items()}
+            for lake in [(-87, 47.5), (-87, 43.5), (-82.7, 44.5), (-81.2, 42.1), (-77.8, 43.5), (-87.55, 41.9)]:
+                check(not any(g.covers(Point(lake)) for g in land.values()), 'Great Lakes must remain water')
+            for state, point in [('US-IL', (-87.65, 41.9)), ('US-MI', (-83.1, 42.4)), ('US-MI', (-87.4, 46.5))]:
+                check(land[state].contains(Point(point)), 'Lake shoreline removed state land')
+            check(m['sourceId'] == 'natural-earth-admin1-lakes', 'US map must use lake-clipped boundaries')
             check(ids == {'US-' + i for i in US_STATES}, 'Incorrect US state set')
             check(set(by_id) == ids | {'US-DC'}, 'Incorrect US background')
             check(m['referenceSvgGeoreferenced'] is False, 'SVG must stay a visual reference')

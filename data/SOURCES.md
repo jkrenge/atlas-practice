@@ -1,6 +1,6 @@
 # Geographic data sources
 
-The original geographic snapshots were downloaded on **2026-09-13**. New facts and assets were retrieved on **2026-09-14**. Original bytes are retained under `data/sources/`; SHA-256 hashes are in `data/source-checksums.json`. Compilation verifies those hashes before writing output. Source data is not covered by an assumed project-wide license.
+The original geographic snapshots were downloaded on **2026-09-13**. The lake-clipped US snapshot, new facts, and assets were retrieved on **2026-09-14**. Original bytes are retained under `data/sources/`; SHA-256 hashes are in `data/source-checksums.json`. Compilation verifies those hashes before writing output. Source data is not covered by an assumed project-wide license.
 
 ## Natural Earth
 
@@ -8,7 +8,8 @@ Natural Earth makes its map data public domain. See the [official terms](https:/
 
 | Source ID | Snapshot and direct download | Version | Output and selection |
 | --- | --- | --- | --- |
-| `natural-earth-admin1` | [ne_10m_admin_1_states_provinces.zip](https://naturalearth.s3.amazonaws.com/10m_cultural/ne_10m_admin_1_states_provinces.zip) | 5.1.1, 1:10 million | Keep `adm0_a3` USA or DEU; use `iso_3166_2` as ID. 51 US features, with US-DC excluded from questions; 16 German states. |
+| `natural-earth-admin1` | [ne_10m_admin_1_states_provinces.zip](https://naturalearth.s3.amazonaws.com/10m_cultural/ne_10m_admin_1_states_provinces.zip) | 5.1.1, 1:10 million | Keep `adm0_a3` DEU geometry for 16 German states. Retain USA names, IDs, and order; US geometry now comes from the lake-clipped variant below. |
+| `natural-earth-admin1-lakes` | [ne_10m_admin_1_states_provinces_lakes.zip](https://naturalearth.s3.amazonaws.com/10m_cultural/ne_10m_admin_1_states_provinces_lakes.zip) | 5.1.1, 1:10 million | Keep `adm0_a3` USA. 51 lake-clipped state features, with US-DC excluded from questions. The official variant excludes large lakes, preserving the Illinois shore of Lake Michigan and both Michigan peninsulas. |
 | `natural-earth-countries` | [ne_50m_admin_0_countries.zip](https://naturalearth.s3.amazonaws.com/50m_cultural/ne_50m_admin_0_countries.zip) | 5.1.1, 1:50 million | Keep all 242 features. Only `TYPE` values `Sovereign country` and `Country` are provisionally eligible: 204 records. |
 | `natural-earth-places` | [ne_10m_populated_places.zip](https://naturalearth.s3.amazonaws.com/10m_cultural/ne_10m_populated_places.zip) | 5.1.2, 1:10 million | Keep `ADM0_A3` USA: 769 city and town Points. Preserve `POP_MAX` and `SCALERANK` as source metadata. |
 

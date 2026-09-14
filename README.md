@@ -58,7 +58,7 @@ The older `data/us-cities.geojson` remains a cartographic reference with 769 Nat
 - `maps/*/areas.geojson`: Polygon and MultiPolygon geometry, including background areas.
 - `data/us-cities.geojson`: Retained Natural Earth city Point features.
 - `data/sources/`: Original source snapshots, committed for reproducible builds.
-- `data/source-checksums.json`: SHA-256 lock for the six snapshots.
+- `data/source-checksums.json`: SHA-256 lock for the seven geographic snapshots.
 - `content/learning.json` and `content/flags/`: offline game facts and authentic flag images.
 - `data/learning/`: reviewed identities, selections, slogan sources, and flag metadata.
 - `data/learning-checksums.json`: locks the new source snapshots, curation, and flag assets.

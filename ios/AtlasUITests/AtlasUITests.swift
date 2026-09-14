@@ -40,9 +40,23 @@ final class AtlasUITests: XCTestCase {
         app.buttons["Reset map"].tap()
         map.coordinate(withNormalizedOffset: CGVector(dx: 0.13, dy: 0.18)).tap()
         XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("That's right."))
+        app.buttons["Zoom in"].tap()
+        XCTAssertEqual(map.value as? String, "150 percent zoom")
         tap(app.buttons["continue-session"])
+        XCTAssertEqual(map.value as? String, "100 percent zoom")
         map.coordinate(withNormalizedOffset: CGVector(dx: 0.925, dy: 0.20)).tap()
         XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("You chose Rhode Island"))
+    }
+    func testNativePanKeepsTapCoordinatesAligned() {
+        open("us-states", mode: "find")
+        let map = app.images["geographicMap"]
+        let start = map.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+        let end = map.coordinate(withNormalizedOffset: CGVector(dx: 0.65, dy: 0.65))
+        start.press(forDuration: 0.05, thenDragTo: end)
+        // Washington moves with the map. This point is outside Washington
+        // before the drag, so it also detects a gesture that fails to pan.
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.245, dy: 0.295)).tap()
+        XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("That's right."))
     }
     func testNameModeCorrectWrongAndReveal() {
         open("us-states", mode: "name")

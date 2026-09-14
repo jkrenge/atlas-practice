@@ -11,6 +11,7 @@ extension Color {
 struct MapView: View {
     let pack: MapPack
     var canvasHeight: CGFloat = 320
+    var resetID: UUID? = nil
     var highlight: String? = nil
     var selected: String? = nil
     var revealLabels = false
@@ -53,6 +54,10 @@ struct MapView: View {
         }
         .background(Color(red: 0.90, green: 0.94, blue: 0.92))
         .clipShape(RoundedRectangle(cornerRadius: 24))
+        .onChange(of: resetID) { _, _ in
+            viewport = MapViewport()
+            hint = "Pinch to zoom. Drag to move."
+        }
     }
 }
 
@@ -77,29 +82,34 @@ private struct MapCanvas: UIViewRepresentable {
         view.selected = selected
         view.revealLabels = revealLabels
         view.acceptsAnswers = acceptsAnswers
-        view.viewport = viewport
+        view.applyViewport(viewport)
         view.onViewport = { viewport = $0 }
         view.onSelect = onSelect
         view.accessibilityLabel = highlight != nil && !revealLabels ? "Map with one highlighted area" : "Map of \(pack.manifest.name)"
         view.accessibilityValue = "\(Int(viewport.scale * 100)) percent zoom" + (guess.map { ". Guess at latitude \($0.coordinate.latitude.formatted(.number.precision(.fractionLength(2)))), longitude \($0.coordinate.longitude.formatted(.number.precision(.fractionLength(2))))" } ?? "")
         view.accessibilityHint = "Use zoom controls to enlarge the map. In Find the area, an area list is also available."
-        view.setNeedsDisplay()
     }
 }
 
-private final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
+final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
     let pack: MapPack
-    var guess: MapPin?
-    var target: MapPin?
-    var onLocation: ((MapPin) -> Void)?
-    var layout: MapLayout?
-    var viewport = MapViewport()
-    var highlight: String?
-    var selected: String?
-    var revealLabels = false
+    var guess: MapPin? { didSet { if guess != oldValue { annotations.setNeedsDisplay() } } }
+    var target: MapPin? { didSet { if target != oldValue { annotations.setNeedsDisplay() } } }
+    var onLocation: ((MapPin) -> Void)? {
+        didSet { if (onLocation == nil) != (oldValue == nil) { annotations.setNeedsDisplay() } }
+    }
+    private(set) var layout: MapLayout?
+    var viewport = MapViewport() { didSet { if viewport != oldValue { updateViewport() } } }
+    var highlight: String? { didSet { if highlight != oldValue { updateColors() } } }
+    var selected: String? { didSet { if selected != oldValue { updateColors() } } }
+    var revealLabels = false { didSet { if revealLabels != oldValue { annotations.setNeedsDisplay() } } }
     var acceptsAnswers = true
     var onSelect: ((MapHit) -> Void)?
     var onViewport: ((MapViewport) -> Void)?
+    private let geography = CALayer()
+    private var areaLayers: [CAShapeLayer] = []
+    private let highlightOutline = CAShapeLayer()
+    private let annotations = MapAnnotationsView()
     private var gestureStart = MapViewport()
     private var pinchAnchor = CGPoint.zero
 
@@ -111,6 +121,12 @@ private final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
         clipsToBounds = true
         isAccessibilityElement = true
         accessibilityTraits = .image
+        layer.addSublayer(geography)
+        annotations.map = self
+        annotations.backgroundColor = .clear
+        annotations.isOpaque = false
+        annotations.isUserInteractionEnabled = false
+        addSubview(annotations)
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panned))
         pan.maximumNumberOfTouches = 1
@@ -123,39 +139,80 @@ private final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        annotations.frame = bounds
         if bounds.width > 0, bounds.height > 0, layout?.size != bounds.size {
             layout = MapLayout(pack: pack, size: bounds.size)
-            setNeedsDisplay()
+            rebuildLayers()
         }
     }
 
-    override func draw(_ rect: CGRect) {
-        guard let context = UIGraphicsGetCurrentContext(), let layout else { return }
-        context.saveGState()
-        context.translateBy(x: bounds.midX + viewport.offset.width, y: bounds.midY + viewport.offset.height)
-        context.scaleBy(x: viewport.scale, y: viewport.scale)
-        context.translateBy(x: -bounds.midX, y: -bounds.midY)
-        for shape in layout.shapes {
+    private func rebuildLayers() {
+        guard let layout else { return }
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        geography.sublayers?.forEach { $0.removeFromSuperlayer() }
+        areaLayers = layout.shapes.map { shape in
+            let layer = CAShapeLayer()
+            layer.path = shape.path
+            layer.fillRule = .evenOdd
+            layer.strokeColor = UIColor(Color.atlasInk).withAlphaComponent(0.55).cgColor
+            geography.addSublayer(layer)
+            return layer
+        }
+        highlightOutline.fillColor = nil
+        highlightOutline.strokeColor = UIColor(Color.atlasInk).cgColor
+        geography.addSublayer(highlightOutline)
+        updateColors()
+        updateViewport()
+        CATransaction.commit()
+    }
+
+    private func updateColors() {
+        guard let layout else { return }
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        for (shape, layer) in zip(layout.shapes, areaLayers) {
             let color: UIColor
             if shape.id == highlight { color = UIColor(Color.atlasTeal) }
             else if shape.id == selected { color = UIColor(red: 0.62, green: 0.30, blue: 0.16, alpha: 1) }
             else { color = layout.eligibleIDs.contains(shape.id) ? UIColor(red: 0.98, green: 0.97, blue: 0.91, alpha: 1) : .systemGray3 }
-            context.addPath(shape.path)
-            context.setFillColor(color.cgColor)
-            context.fillPath(using: .evenOdd)
-            context.addPath(shape.path)
-            context.setStrokeColor(UIColor(Color.atlasInk).withAlphaComponent(0.55).cgColor)
-            context.setLineWidth(0.8 / viewport.scale)
-            context.strokePath()
+            layer.fillColor = color.cgColor
         }
-        if let shape = layout.shapes.first(where: { $0.id == highlight }) {
-            context.addPath(shape.path)
-            context.setStrokeColor(UIColor(Color.atlasInk).cgColor)
-            context.setLineWidth(3 / viewport.scale)
-            context.strokePath()
-        }
-        context.restoreGState()
+        highlightOutline.path = layout.shapes.first { $0.id == highlight }?.path
+        CATransaction.commit()
+        annotations.setNeedsDisplay()
+    }
 
+    func applyViewport(_ value: MapViewport) {
+        // SwiftUI can update the timer during a drag. Preserve the live native
+        // gesture until its final viewport is published back to SwiftUI.
+        guard !(gestureRecognizers ?? []).contains(where: {
+            ($0 is UIPanGestureRecognizer || $0 is UIPinchGestureRecognizer) &&
+                ($0.state == .began || $0.state == .changed)
+        }) else { return }
+        viewport = value
+    }
+
+    private func updateViewport() {
+        // Reuse vector paths. Core Animation moves the map without repainting
+        // every coastline on the main thread for every gesture frame.
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        geography.setAffineTransform(CGAffineTransform(
+            a: viewport.scale, b: 0, c: 0, d: viewport.scale,
+            tx: bounds.midX * (1 - viewport.scale) + viewport.offset.width,
+            ty: bounds.midY * (1 - viewport.scale) + viewport.offset.height))
+        for layer in areaLayers { layer.lineWidth = 0.8 / viewport.scale }
+        highlightOutline.lineWidth = 3 / viewport.scale
+        CATransaction.commit()
+        annotations.setNeedsDisplay()
+        accessibilityValue = "\(Int(viewport.scale * 100)) percent zoom" + (guess.map {
+            ". Guess at latitude \($0.coordinate.latitude.formatted(.number.precision(.fractionLength(2)))), longitude \($0.coordinate.longitude.formatted(.number.precision(.fractionLength(2))))"
+        } ?? "")
+    }
+
+    fileprivate func drawAnnotations() {
+        guard let context = UIGraphicsGetCurrentContext(), let layout else { return }
         if revealLabels {
             var occupied: [CGRect] = []
             for shape in layout.shapes where layout.eligibleIDs.contains(shape.id) && !layout.callouts.contains(where: { $0.id == shape.id }) {
@@ -217,14 +274,18 @@ private final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
         if gesture.state == .began { gestureStart = viewport }
         let translation = gesture.translation(in: self)
         viewport.offset = CGSize(width: gestureStart.offset.width + translation.x, height: gestureStart.offset.height + translation.y)
-        onViewport?(viewport)
-        setNeedsDisplay()
+        if gesture.state == .ended || gesture.state == .cancelled { onViewport?(viewport) }
     }
     @objc private func pinched(_ gesture: UIPinchGestureRecognizer) {
         if gesture.state == .began { gestureStart = viewport; pinchAnchor = gesture.location(in: self) }
-        viewport = gestureStart
-        viewport.zoom(to: gestureStart.scale * gesture.scale, anchor: pinchAnchor, size: bounds.size)
-        onViewport?(viewport)
-        setNeedsDisplay()
+        var updated = gestureStart
+        updated.zoom(to: gestureStart.scale * gesture.scale, anchor: pinchAnchor, size: bounds.size)
+        viewport = updated
+        if gesture.state == .ended || gesture.state == .cancelled { onViewport?(viewport) }
     }
+}
+
+private final class MapAnnotationsView: UIView {
+    weak var map: GeographicMapView?
+    override func draw(_ rect: CGRect) { map?.drawAnnotations() }
 }

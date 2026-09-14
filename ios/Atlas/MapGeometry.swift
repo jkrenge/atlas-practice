@@ -32,12 +32,12 @@ enum MapProjection {
         }
     }
 
-    private static var albersConstants: (Double, Double, Double) {
+    private static let albersConstants: (Double, Double, Double) = {
         let p1 = 29.5 * Double.pi / 180, p2 = 45.5 * Double.pi / 180
         let n = (sin(p1) + sin(p2)) / 2
         let c = pow(cos(p1), 2) + 2 * n * sin(p1)
         return (n, c, sqrt(c - 2 * n * sin(37.5 * .pi / 180)) / n)
-    }
+    }()
     private static func wrap(_ longitude: Double) -> Double {
         var value = longitude
         while value > 180 { value -= 360 }
@@ -87,6 +87,10 @@ struct MapShape {
     let path: CGPath
     let anchor: CGPoint
     let region: Int
+    let bounds: CGRect
+    func contains(_ point: CGPoint) -> Bool {
+        bounds.contains(point) && path.contains(point, using: .evenOdd)
+    }
 }
 
 struct MapCallout {
@@ -154,7 +158,7 @@ struct MapLayout {
                     }
                 }
                 let anchor = Self.interiorPoint(path: path, ring: largestRing)
-                shapes.append(MapShape(id: feature.id, path: path, anchor: anchor, region: regionIndex))
+                shapes.append(MapShape(id: feature.id, path: path, anchor: anchor, region: regionIndex, bounds: path.boundingBoxOfPath))
             }
         }
         self.regions = regions
@@ -169,13 +173,13 @@ struct MapLayout {
     func hit(_ screen: CGPoint, viewport: MapViewport, tolerance: CGFloat = 3) -> MapHit {
         if let callout = callouts.first(where: { $0.frame.contains(screen) }) { return .area(callout.id) }
         let point = viewport.map(screen, size: size)
-        guard let shape = shapes.first(where: { $0.path.contains(point, using: .evenOdd) }) else { return .water }
+        guard let shape = shapes.first(where: { $0.contains(point) }) else { return .water }
         guard eligibleIDs.contains(shape.id) else { return .water }
         // Reject a tap near another eligible area instead of recording an uncertain answer.
         let delta = tolerance / viewport.scale
         for offset in [CGPoint(x: delta, y: 0), CGPoint(x: -delta, y: 0), CGPoint(x: 0, y: delta), CGPoint(x: 0, y: -delta)] {
             let neighbor = CGPoint(x: point.x + offset.x, y: point.y + offset.y)
-            if shapes.contains(where: { $0.id != shape.id && eligibleIDs.contains($0.id) && $0.path.contains(neighbor, using: .evenOdd) }) {
+            if shapes.contains(where: { $0.id != shape.id && eligibleIDs.contains($0.id) && $0.contains(neighbor) }) {
                 return .ambiguous
             }
         }
@@ -189,7 +193,7 @@ struct MapLayout {
 
     func coordinate(_ screen: CGPoint, viewport: MapViewport) -> Coordinate? {
         let point = viewport.map(screen, size: size)
-        guard let shape = shapes.first(where: { $0.path.contains(point, using: .evenOdd) }) else { return nil }
+        guard let shape = shapes.first(where: { $0.contains(point) }) else { return nil }
         return regions[shape.region].coordinate(point)
     }
 

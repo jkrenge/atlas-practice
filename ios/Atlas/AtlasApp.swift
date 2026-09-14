@@ -73,9 +73,12 @@ struct LibraryScreen: View {
             .task {
                 guard packs.isEmpty, loadError == nil else { return }
                 do {
-                    let library = try MapLibrary()
-                    content = try LearningContent.load()
-                    packs = try MapLibrary.starterIDs.map(library.load)
+                    let loaded = try await Task.detached(priority: .userInitiated) {
+                        let library = try MapLibrary()
+                        return (try LearningContent.load(), try MapLibrary.starterIDs.map(library.load))
+                    }.value
+                    content = loaded.0
+                    packs = loaded.1
                 } catch { loadError = error.localizedDescription }
             }
         }
@@ -224,6 +227,7 @@ struct PracticeScreen: View {
                         if session.mode.usesMap {
                             MapView(pack: pack,
                                     canvasHeight: min(440, max(300, geometry.size.width * (session.mode == .find ? 1.03 : 0.82))) - 44,
+                                    resetID: question.id,
                                     highlight: !session.mode.isLocation && (session.mode == .name || session.answer != nil) ? question.area.id : nil,
                                     selected: session.answer?.selected?.id,
                                     revealLabels: session.answer != nil,
@@ -232,7 +236,7 @@ struct PracticeScreen: View {
                                     target: session.answer != nil && session.mode.isLocation ? content.location(question.area, mode: session.mode) : nil,
                                     onLocation: session.mode.isLocation ? { guess = $0 } : nil) { id in
                                 if let area = pack.area(id) { session.submit(area) }
-                            }.id(question.id)
+                            }
                         }
                         if let answer = session.answer {
                             feedback(answer, question: question)
@@ -309,8 +313,10 @@ struct PracticeScreen: View {
             while !Task.isCancelled && !session.isComplete {
                 do { try await Task.sleep(for: .milliseconds(200)) } catch { break }
                 if session.secondsAllowed > 0 && answering && scenePhase == .active {
-                    timer.tick(now: now)
-                    if timer.expired { session.expire() }
+                    var updated = timer
+                    updated.tick(now: now)
+                    if ceil(updated.remaining) != ceil(timer.remaining) || updated.expired { timer = updated }
+                    if updated.expired { session.expire() }
                 }
             }
         }
@@ -493,7 +499,7 @@ struct SourcesScreen: View {
     var body: some View {
         List {
             Section("United States and Germany") {
-                Text("Boundaries: Natural Earth, Admin 1 states and provinces, version 5.1.1. Public domain. Boundaries are simplified for learning.")
+                Text("Boundaries: Natural Earth, Admin 1 states and provinces, version 5.1.1. The US map excludes large lakes so shorelines remain visible. Public domain. Boundaries are simplified for learning.")
                 Link("Natural Earth", destination: URL(string: "https://www.naturalearthdata.com")!)
             }
             Section("New York City") {

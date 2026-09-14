@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-struct StateFact: Decodable, Identifiable {
+struct StateFact: Sendable, Decodable, Identifiable {
     let id: String
     let name: String
     let capital: String
@@ -16,7 +16,7 @@ struct StateFact: Decodable, Identifiable {
     let flagLicense: String
 }
 
-struct PlaceFact: Decodable, Identifiable {
+struct PlaceFact: Sendable, Decodable, Identifiable {
     let id: String
     let name: String
     let country: String
@@ -32,7 +32,7 @@ struct PlaceFact: Decodable, Identifiable {
     var populationLabel: String { population?.formatted(.number.locale(Locale(identifier: "en_US"))) ?? "" }
 }
 
-struct LearningContent: Decodable {
+struct LearningContent: Sendable, Decodable {
     let schemaVersion: Int
     let states: [StateFact]
     let cities: [PlaceFact]
@@ -89,9 +89,8 @@ struct LearningContent: Decodable {
         }
     }
     static func flag(_ state: StateFact, bundle: Bundle = .main) -> UIImage? {
-        guard let root = bundle.resourceURL?.appendingPathComponent("content"),
-              !state.flagAsset.contains(".."), !state.flagAsset.hasPrefix("/") else { return nil }
-        return UIImage(contentsOfFile: root.appendingPathComponent(state.flagAsset).path)
+        guard !state.flagAsset.contains(".."), !state.flagAsset.hasPrefix("/") else { return nil }
+        return UIImage(named: "content/" + state.flagAsset, in: bundle, compatibleWith: nil)
     }
 }
 

@@ -1,5 +1,40 @@
 # iOS app verification
 
+## Native map performance and Great Lakes — 2026-09-14
+
+The app remains native SwiftUI, UIKit, Core Graphics, and Core Animation. There is no web view, JavaScript UI, or external runtime. Map shapes now use retained `CAShapeLayer` paths. Gestures change native layer transforms; only labels, callouts, and pins need drawing. Unchanged SwiftUI updates no longer request map redraws. Question changes reset the viewport without destroying the map view. Bounds checks narrow polygon hit tests. Bundled map decoding runs outside the main actor, and UIKit caches flag images. Timer display updates occur when the displayed second changes; expiry still checks elapsed time every 200 ms.
+
+### Measurements
+
+Measured with Xcode 26.6, iOS 26.5, iPhone 17 Pro Simulator, Debug configuration, a 360 × 380 canvas, and 30 map updates at 2× zoom:
+
+| Map | Previous CPU drawing work per update | Updated CPU work per update |
+| --- | ---: | ---: |
+| United States | 37.35 ms | 0.77 ms |
+| Germany | 13.46 ms | 0.80 ms |
+| NYC boroughs | 200.01 ms | 0.40 ms |
+| NYC neighborhoods | 15.03 ms | 0.42 ms |
+
+These measurements cover app-side work. Previously, the benchmark drew all polygons into a bitmap. It now changes the native layer transform, draws annotations, and flushes the Core Animation transaction. Rendering in the system compositor/GPU is excluded, so these are not end-to-end frame times or measured physical-phone speedups. Initial layout construction remains about 48 ms for US states and 81 ms for boroughs in this Debug run; that work is now retained across questions rather than repeated for each one.
+
+### US geometry and validation
+
+The US pack now uses Natural Earth's official Admin 1 variant without large lakes, version 5.1.1. The archive is pinned with a SHA-256 hash. Original state names, order, IDs, and saved score keys remain stable. The source retains the Illinois shoreline and both Michigan peninsulas; the Great Lakes are water rather than state fill. No manual lake shape or screen-coordinate correction is used.
+
+Both data validators pass: 12 packs, 623 valid area features, 66 state facts and flags, 60 ranked cities, 70 sights, and all 196 learning coordinates. A second offline compilation reproduced all 22 generated map files byte for byte.
+
+All **37 distinct automated tests passed**: 21 unit checks and 16 Simulator UI checks. The complete 21-unit/15-UI suite passed first. An additional real pan-and-tap regression then passed after moving its test tap away from the border tolerance. Coverage includes all five Great Lakes as water, near-shore Illinois land, both Michigan peninsulas, retained native paths, transform alignment, resize, question viewport reset, gesture input, labels, pins, all modes, timer expiry, and accessibility controls.
+
+The full result bundle is in the task's `work/performance/build/PerformanceUpdated/Logs/Test/Test-Atlas-2026.09.14_18-58-45--0400.xcresult`. The extra pan test is `Test-Atlas-2026.09.14_19-08-14--0400.xcresult` in the same directory. The before-change benchmark is under `build/PerformanceBaseline/Logs/Test/Test-Atlas-2026.09.14_18-54-05--0400.xcresult` in that task directory.
+
+A separate iPhone 17 Simulator inspection confirmed visible lake shorelines, Illinois selection, state labels, flag details, and enlarged native map shapes. Automated pan input also confirmed that the moved Washington polygon and answer hit testing stay aligned.
+
+### Phone installation
+
+A signed **Release** build was installed successfully on the connected iPhone Air using the existing paid developer team. The compiler used `-O` and whole-module optimization. `ENABLE_CODE_COVERAGE=NO CLANG_COVERAGE_MAPPING=NO` removed test instrumentation; these settings must be included when repeating this development build because the scheme enables test coverage. Build output: `build/DeviceRelease/Build/Products/Release-iphoneos/Atlas.app`.
+
+Automatic launch was blocked by the iPhone lock screen. Unlock the phone and open Atlas Practice. Installation is verified; physical-phone interaction performance is not yet measured. No remote push, TestFlight upload, or App Store release was performed.
+
 ## NYC map reduction — 2026-09-14
 
 The active NYC neighborhood map now has **47 areas: all 37 original Manhattan areas plus ten areas outside Manhattan**. The five named Brooklyn/Queens neighborhoods retain their polygons. The other Brooklyn and Queens areas use explicit source unions. The Bronx and Staten Island each use one official borough boundary. The new map ID keeps scores separate from the earlier 266-area map.

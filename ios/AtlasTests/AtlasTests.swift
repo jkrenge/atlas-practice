@@ -1,6 +1,7 @@
 import Testing
 import Foundation
 import CoreGraphics
+import UIKit
 @testable import Atlas
 
 @Test func allCatalogPacksResolveAndDecode() throws {
@@ -307,4 +308,83 @@ import CoreGraphics
     #expect(!pack.areas.contains { ["Country Club", "Marine Park", "Allerton"].contains($0.name) })
     #expect(MapLibrary.starterIDs.contains(pack.id))
     #expect(!MapLibrary.starterIDs.contains("nyc-local-neighborhoods"))
+}
+
+
+@MainActor
+@Test func mapWorkloadBenchmark() throws {
+    for id in MapLibrary.starterIDs {
+        let start = Date.timeIntervalSinceReferenceDate
+        let pack = try MapLibrary().load(id)
+        let loadMS = (Date.timeIntervalSinceReferenceDate - start) * 1000
+        var layoutMS = 0.0
+        for _ in 0..<5 {
+            let start = Date.timeIntervalSinceReferenceDate
+            _ = MapLayout(pack: pack, size: CGSize(width: 360, height: 380))
+            layoutMS += (Date.timeIntervalSinceReferenceDate - start) * 1000 / 5
+        }
+        let view = GeographicMapView(pack: pack)
+        view.frame = CGRect(x: 0, y: 0, width: 360, height: 380)
+        view.layoutIfNeeded()
+        let renderer = UIGraphicsImageRenderer(size: view.bounds.size)
+        let drawStart = Date.timeIntervalSinceReferenceDate
+        for step in 0..<30 {
+            view.viewport = MapViewport(scale: 2, offset: CGSize(width: step, height: 0))
+            // The vector layers are rendered by Core Animation. Measure app-side
+            // viewport and annotation work, excluding the GPU compositor.
+            _ = renderer.image { _ in view.subviews.first?.draw(view.bounds) }
+            CATransaction.flush()
+        }
+        let drawMS = (Date.timeIntervalSinceReferenceDate - drawStart) * 1000 / 30
+        print("MAP_BENCH \(id) load_ms=\(loadMS) layout_ms=\(layoutMS) cpu_update_ms=\(drawMS)")
+    }
+}
+
+@Test func greatLakesAreWaterAndIllinoisKeepsItsShoreline() throws {
+    let pack = try MapLibrary().load("us-states")
+    for size in [CGSize(width: 360, height: 380), CGSize(width: 780, height: 320)] {
+        let layout = MapLayout(pack: pack, size: size)
+        for viewport in [MapViewport(), MapViewport(scale: 4, offset: CGSize(width: 12, height: -30))] {
+            for coordinate in [Coordinate(-87, 47.5), Coordinate(-87, 43.5), Coordinate(-82.7, 44.5),
+                               Coordinate(-81.2, 42.1), Coordinate(-77.8, 43.5), Coordinate(-87.55, 41.9)] {
+                let screen = try #require(layout.screen(coordinate, areaID: "US-IL", viewport: viewport))
+                #expect(layout.hit(screen, viewport: viewport, tolerance: 0) == .water)
+                #expect(layout.coordinate(screen, viewport: viewport) == nil)
+                #expect(layout.locationPin(screen, viewport: viewport) != nil)
+            }
+            for (id, coordinate) in [("US-IL", Coordinate(-87.65, 41.9)),
+                                     ("US-MI", Coordinate(-83.1, 42.4)), ("US-MI", Coordinate(-87.4, 46.5))] {
+                let screen = try #require(layout.screen(coordinate, areaID: id, viewport: viewport))
+                #expect(layout.hit(screen, viewport: viewport, tolerance: 0) == .area(id))
+            }
+        }
+    }
+}
+
+@MainActor
+@Test func mapLayersReusePathsAndMatchGeographicTransforms() throws {
+    let view = GeographicMapView(pack: try MapLibrary().load("us-states"))
+    view.frame = CGRect(x: 0, y: 0, width: 360, height: 380)
+    view.layoutIfNeeded()
+    let layout = try #require(view.layout)
+    let geography = try #require(view.layer.sublayers?.first)
+    let layers = try #require(geography.sublayers)
+    #expect(layers.count == 52) // 51 areas and one highlight outline.
+    let paths = layers.compactMap { ($0 as? CAShapeLayer)?.path }
+    for step in 1...30 {
+        view.applyViewport(MapViewport(scale: 2, offset: CGSize(width: step, height: -12)))
+        view.highlight = step.isMultiple(of: 2) ? "US-IL" : "US-MI"
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+        for (index, shape) in layout.shapes.enumerated() {
+            #expect((geography.sublayers?[index] as? CAShapeLayer)?.path === paths[index])
+            let actual = shape.anchor.applying(geography.affineTransform())
+            let expected = view.viewport.screen(shape.anchor, size: layout.size)
+            #expect(abs(actual.x - expected.x) < 1e-8 && abs(actual.y - expected.y) < 1e-8)
+        }
+    }
+    view.frame.size = CGSize(width: 780, height: 320)
+    view.layoutIfNeeded()
+    #expect(view.layout?.size == view.bounds.size)
+    #expect((geography.sublayers?.first as? CAShapeLayer)?.path !== paths[0])
 }

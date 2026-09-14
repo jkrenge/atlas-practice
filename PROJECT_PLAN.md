@@ -1,51 +1,38 @@
-# iOS implementation plan
+# iOS implementation status
 
-The repository prepares data for implementation. No Xcode project or app target exists yet. Use the following steps to build and verify the first version.
+## Implemented: first playable milestone
 
-## 1. Create the app shell and data loader
+- SwiftUI app, iOS 18 deployment target, shared Atlas scheme, committed Xcode project, and repeatable build/test/run script.
+- Generic schema-version-2 catalog loader. All 11 prepared packs decode; only US states, German states, and official NYC boroughs appear in the selector.
+- Geographic Polygon/MultiPolygon renderer with holes, Albers lower-48 projection, separate Alaska/Hawaii insets, antimeridian wrapping, and inverse coordinate transforms.
+- Polygon taps, pinch zoom, pan, zoom buttons, and reset. Gestures do not submit answers. Ambiguous border taps, water, holes, and background geometry do not score.
+- Linked 44-point neutral markers for Rhode Island, Connecticut, New Jersey, and Delaware, plus Hamburg, Bremen, and Berlin. Study and feedback can reveal labels.
+- Find the area and Name the area, labeled study, short untimed sessions, explicit feedback, Show answer, one spaced review per miss, and results.
+- Local progress by map and mode. First attempts and review attempts have separate counts.
+- Native accessible controls and text feedback alongside color. The area-list alternative supports non-spatial selection; it is not a substitute for spatial learning.
 
-Create a SwiftUI iOS app and choose its minimum supported iOS version. Bundle the catalog, manifests, and required GeoJSON. Decode map and feature IDs without assuming a fixed number of areas. Keep the area question session independent of country or area type.
+Build, geometry, scoring, Simulator interaction, and accessibility checks are recorded in [ios/VERIFICATION.md](ios/VERIFICATION.md). A physical iPhone remains untested. No distribution or App Store work is included.
 
-Verify: load all eleven prepared manifests, resolve shared assets, and reject a question ID that has no geometry. Use the same session logic for US states, German federal states, and NYC areas.
+## Next core milestones
 
-## 2. Build the geographic renderer
+1. **Capital pairs:** reviewed US/German state-to-capital relationships, stable IDs, aliases, source metadata, and separate progress in each direction. Do not infer capitals from population or shape centroids.
+2. **Place the city:** choose a point, adjust a pin, then Check. Invert taps to geographic coordinates before measuring distance. Use reviewed representative city centers; callout boxes cannot submit a city guess.
+3. **Largest US cities:** archive and validate the Census Vintage 2025 `SUB-IP-EST2025-ANNRNK` workbook before selecting ranks 1–50. The source has been identified, but its rows have not been validated. Natural Earth population fields are not this ranking.
+4. **Continent curricula:** review names, dependencies, disputed/transcontinental areas, islands, overseas geometry, and camera framing. The current 204 World questions are source records, not a sovereign-country count. Seychelles, Mauritius, and Maldives require an explicit continent decision.
+5. **Detailed NYC:** resolve the Pediacities candidate license, two topology errors, and coverage before adding everyday neighborhoods. Keep statistical NTAs clearly distinct. Use the official five-borough polygons independently; do not dissolve NTAs to derive boroughs.
 
-Render Polygon and MultiPolygon features with holes. Choose and document a projection with an inverse. Add antimeridian handling and explicit Alaska and Hawaii insets. Initially show the full map with all 50 US states available.
+## Optional backlog
 
-Verify: Colorado, Alaska, Hawaii, islands, holes, and DC draw correctly. Coordinate-to-screen-to-coordinate round trips stay within a defined numeric tolerance for every view region. US islands near the antimeridian do not create lines across the map. Inset gaps cannot select an unrelated place.
+Outline recognition, land-border neighbors, city/state and neighborhood/borough relationships, and north/south comparisons need a separate product decision and reviewed content.
 
-## 3. Add map interaction
+Additional research ideas retained in the [implementation brief](IMPLEMENTATION_HANDOFF.md):
 
-Add pinch zoom and pan to every map. Use the same transforms for drawing and selection. Use actual polygon containment for area taps. Add callout boxes for small states, including Delaware and Rhode Island, with leader lines to their shapes. Both the box and the shape select the same feature ID. Keep the callouts usable as zoom and pan change.
+| Idea | Required work |
+| --- | --- |
+| Build the map | Place region shapes while preserving geographic proportions. |
+| Plan a journey | Validate connected routes against a reviewed adjacency graph. |
+| Find the landmark | Add reviewed landmark points or geometry and area links. |
+| Follow the river | Add named river geometry and geographic relationships. |
+| Find the mistake | Identify and correct swapped map labels. |
 
-Verify: a visible shape remains selectable after zoom, pan, rotation of the device, and inset scaling. Callouts do not select adjacent states. Background, water, polygon holes, and DC cannot become state answers. Check small targets, islands, and accessibility on a simulator and a physical iPhone.
-
-## 4. Complete the first learning loop
-
-Show a prompt such as `Tap Colorado`. Compare the selected ID with the requested ID, show clear feedback, and continue to the next question. Use the manifest's explicit question list. Choose retry, question order, and score rules before implementing them.
-
-Verify: correct, incorrect, and background taps behave as specified. All 50 states can appear. Switching to Germany or an NYC map changes data, not the session logic. Screen-reader controls identify selectable areas and announce feedback.
-
-## 5. Prepare the NYC learning levels
-
-Start with the five boroughs, then offer finer named neighborhoods. The requested names include Chinatown, Nolita, Tribeca, and Financial District (FiDi). Keep aliases separate from stable IDs.
-
-The current NTA pack is a statistical reference level. It must not be presented as a complete fine-neighborhood curriculum. The official five-borough pack is prepared. A 266-area Pediacities candidate includes the four requested finer neighborhoods, but its exact license and two invalid geometries need resolution before it becomes an active pack. Do not create borough boundaries by dissolving NTAs: some NTAs cross borough boundaries.
-
-Verify: the borough pack has five correct polygons and five answers. Each requested finer neighborhood has its own named polygon and reviewed source terms. Record gaps, overlapping boundaries, and naming rules before importing that dataset. Reuse the same map contract and area session.
-
-## 6. Review continent question lists
-
-Review disputed areas, dependencies, transcontinental countries, names, and islands. The current lists follow source fields and are provisional. Decide how to assign Seychelles, Mauritius, and Maldives, which the source classifies outside the six continents. Review overseas geometry and camera framing separately from question membership.
-
-Verify: each intended country appears in the intended learning level, and the documented policy explains exclusions and duplicate membership. Keep Antarctica out of the country quiz.
-
-## 7. Add city-distance mode later
-
-Select and review a city curriculum from the 769 prepared points. If a current largest-cities list is wanted, obtain an appropriate dated population source. Show a city name, invert a map tap to longitude and latitude, then measure geographic distance to the city's Point. Decide the score curve after distance is verified.
-
-Verify: exact-location guesses return zero within tolerance. Known coordinate pairs return the expected distance. Results remain the same after zoom, pan, inset movement, and device rotation. A small-state callout cannot submit a city guess. Check Los Angeles, New York, Anchorage, and Honolulu against the map display.
-
-## Completion criteria for the first app version
-
-The full US map supports all 50 state questions, correct polygon selection, zoom and pan, small-state callouts, and a complete question/feedback loop. Shared data loading also works for Germany and NYC. Projection round trips and area selection pass automated checks; the learning flow passes simulator and physical-device checks. City-distance mode and the later curricula are separate follow-up work.
+These proposals are not implemented. Accounts, leaderboards, payments, social features, and reward systems are outside this delivery.

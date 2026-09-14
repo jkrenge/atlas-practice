@@ -1,0 +1,154 @@
+import Testing
+import Foundation
+import CoreGraphics
+@testable import Atlas
+
+@Test func allCatalogPacksResolveAndDecode() throws {
+    let library = try MapLibrary()
+    #expect(library.catalog.maps.count == 11)
+    for entry in library.catalog.maps {
+        let pack = try library.load(entry.id)
+        #expect(pack.areas.count == entry.areaCount)
+        #expect(Set(pack.features.map(\.id)).isSuperset(of: Set(pack.areas.map(\.id))))
+    }
+    #expect(throws: (any Error).self) { try library.load("missing") }
+}
+
+@Test func projectionRoundTripsIncludingAntimeridian() {
+    let cases: [(MapProjection, Coordinate)] = [
+        (.albers, Coordinate(-105, 39)), (.albers, Coordinate(-70, 44)),
+        (.equirectangular(longitude: -154, latitude: 64), Coordinate(179.7, 51.8)),
+        (.equirectangular(longitude: -154, latitude: 64), Coordinate(-150, 64)),
+        (.equirectangular(longitude: -157, latitude: 20), Coordinate(-155.5, 19.7)),
+        (.equirectangular(longitude: 10, latitude: 51), Coordinate(13.4, 52.5))
+    ]
+    for (projection, coordinate) in cases {
+        let result = projection.inverse(projection.forward(coordinate))
+        #expect(abs(coordinate.latitude - result.latitude) < 1e-8)
+        #expect(abs(coordinate.longitude - result.longitude) < 1e-8)
+    }
+}
+
+@Test func geographicHitsAndInverseSurviveZoomPanAndResize() throws {
+    let library = try MapLibrary()
+    let cases: [(String, String, Coordinate)] = [
+        ("us-states", "US-CO", Coordinate(-105.5, 39)),
+        ("us-states", "US-AK", Coordinate(-150, 64)),
+        ("us-states", "US-HI", Coordinate(-155.55, 19.65)),
+        ("us-states", "US-RI", Coordinate(-71.5, 41.7)),
+        ("us-states", "US-DE", Coordinate(-75.5, 39)),
+        ("germany-states", "DE-BY", Coordinate(11.5, 48.7)),
+        ("nyc-boroughs", "NYC-BORO-1", Coordinate(-73.965, 40.78)),
+        ("nyc-boroughs", "NYC-BORO-5", Coordinate(-74.15, 40.58))
+    ]
+    for (map, id, coordinate) in cases {
+        let pack = try library.load(map)
+        for size in [CGSize(width: 360, height: 380), CGSize(width: 780, height: 320)] {
+            let layout = MapLayout(pack: pack, size: size)
+            for viewport in [MapViewport(), MapViewport(scale: 3, offset: CGSize(width: 15, height: -30))] {
+                let screen = try #require(layout.screen(coordinate, areaID: id, viewport: viewport))
+                #expect(layout.hit(screen, viewport: viewport, tolerance: 0) == .area(id))
+                let back = try #require(layout.coordinate(screen, viewport: viewport))
+                #expect(abs(back.longitude - coordinate.longitude) < 1e-8)
+                #expect(abs(back.latitude - coordinate.latitude) < 1e-8)
+            }
+        }
+    }
+}
+
+@Test func allFiftyStatesHaveGeometryAndCalloutsHaveRealAnchors() throws {
+    let pack = try MapLibrary().load("us-states")
+    let layout = MapLayout(pack: pack, size: CGSize(width: 360, height: 400))
+    #expect(pack.areas.count == 50)
+    #expect(layout.shapes.count == 51)
+    for area in pack.areas {
+        let shape = try #require(layout.shapes.first { $0.id == area.id })
+        #expect(shape.path.contains(shape.anchor, using: .evenOdd))
+    }
+    for callout in layout.callouts {
+        #expect(callout.frame.width >= 44)
+        #expect(layout.hit(callout.center, viewport: MapViewport()) == .area(callout.id))
+    }
+    #expect(layout.callouts.contains { $0.id == "US-DE" })
+    #expect(layout.callouts.contains { $0.id == "US-RI" })
+    let dc = try #require(layout.shapes.first { $0.id == "US-DC" })
+    #expect(layout.hit(dc.anchor, viewport: MapViewport(), tolerance: 0) == .water)
+}
+
+@Test func holesWaterBackgroundAndBordersDoNotSubmitAnswers() throws {
+    let manifest = try JSONDecoder().decode(MapManifest.self, from: Data("""
+    {"schemaVersion":2,"id":"fixture","name":"Fixture","areaType":"area","coordinateSystem":"OGC:CRS84","geometryAsset":"areas.geojson","areas":[{"id":"A","name":"A"},{"id":"B","name":"B"}]}
+    """.utf8))
+    let features = try JSONDecoder().decode(FeatureCollection.self, from: Data("""
+    {"features":[
+    {"id":"A","geometry":{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[3,3],[3,7],[7,7],[7,3],[3,3]]]}},
+    {"id":"B","geometry":{"type":"Polygon","coordinates":[[[10,0],[20,0],[20,10],[10,10],[10,0]]]}},
+    {"id":"background","geometry":{"type":"Polygon","coordinates":[[[20,0],[30,0],[30,10],[20,10],[20,0]]]}}
+    ]}
+    """.utf8)).features
+    let layout = MapLayout(pack: MapPack(manifest: manifest, features: features), size: CGSize(width: 600, height: 300))
+    let viewport = MapViewport()
+    func screen(_ x: Double, _ y: Double) -> CGPoint { layout.regions[0].point(Coordinate(x, y)) }
+    #expect(layout.hit(screen(5, 5), viewport: viewport) == .water)
+    #expect(layout.hit(screen(25, 5), viewport: viewport) == .water)
+    #expect(layout.hit(screen(9.95, 5), viewport: viewport) == .ambiguous)
+    #expect(layout.hit(screen(1, 5), viewport: viewport) == .area("A"))
+    #expect(layout.coordinate(screen(5, 5), viewport: viewport) == nil)
+}
+
+@Test func pinchAnchorStaysFixedAndResetRestoresIdentity() {
+    let size = CGSize(width: 400, height: 400), anchor = CGPoint(x: 90, y: 130)
+    var viewport = MapViewport()
+    viewport.zoom(to: 3, anchor: anchor, size: size)
+    #expect(viewport.screen(anchor, size: size) == anchor)
+    viewport.zoom(to: 0.5, anchor: anchor, size: size)
+    #expect(viewport == MapViewport())
+}
+
+@Test func missedAnswersAreSpacedAndFirstAttemptsStaySeparate() {
+    let areas = (1...6).map { Area(id: "\($0)", name: "Area \($0)") }
+    var session = PracticeSession(areas: areas, mode: .find, ordered: true)
+    session.submit(areas[1])
+    session.submit(areas[0]) // A second tap must not change the recorded answer.
+    #expect(session.firstAttemptCorrect == 0)
+    #expect(session.questions.count == 7)
+    #expect(session.questions[3].isReview)
+    #expect(session.questions[3].area == areas[0])
+    session.advance()
+    while let question = session.current {
+        session.submit(question.area)
+        session.advance()
+    }
+    #expect(session.firstAttemptCorrect == 5)
+    #expect(session.reviewedCorrect == 1)
+    #expect(session.primaryCount == 6)
+    #expect(session.missed == [areas[0]])
+}
+
+@Test func showAnswerCannotCreateAnEndlessReviewLoop() {
+    let areas = [Area(id: "a", name: "A"), Area(id: "b", name: "B")]
+    var session = PracticeSession(areas: areas, mode: .name, ordered: true)
+    while !session.isComplete { session.submit(nil); session.advance() }
+    #expect(session.questions.count == 4)
+    #expect(session.firstAttemptCorrect == 0)
+    #expect(session.reviewedCorrect == 0)
+    #expect(session.questions.allSatisfy { $0.choices.contains($0.area) && Set($0.choices).count == $0.choices.count })
+}
+
+@MainActor
+@Test func progressPersistsAndKeepsMapsAndModesSeparate() throws {
+    let suite = "AtlasTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    let store = ProgressStore(defaults: defaults)
+    let area = Area(id: "a", name: "A")
+    var session = PracticeSession(areas: [area], mode: .find)
+    store.save(session, map: "us-states")
+    #expect(store.record(for: "us-states", mode: .find).sessions == 0)
+    session.submit(area); session.advance()
+    store.save(session, map: "us-states")
+    let restored = ProgressStore(defaults: defaults)
+    #expect(restored.record(for: "us-states", mode: .find).firstCorrect == 1)
+    #expect(restored.record(for: "us-states", mode: .name).sessions == 0)
+    #expect(restored.record(for: "germany-states", mode: .find).sessions == 0)
+}

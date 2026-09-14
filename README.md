@@ -1,8 +1,26 @@
-# Geography learning for iOS
+# Atlas Practice for iOS
 
-Project preparation for a personal geography learning app. The first mode shows a prompt such as **Tap Colorado**, displays the full US map, and lets the player select a state.
+A native SwiftUI geography learning app. Practice **Find the area** and **Name the area** with all 50 US states, 16 German states, and five official NYC boroughs. Explore a labeled study map, get feedback, and revisit missed answers in short untimed sessions. Progress is stored on the device, separately for each map and mode.
 
-This repository contains map geometry, source snapshots, a shared data format, and an implementation plan. The iOS app, renderer, tap detection, projection transforms, and distance scoring are not implemented. No simulator or device tests have run.
+The app uses geographic polygons for display and selection, supports pinch zoom and pan, and includes linked markers for small states. Alaska and Hawaii have reversible inset transforms. Other prepared datasets remain outside the app selector until their curricula are reviewed.
+
+## Build and run
+
+Open `ios/Atlas.xcodeproj`, select the **Atlas** scheme and an iOS Simulator, then run. The deployment target is iOS 18.0. Development was verified with Xcode 26.6, Swift 6 language mode, and the iOS 26.5 Simulator runtime. No third-party app packages or server are required.
+
+The generated project is committed, so XcodeGen is only needed when changing `ios/project.yml` or adding source files. To regenerate it, use XcodeGen 2.46 or compatible and `scripts/ios.sh generate`.
+
+```sh
+scripts/ios.sh build
+xcrun simctl list devices available
+# Replace SIMULATOR_UDID with an available device identifier.
+scripts/ios.sh test SIMULATOR_UDID
+scripts/ios.sh run SIMULATOR_UDID
+```
+
+Build products and test results stay under ignored `build/`. To run on a physical iPhone, select a signing team in Xcode and a connected device. Physical-device testing and signing are not yet verified.
+
+See [implementation status](PROJECT_PLAN.md), [verification evidence](ios/VERIFICATION.md), and the retained [implementation brief](IMPLEMENTATION_HANDOFF.md).
 
 ## Prepared data
 
@@ -59,8 +77,19 @@ Compilation reads the committed snapshots and checks their hashes before writing
 
 Source snapshots total about 27 MB. Keeping them in Git makes the initial data build independent of upstream updates, API row order, and download availability. The virtual environment is excluded.
 
-## First implementation
+## App structure
 
-Build one SwiftUI area-selection flow for all maps. Keep data loading, map display and tap detection, and question state separate. Pinch zoom, pan, and linked callout boxes for small states are required. Alaska and Hawaii need explicit inset transforms with an inverse. The later city mode must convert the tap back to longitude and latitude before computing geographic distance.
+- `ios/Atlas/MapData.swift`: schema-version-2 manifests and Polygon/MultiPolygon decoding, including shared geometry paths.
+- `ios/Atlas/MapGeometry.swift`: projection, inset fitting, viewport transforms, and polygon hit testing.
+- `ios/Atlas/MapView.swift`: native map drawing and touch gestures, with SwiftUI zoom controls.
+- `ios/Atlas/PracticeSession.swift`: question queue, spaced review, scoring, and local progress.
+- `ios/Atlas/AtlasApp.swift`: map selector, practice screens, study, results, and credits.
+- `ios/AtlasTests` and `ios/AtlasUITests`: geometry/session checks and Simulator interaction tests.
 
-See the [project plan](PROJECT_PLAN.md) for the sequence and checks. Data source terms remain separate from the project code; see [source notes](data/SOURCES.md).
+The lower 48 use Albers equal-area with standard parallels 29.5°/45.5°, central longitude −96°, and origin latitude 37.5°. Alaska and Hawaii use separate equirectangular view regions centered at −154°/64° and −157°/20°. Longitude wrapping around Alaska preserves the Aleutian Islands across ±180°. Germany and NYC use an equirectangular projection centered on their geometry. Each region has an explicit inverse; uniform fitting preserves aspect ratio. These first three map layouts are tested. The world and continent views need separate camera and antimeridian review before exposure.
+
+Callout boxes are fixed 44-point touch targets. Their leader lines follow the projected shape as the map moves. Before feedback, the markers display neutral numbers. Water, holes, and DC do not submit state answers. A tap within 3 screen points of another eligible area is treated as ambiguous and asks the player to zoom in.
+
+Each session samples up to six unique places. A first miss or Show answer inserts one review after two other queued questions when possible. A review is attempted once, so a session always ends. First-attempt results and review results remain separate. The area list supports non-spatial selection in Find mode; it does not provide equivalent spatial learning for a person who cannot see the map.
+
+Source terms remain separate from project code; see [source notes](data/SOURCES.md).

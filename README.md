@@ -1,8 +1,10 @@
 # Atlas Practice for iOS
 
-A native SwiftUI geography learning app. Practice **Find the area** and **Name the area** with all 50 US states, 16 German states, and five official NYC boroughs. Explore a labeled study map, get feedback, and revisit missed answers in short untimed sessions. Progress is stored on the device, separately for each map and mode.
+A native SwiftUI geography learning app with 50 US states, 16 German states, five NYC boroughs, and 266 NYC neighborhood areas. Learn state capitals, flags, nicknames and campaign slogans; locate capitals, the 50 largest US cities and 10 largest German cities; estimate city populations; and place 50 US and 20 German landmarks on the map.
 
-The app uses geographic polygons for display and selection, supports pinch zoom and pan, and includes linked markers for small states. Alaska and Hawaii have reversible inset transforms. Other prepared datasets remain outside the app selector until their curricula are reviewed.
+Choose untimed practice or a 30/60-second countdown per question. Pause and resume, review missed answers once, and keep separate local scores by map, mode, and timer setting. Location questions use movable pins and geographic distance: within 50 km for US maps or 20 km for Germany counts as correct. Browse every fact and its source before playing.
+
+The app runs offline. State flags are bundled PNGs from Wikimedia Commons with file-specific credits. NYC neighborhood boundaries are approximate and include parks and islands; source equivalence remains a documented limit in [source notes](data/SOURCES.md).
 
 ## Build and run
 
@@ -31,6 +33,7 @@ All playable geometry uses GeoJSON with WGS 84 longitude and latitude coordinate
 | United States | 51 | 50 states; DC is background |
 | Germany | 16 | 16 federal states |
 | NYC boroughs | 5 | 5 boroughs |
+| NYC local neighborhoods | 266 | 266 named areas |
 | NYC statistical neighborhoods | 262 | 197 residential 2020 NTAs |
 | World | 242 | 204 provisionally eligible source records |
 | Africa | Shared world geometry | 53 |
@@ -42,18 +45,23 @@ All playable geometry uses GeoJSON with WGS 84 longitude and latitude coordinate
 
 The country lists follow Natural Earth's classifications. The count of 204 is not a claim about the number of sovereign countries. The six continent lists contain 201 questions in total: the source places Seychelles, Mauritius, and Maldives in `Seven seas (open ocean)`, so they appear only in the World list. Continent membership and disputed areas need curriculum review. There is no Antarctica country quiz.
 
-NYC NTAs are statistical areas that approximate neighborhoods. They do not provide the requested finer neighborhood level for every name, such as Chinatown, Nolita, Tribeca, and Financial District (FiDi). The official five-borough pack is ready. Finer Pediacities geometry is retained in `data/candidates/nyc-neighborhoods.geojson`, with separate polygons for all four requested names. It stays outside the active catalog because its exact license is unverified and two other features have invalid topology. See [candidate notes](data/candidates/README.md).
+The app selector includes the US, Germany, NYC boroughs, and the finer NYC neighborhood pack. The separate official NTA dataset remains a statistical reference. Chinatown, Nolita, Tribeca, and Financial District have separate geometry in the neighborhood game. The unmodified mirror remains in `data/candidates`; only the active pack repairs the Country Club and Marine Park self-intersections.
 
-`data/us-cities.geojson` contains 769 US city and town points for a later city mode, including Los Angeles. These are cartographic points, with source population estimates and scale ranks. They are not a current list of the largest cities. The geometry coordinates are canonical; separate coordinate attributes in the original source can differ.
+`content/learning.json` contains 66 state facts, 60 ranked cities, and 70 curated sights. US city populations use Census Vintage 2025, July 1, 2025; German cities use Destatis, December 31, 2024. These are city/municipal populations, not metro areas. US consolidated-government balances and Washington, DC follow the Census ranking. Landmarks form a curated learning list, not a measured popularity ranking. Each point has a source link, and park reference points are labeled.
+
+The older `data/us-cities.geojson` remains a cartographic reference with 769 Natural Earth city/town points. Its population fields do not feed the new city games.
 
 ## Files
 
-- `maps/catalog.json`: Index of the eleven prepared map packs.
+- `maps/catalog.json`: Index of the twelve prepared map packs.
 - `maps/*/map.json`: Question IDs, names, and relative geometry references.
 - `maps/*/areas.geojson`: Polygon and MultiPolygon geometry, including background areas.
-- `data/us-cities.geojson`: City Point features for future distance questions.
+- `data/us-cities.geojson`: Retained Natural Earth city Point features.
 - `data/sources/`: Original source snapshots, committed for reproducible builds.
 - `data/source-checksums.json`: SHA-256 lock for the six snapshots.
+- `content/learning.json` and `content/flags/`: offline game facts and authentic flag images.
+- `data/learning/`: reviewed identities, selections, slogan sources, and flag metadata.
+- `data/learning-checksums.json`: locks the new source snapshots, curation, and flag assets.
 - `data/SOURCES.md`: Source URLs, versions, terms, and selection rules.
 - `assets/us-states.svg` and `maps/us-states/map.svg`: Original and adapted visual references.
 - [MAP_FORMAT.md](MAP_FORMAT.md): Data contract and required coordinate handling.
@@ -70,12 +78,14 @@ python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-data.txt
 .venv/bin/python scripts/compile_maps.py
 .venv/bin/python scripts/validate_data.py
-git diff --exit-code -- maps data/us-cities.geojson data/candidates/nyc-neighborhoods.geojson data/source-checksums.json
+.venv/bin/python scripts/compile_learning.py
+.venv/bin/python scripts/validate_learning.py
+git diff --exit-code -- maps content data/us-cities.geojson data/candidates/nyc-neighborhoods.geojson data/nyc-neighborhood-repairs.json
 ```
 
 Compilation reads the committed snapshots and checks their hashes before writing output. It does not download data or replace the checksum lock. The validation checks references, expected area sets, geometry structure and topology, coordinate bounds, and representative city points. The final command checks that compilation reproduced the committed output exactly.
 
-Source snapshots total about 27 MB. Keeping them in Git makes the initial data build independent of upstream updates, API row order, and download availability. The virtual environment is excluded.
+Keeping source snapshots in Git makes the initial data build independent of upstream updates, API row order, and download availability. The virtual environment is excluded.
 
 ## App structure
 
@@ -86,10 +96,14 @@ Source snapshots total about 27 MB. Keeping them in Git makes the initial data b
 - `ios/Atlas/AtlasApp.swift`: map selector, practice screens, study, results, and credits.
 - `ios/AtlasTests` and `ios/AtlasUITests`: geometry/session checks and Simulator interaction tests.
 
-The lower 48 use Albers equal-area with standard parallels 29.5°/45.5°, central longitude −96°, and origin latitude 37.5°. Alaska and Hawaii use separate equirectangular view regions centered at −154°/64° and −157°/20°. Longitude wrapping around Alaska preserves the Aleutian Islands across ±180°. Germany and NYC use an equirectangular projection centered on their geometry. Each region has an explicit inverse; uniform fitting preserves aspect ratio. These first three map layouts are tested. The world and continent views need separate camera and antimeridian review before exposure.
+The lower 48 use Albers equal-area with standard parallels 29.5°/45.5°, central longitude −96°, and origin latitude 37.5°. Alaska and Hawaii use separate equirectangular view regions centered at −154°/64° and −157°/20°. Longitude wrapping around Alaska preserves the Aleutian Islands across ±180°. Germany and NYC use an equirectangular projection centered on their geometry. Each region has an explicit inverse; uniform fitting preserves aspect ratio. The four exposed map layouts are tested. The world and continent views need separate camera and antimeridian review before exposure.
 
 Callout boxes are fixed 44-point touch targets. Their leader lines follow the projected shape as the map moves. Before feedback, the markers display neutral numbers. Water, holes, and DC do not submit state answers. A tap within 3 screen points of another eligible area is treated as ambiguous and asks the player to zoom in.
 
+Point questions accept water and coastlines inside a geographic map region. Gaps between US insets cannot submit a point. Distance uses the haversine formula on canonical longitude/latitude, not screen pixels. Map zoom supports up to 32×.
+
 Each session samples up to six unique places. A first miss or Show answer inserts one review after two other queued questions when possible. A review is attempted once, so a session always ends. First-attempt results and review results remain separate. The area list supports non-spatial selection in Find mode; it does not provide equivalent spatial learning for a person who cannot see the map.
+
+Countdowns pause while the app is inactive and during answer feedback. A timeout records one miss and one review. The coordinate-entry sheet provides an accessible alternative to pin placement.
 
 Source terms remain separate from project code; see [source notes](data/SOURCES.md).

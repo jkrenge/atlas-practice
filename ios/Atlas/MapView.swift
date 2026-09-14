@@ -15,6 +15,9 @@ struct MapView: View {
     var selected: String? = nil
     var revealLabels = false
     var acceptsAnswers = true
+    var guess: MapPin? = nil
+    var target: MapPin? = nil
+    var onLocation: ((MapPin) -> Void)? = nil
     var onSelect: (String) -> Void
     @State private var viewport = MapViewport()
     @State private var hint = "Pinch to zoom. Drag to move."
@@ -22,7 +25,7 @@ struct MapView: View {
     var body: some View {
         VStack(spacing: 0) {
             MapCanvas(pack: pack, highlight: highlight, selected: selected, revealLabels: revealLabels,
-                      acceptsAnswers: acceptsAnswers, viewport: $viewport) { hit in
+                      acceptsAnswers: acceptsAnswers, guess: guess, target: target, onLocation: onLocation, viewport: $viewport) { hit in
                 switch hit {
                 case .area(let id): hint = "Pinch to zoom. Drag to move."; onSelect(id)
                 case .ambiguous: hint = "Close to a border. Zoom in and tap again."
@@ -38,7 +41,7 @@ struct MapView: View {
                 Button { viewport.scale = max(1, viewport.scale / 1.5); if viewport.scale == 1 { viewport.offset = .zero } }
                 label: { Image(systemName: "minus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44) }
                     .accessibilityLabel("Zoom out")
-                Button { viewport.scale = min(8, viewport.scale * 1.5) }
+                Button { viewport.scale = min(32, viewport.scale * 1.5) }
                 label: { Image(systemName: "plus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44) }
                     .accessibilityLabel("Zoom in")
                 Button { viewport = MapViewport() }
@@ -59,11 +62,17 @@ private struct MapCanvas: UIViewRepresentable {
     let selected: String?
     let revealLabels: Bool
     let acceptsAnswers: Bool
+    let guess: MapPin?
+    let target: MapPin?
+    let onLocation: ((MapPin) -> Void)?
     @Binding var viewport: MapViewport
     let onSelect: (MapHit) -> Void
 
     func makeUIView(context: Context) -> GeographicMapView { GeographicMapView(pack: pack) }
     func updateUIView(_ view: GeographicMapView, context: Context) {
+        view.guess = guess
+        view.target = target
+        view.onLocation = onLocation
         view.highlight = highlight
         view.selected = selected
         view.revealLabels = revealLabels
@@ -72,7 +81,7 @@ private struct MapCanvas: UIViewRepresentable {
         view.onViewport = { viewport = $0 }
         view.onSelect = onSelect
         view.accessibilityLabel = highlight != nil && !revealLabels ? "Map with one highlighted area" : "Map of \(pack.manifest.name)"
-        view.accessibilityValue = "\(Int(viewport.scale * 100)) percent zoom"
+        view.accessibilityValue = "\(Int(viewport.scale * 100)) percent zoom" + (guess.map { ". Guess at latitude \($0.coordinate.latitude.formatted(.number.precision(.fractionLength(2)))), longitude \($0.coordinate.longitude.formatted(.number.precision(.fractionLength(2))))" } ?? "")
         view.accessibilityHint = "Use zoom controls to enlarge the map. In Find the area, an area list is also available."
         view.setNeedsDisplay()
     }
@@ -80,6 +89,9 @@ private struct MapCanvas: UIViewRepresentable {
 
 private final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
     let pack: MapPack
+    var guess: MapPin?
+    var target: MapPin?
+    var onLocation: ((MapPin) -> Void)?
     var layout: MapLayout?
     var viewport = MapViewport()
     var highlight: String?
@@ -145,14 +157,21 @@ private final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
         context.restoreGState()
 
         if revealLabels {
+            var occupied: [CGRect] = []
             for shape in layout.shapes where layout.eligibleIDs.contains(shape.id) && !layout.callouts.contains(where: { $0.id == shape.id }) {
                 let anchor = viewport.screen(shape.anchor, size: bounds.size)
                 let title = pack.id == "us-states" ? String(shape.id.suffix(2)) : (pack.area(shape.id)?.name ?? "")
+                let font = UIFont.systemFont(ofSize: 11, weight: .semibold)
+                let labelSize = (title as NSString).size(withAttributes: [.font: font])
+                let labelRect = CGRect(x: anchor.x - labelSize.width / 2, y: anchor.y - labelSize.height / 2,
+                                       width: labelSize.width, height: labelSize.height).insetBy(dx: -3, dy: -3)
+                if shape.id != highlight && (occupied.contains { $0.intersects(labelRect) } || !bounds.contains(labelRect)) { continue }
+                occupied.append(labelRect)
                 let color: UIColor = shape.id == highlight || shape.id == selected ? .white : UIColor(Color.atlasInk)
                 drawLabel(title, center: anchor, font: .systemFont(ofSize: 11, weight: .semibold), color: color)
             }
         }
-        for callout in layout.callouts {
+        for callout in layout.callouts where onLocation == nil && target == nil {
             guard let shape = layout.shapes.first(where: { $0.id == callout.id }) else { continue }
             let anchor = viewport.screen(shape.anchor, size: bounds.size)
             context.setStrokeColor(UIColor(Color.atlasInk).withAlphaComponent(0.5).cgColor)
@@ -171,6 +190,16 @@ private final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
             drawLabel(title, center: callout.center, font: .systemFont(ofSize: 14, weight: .bold),
                       color: active || wrong ? .white : UIColor(Color.atlasInk))
         }
+        drawPin(guess, letter: "G", color: UIColor(red: 0.62, green: 0.30, blue: 0.16, alpha: 1), layout: layout)
+        drawPin(target, letter: "A", color: UIColor(Color.atlasTeal), layout: layout)
+    }
+
+    private func drawPin(_ pin: MapPin?, letter: String, color: UIColor, layout: MapLayout) {
+        guard let pin, let point = layout.screen(pin.coordinate, areaID: pin.regionID, viewport: viewport) else { return }
+        let marker = UIBezierPath(ovalIn: CGRect(x: point.x - 12, y: point.y - 12, width: 24, height: 24))
+        color.setFill(); marker.fill()
+        UIColor.white.setStroke(); marker.lineWidth = 2; marker.stroke()
+        drawLabel(letter, center: point, font: .systemFont(ofSize: 13, weight: .bold), color: .white)
     }
 
     private func drawLabel(_ text: String, center: CGPoint, font: UIFont, color: UIColor) {
@@ -180,7 +209,9 @@ private final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
     }
     @objc private func tapped(_ gesture: UITapGestureRecognizer) {
         guard acceptsAnswers, let layout else { return }
-        onSelect?(layout.hit(gesture.location(in: self), viewport: viewport))
+        if let onLocation {
+            if let pin = layout.locationPin(gesture.location(in: self), viewport: viewport) { onLocation(pin) }
+        } else { onSelect?(layout.hit(gesture.location(in: self), viewport: viewport)) }
     }
     @objc private func panned(_ gesture: UIPanGestureRecognizer) {
         if gesture.state == .began { gestureStart = viewport }

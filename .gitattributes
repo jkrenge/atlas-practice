@@ -1,3 +1,2 @@
-# Preserve downloaded source bytes, including original line endings.
-data/sources/* -text
-assets/us-states.svg -text whitespace=cr-at-eol
+# Preserve the official CSV snapshot's original CRLF bytes and SHA-256.
+data/sources/destatis-cities-2024.csv -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

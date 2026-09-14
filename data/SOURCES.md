@@ -1,6 +1,6 @@
 # Geographic data sources
 
-All snapshots were downloaded on **2026-09-13**. Original bytes are retained under `data/sources/`; SHA-256 hashes are in `data/source-checksums.json`. Compilation verifies those hashes before writing output. Source data is not covered by an assumed project-wide license.
+The original geographic snapshots were downloaded on **2026-09-13**. New facts and assets were retrieved on **2026-09-14**. Original bytes are retained under `data/sources/`; SHA-256 hashes are in `data/source-checksums.json`. Compilation verifies those hashes before writing output. Source data is not covered by an assumed project-wide license.
 
 ## Natural Earth
 
@@ -42,16 +42,27 @@ NTAs are statistical areas, not definitive neighborhood boundaries. Some cross b
 
 Both NYC geometry sources use longitude and latitude. Preserve their coordinates and polygon parts without reprojection.
 
-## Candidate: Pediacities / Ontodia neighborhoods
+## Pediacities / Ontodia neighborhoods
 
-This data is retained for prototype evaluation outside the active map catalog. Its exact upstream license is unverified. Two normalized geometries are invalid. See [candidate notes](candidates/README.md) before using it.
+The requested prototype now exposes a repaired copy as `nyc-local-neighborhoods`. The unmodified normalized mirror remains under `data/candidates`. Two self-intersections are repaired only in the active pack, with Shapely 2.1.2 `make_valid`. The repair report records affected IDs and before/after areas.
 
 - [Pinned ix4 mirror download](https://gist.githubusercontent.com/ix4/ff7603f48283cf06fc4fb3dfb6a0635c/raw/5cdd9db840eb9235d116c5f632599dca1b925d11/nyc.geojson), saved as `nyc-pediacities-neighborhoods.geojson`.
 - [Mirror page](https://gist.github.com/ix4/ff7603f48283cf06fc4fb3dfb6a0635c), revision `5cdd9db840eb9235d116c5f632599dca1b925d11`. The boundary vintage is unknown; mirror activity is not a boundary update date.
-- [Catalog](https://data.dathere.com/dataset/nyc-neighborhoods) credits Pediacities/Ontodia. [Niche's attribution](https://www.niche.com/about/urban-neighborhood-data-disclaimers-and-sources/) refers to ODC Attribution, but this is downstream evidence and does not verify the license for these exact bytes.
+- The [datHere catalog API](https://data.dathere.com/api/3/action/package_show?id=nyc-neighborhoods), saved as `nyc-catalog.json`, credits Ontodia and declares **Open Data Commons Attribution License (ODC-By)**. The catalog resource download and datastore endpoint returned HTTP 403, so its exact equivalence to the pinned mirror was not confirmed. This is a prototype source limitation, not a claim that matching licensed bytes were verified. Attribution and this limit are also visible in the app.
 
-The raw snapshot has 310 records. Compilation skips seven null geometries and groups polygon parts by the existing `properties.@id`, yielding 266 named areas. IDs are the original source URIs. No vertices are changed, and no topology repair is applied. Boundaries are approximate and historical; named parks and islands are included. Provisional credit: Neighborhood boundaries from Pediacities / Ontodia; normalized from the ix4 GeoJSON mirror.
+The raw snapshot has 310 records. Compilation skips seven null geometries and groups polygon parts by the existing `properties.@id`, yielding 266 named areas. IDs are the original source URIs. The original normalized copy changes no vertices. The active pack uses `make_valid` on Country Club and Marine Park only; all other geometries are unchanged. Boundaries are approximate and historical; named parks and islands are included. Credit: Neighborhood boundaries from Pediacities / Ontodia; normalized from the ix4 GeoJSON mirror.
 
 ## Decorative US SVG
 
 See [assets/SOURCE.md](../assets/SOURCE.md). This CC0 reference is separate from the geographic datasets. Neither its declared projection name nor its state IDs provides a verified screen-to-geography transform.
+
+## State facts, flags, cities, and landmarks
+
+- **State capitals and US nicknames:** pinned Wikidata EntityData JSON snapshots. IDs are checked against each state's `P300` ISO code. Current non-deprecated `P36` capital claims are used, with preferred rank taking priority and ended claims excluded. Berlin and Hamburg are their own capitals. Coordinates use `P625`. US nicknames use one English `P1449` name. The app does not call all nicknames official mottos. [Wikidata structured data is CC0](https://www.wikidata.org/wiki/Wikidata:Licensing).
+- **German names and slogans:** one sourced phrase per state, with a separate kind: nickname, state brand, tourism slogan, or campaign. `data/learning/german-slogans.json` records the precise source URL. Campaigns are learning facts, not claims of legal motto status or a guarantee that every historic campaign remains in use.
+- **Flags:** `P41` identifies each Commons file. Commons image metadata, artist attribution, license, description URL, original URL, and thumbnail URL are retained in `data/learning/flag-metadata.json`. Each downloaded PNG is hash-locked. The app displays file-specific credits and links; it does not assign a blanket license to all flag artwork. Current Minnesota and Utah designs were visually checked. Flag images are not generated substitutes.
+- **US city population:** [Census Vintage 2025 ranking workbook](https://www2.census.gov/programs-surveys/popest/tables/2020-2025/cities/totals/SUB-IP-EST2025-ANNRNK.xlsx), saved as `census-us-cities-2025.xlsx`. Use ranks 1–50 and the July 1, 2025 column. Preserve the geographic-area definition, including consolidated-government balances. This set includes Washington, DC. Population estimates may be revised in later vintages.
+- **German city population:** [Destatis city visualization](https://service.destatis.de/DE/barchart_race/BarChartRace500k_Berlin_1955-2024.html) and its [published CSV](https://service.destatis.de/DE/barchart_race/data/staedte1b15de1955b2024.csv), saved as `destatis-cities-2024.csv`. Sort the 2024 column descending and select 10. Date: December 31, 2024; municipal boundaries and 2022-census-based figures. These are not local population-register counts. The current Destatis city-size page also reports December 31, 2024.
+- **City and landmark coordinates:** pinned Wikidata API/EntityData snapshots. Curated records identify exact Wikidata entities and expected country/state. Place identity and coordinate/state proximity are validated. Do not infer locations from display pixels. Broad parks use the source reference coordinate, not a claimed entrance. The 50 US and 20 German landmarks are curated for learning and geographic variety, not an objective top-visitor ranking.
+
+`compile_learning.py` rebuilds all facts from these local snapshots and curation files. `learning-checksums.json` locks every input and flag image. Compilation performs no network requests. Per-record source links remain in `content/learning.json`; the app exposes them in Browse facts.

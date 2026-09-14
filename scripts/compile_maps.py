@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 
 import shapefile
+from shapely import make_valid
+from shapely.geometry import shape, mapping, MultiPolygon
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / 'data/sources'
@@ -97,7 +99,7 @@ def main():
         identifier = continent.lower().replace(' ', '-') + '-countries'
         catalog.append(pack(identifier, continent, 'country', selected,
                             'natural-earth-countries', '../world-countries/areas.geojson'))
-    write(ROOT / 'maps/catalog.json', {'schemaVersion': 2, 'maps': catalog})
+
 
     cities = []
     for row in records('ne_10m_populated_places.zip'):
@@ -109,7 +111,7 @@ def main():
                                   sourceScaleRank=p['SCALERANK']))
     write(ROOT / 'data/us-cities.geojson', {'type': 'FeatureCollection', 'features': cities})
 
-    # Preserve candidate polygon parts; do not repair or publish them as a quiz pack.
+    # Preserve the original candidate geometry, then build a repaired learning pack.
     groups = {}
     for row in json.loads((SOURCES / 'nyc-pediacities-neighborhoods.geojson').read_text())['features']:
         if row['geometry'] is None:
@@ -130,9 +132,28 @@ def main():
                            'properties': entry['properties'], 'geometry': geometry})
     write(ROOT / 'data/candidates/nyc-neighborhoods.geojson',
           {'type': 'FeatureCollection', 'features': candidates})
+    local = []
+    repairs = []
+    for candidate in candidates:
+        geometry = shape(candidate['geometry'])
+        if not geometry.is_valid:
+            fixed = make_valid(geometry)
+            if fixed.geom_type == 'GeometryCollection':
+                fixed = MultiPolygon([part for part in fixed.geoms if part.geom_type == 'Polygon'])
+            if not fixed.is_valid or fixed.geom_type not in ('Polygon', 'MultiPolygon'):
+                raise ValueError(f"Invalid repaired neighborhood: {candidate['id']}")
+            repairs.append({'id': candidate['id'], 'method': 'shapely.make_valid',
+                            'originalAreaDegreesSquared': geometry.area, 'repairedAreaDegreesSquared': fixed.area})
+            geometry = fixed
+        p = candidate['properties']
+        local.append(feature(candidate['id'], p['neighborhood'], mapping(geometry),
+                             borough=p['borough'], quizEligible=True))
+    catalog.append(pack('nyc-local-neighborhoods', 'NYC neighborhoods', 'neighborhood', local, 'nyc-pediacities'))
+    write(ROOT / 'maps/catalog.json', {'schemaVersion': 2, 'maps': catalog})
+    write(ROOT / 'data/nyc-neighborhood-repairs.json', repairs)
     print(json.dumps(catalog, indent=2))
     print(f'US city and town points: {len(cities)}')
-    print(f'Candidate NYC areas (outside catalog): {len(candidates)}')
+    print(f'NYC local neighborhoods: {len(local)}; repaired geometries: {len(repairs)}')
 
 
 if __name__ == '__main__':

@@ -1,0 +1,3390 @@
+{
+  "schemaVersion": 1,
+  "retrievedAt": "2026-09-14",
+  "states": [
+    {
+      "id": "US-AL",
+      "name": "Alabama",
+      "capital": "Montgomery",
+      "capitalCoordinate": {
+        "longitude": -86.3,
+        "latitude": 32.3675
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q29364",
+      "sourceURL": "https://www.wikidata.org/wiki/Q173",
+      "nickname": "The Yellowhammer State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q173",
+      "flagAsset": "flags/US-AL.png",
+      "flagCredit": "Steve Hall",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Alabama.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-AK",
+      "name": "Alaska",
+      "capital": "Juneau",
+      "capitalCoordinate": {
+        "longitude": -134.41972,
+        "latitude": 58.30194
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q29445",
+      "sourceURL": "https://www.wikidata.org/wiki/Q797",
+      "nickname": "The Last Frontier",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q797",
+      "flagAsset": "flags/US-AK.png",
+      "flagCredit": "Benny Benson",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Alaska.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-AZ",
+      "name": "Arizona",
+      "capital": "Phoenix",
+      "capitalCoordinate": {
+        "longitude": -112.07388888888889,
+        "latitude": 33.44833333333333
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q16556",
+      "sourceURL": "https://www.wikidata.org/wiki/Q816",
+      "nickname": "The Grand Canyon State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q816",
+      "flagAsset": "flags/US-AZ.png",
+      "flagCredit": "Original: Unknown author Vector:  Madden",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Arizona.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-AR",
+      "name": "Arkansas",
+      "capital": "Little Rock",
+      "capitalCoordinate": {
+        "longitude": -92.28805555555556,
+        "latitude": 34.74444444444445
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q33405",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1612",
+      "nickname": "The Natural State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1612",
+      "flagAsset": "flags/US-AR.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Arkansas.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-CA",
+      "name": "California",
+      "capital": "Sacramento",
+      "capitalCoordinate": {
+        "longitude": -121.48611111111,
+        "latitude": 38.575277777778
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q18013",
+      "sourceURL": "https://www.wikidata.org/wiki/Q99",
+      "nickname": "The Golden State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q99",
+      "flagAsset": "flags/US-CA.png",
+      "flagCredit": "Original:  Donald Graeme Kelley\nVectorization:  Devin Cook",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_California.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-CO",
+      "name": "Colorado",
+      "capital": "Denver",
+      "capitalCoordinate": {
+        "longitude": -104.98472222222,
+        "latitude": 39.739166666667
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q16554",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1261",
+      "nickname": "The Centennial State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1261",
+      "flagAsset": "flags/US-CO.png",
+      "flagCredit": "Original: Andrew Carlyle Carson Vector:  Fleminra",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Colorado.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-CT",
+      "name": "Connecticut",
+      "capital": "Hartford",
+      "capitalCoordinate": {
+        "longitude": -72.685,
+        "latitude": 41.763333333333
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q33486",
+      "sourceURL": "https://www.wikidata.org/wiki/Q779",
+      "nickname": "The Constitution State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q779",
+      "flagAsset": "flags/US-CT.png",
+      "flagCredit": "Jean-Pierre Demailly, xrmap authors, Commons users (SVG)",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Connecticut.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-DE",
+      "name": "Delaware",
+      "capital": "Dover",
+      "capitalCoordinate": {
+        "longitude": -75.525709,
+        "latitude": 39.161662
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q33518",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1393",
+      "nickname": "The First State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1393",
+      "flagAsset": "flags/US-DE.png",
+      "flagCredit": "xrmap flag collection",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Delaware.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-FL",
+      "name": "Florida",
+      "capital": "Tallahassee",
+      "capitalCoordinate": {
+        "longitude": -84.28055555555555,
+        "latitude": 30.438333333333333
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q37043",
+      "sourceURL": "https://www.wikidata.org/wiki/Q812",
+      "nickname": "The Sunshine State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q812",
+      "flagAsset": "flags/US-FL.png",
+      "flagCredit": "Template:Brendon Tiana",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Florida.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-GA",
+      "name": "Georgia",
+      "capital": "Atlanta",
+      "capitalCoordinate": {
+        "longitude": -84.38972222222222,
+        "latitude": 33.754444444444445
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q23556",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1428",
+      "nickname": "Peach State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1428",
+      "flagAsset": "flags/US-GA.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_the_State_of_Georgia.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-HI",
+      "name": "Hawaii",
+      "capital": "Honolulu",
+      "capitalCoordinate": {
+        "longitude": -157.85722222222222,
+        "latitude": 21.30472222222222
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q18094",
+      "sourceURL": "https://www.wikidata.org/wiki/Q782",
+      "nickname": "The Aloha State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q782",
+      "flagAsset": "flags/US-HI.png",
+      "flagCredit": "Dbenbenn",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Hawaii.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-ID",
+      "name": "Idaho",
+      "capital": "Boise",
+      "capitalCoordinate": {
+        "longitude": -116.23777777778,
+        "latitude": 43.613611111111
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q35775",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1221",
+      "nickname": "Gem State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1221",
+      "flagAsset": "flags/US-ID.png",
+      "flagCredit": "Paul B. Evans, based on a work by the Adjutant General of Idaho and Emma Edwards Green",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Idaho.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-IL",
+      "name": "Illinois",
+      "capital": "Springfield",
+      "capitalCoordinate": {
+        "longitude": -89.645,
+        "latitude": 39.7975
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q28515",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1204",
+      "nickname": "Land of Lincoln",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1204",
+      "flagAsset": "flags/US-IL.png",
+      "flagCredit": "Denelson83",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Illinois.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-IN",
+      "name": "Indiana",
+      "capital": "Indianapolis",
+      "capitalCoordinate": {
+        "longitude": -86.158055555556,
+        "latitude": 39.768611111111
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q6346",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1415",
+      "nickname": "The Hoosier State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1415",
+      "flagAsset": "flags/US-IN.png",
+      "flagCredit": "The Indiana state flag was designed by Paul Hadley in 1917. This SVG file was made by Zscout370 with some modifications by HoosierMan1816.",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Indiana.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-IA",
+      "name": "Iowa",
+      "capital": "Des Moines",
+      "capitalCoordinate": {
+        "longitude": -93.620833333333,
+        "latitude": 41.590833333333
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q39709",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1546",
+      "nickname": "The Hawkeye State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1546",
+      "flagAsset": "flags/US-IA.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Iowa.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-KS",
+      "name": "Kansas",
+      "capital": "Topeka",
+      "capitalCoordinate": {
+        "longitude": -95.67804,
+        "latitude": 39.04833
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q41057",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1558",
+      "nickname": "The Sunflower State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1558",
+      "flagAsset": "flags/US-KS.png",
+      "flagCredit": "Xrmap",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Kansas.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-KY",
+      "name": "Kentucky",
+      "capital": "Frankfort",
+      "capitalCoordinate": {
+        "longitude": -84.863,
+        "latitude": 38.197
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q28603",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1603",
+      "nickname": "Bluegrass State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1603",
+      "flagAsset": "flags/US-KY.png",
+      "flagCredit": "Commonwealth of Kentucky",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Kentucky.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-LA",
+      "name": "Louisiana",
+      "capital": "Baton Rouge",
+      "capitalCoordinate": {
+        "longitude": -91.178611111111,
+        "latitude": 30.4475
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q28218",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1588",
+      "nickname": "Pelican State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1588",
+      "flagAsset": "flags/US-LA.png",
+      "flagCredit": "Curtis Vann, Jr.",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Louisiana.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-ME",
+      "name": "Maine",
+      "capital": "Augusta",
+      "capitalCoordinate": {
+        "longitude": -69.77944444444445,
+        "latitude": 44.31055555555555
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q28206",
+      "sourceURL": "https://www.wikidata.org/wiki/Q724",
+      "nickname": "The Pine Tree State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q724",
+      "flagAsset": "flags/US-ME.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Maine.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-MD",
+      "name": "Maryland",
+      "capital": "Annapolis",
+      "capitalCoordinate": {
+        "longitude": -76.49194444444444,
+        "latitude": 38.978611111111114
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q28271",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1391",
+      "nickname": "Old Line State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1391",
+      "flagAsset": "flags/US-MD.png",
+      "flagCredit": "Michael Wheeler",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Maryland.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-MA",
+      "name": "Massachusetts",
+      "capital": "Boston",
+      "capitalCoordinate": {
+        "longitude": -71.05777777777777,
+        "latitude": 42.360277777777775
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q100",
+      "sourceURL": "https://www.wikidata.org/wiki/Q771",
+      "nickname": "The Bay State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q771",
+      "flagAsset": "flags/US-MA.png",
+      "flagCredit": "State of Massachusetts",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Massachusetts.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-MI",
+      "name": "Michigan",
+      "capital": "Lansing",
+      "capitalCoordinate": {
+        "longitude": -84.5467,
+        "latitude": 42.7335
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q28237",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1166",
+      "nickname": "The Great Lakes State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1166",
+      "flagAsset": "flags/US-MI.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Michigan.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-MN",
+      "name": "Minnesota",
+      "capital": "Saint Paul",
+      "capitalCoordinate": {
+        "longitude": -93.093611111111,
+        "latitude": 44.944166666667
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q28848",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1527",
+      "nickname": "Land of 10,000 Lakes",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1527",
+      "flagAsset": "flags/US-MN.png",
+      "flagCredit": "Original: Minnesota State Emblems Redesign Commission Vector:  Jamie Eilat, Undertiago",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Minnesota.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-MS",
+      "name": "Mississippi",
+      "capital": "Jackson",
+      "capitalCoordinate": {
+        "longitude": -90.184722222222,
+        "latitude": 32.298888888889
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q28198",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1494",
+      "nickname": "The Magnolia State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1494",
+      "flagAsset": "flags/US-MS.png",
+      "flagCredit": "Rocky Vaughn, Sue Anna Joe, Dominique Pugh, Clay Moss, Kara Giles, Micah Whitson and the Mississippi Department of Archives and History",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Mississippi.svg",
+      "flagLicense": "Copyrighted free use",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-MO",
+      "name": "Missouri",
+      "capital": "Jefferson City",
+      "capitalCoordinate": {
+        "longitude": -92.173611111111,
+        "latitude": 38.576666666667
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q28180",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1581",
+      "nickname": "The Show Me State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1581",
+      "flagAsset": "flags/US-MO.png",
+      "flagCredit": "Marie Watkins Oliver",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Missouri.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-MT",
+      "name": "Montana",
+      "capital": "Helena",
+      "capitalCoordinate": {
+        "longitude": -112.035,
+        "latitude": 46.592777777778
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q38733",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1212",
+      "nickname": "Big Sky Country",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1212",
+      "flagAsset": "flags/US-MT.png",
+      "flagCredit": "N.a",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Montana.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-NE",
+      "name": "Nebraska",
+      "capital": "Lincoln",
+      "capitalCoordinate": {
+        "longitude": -96.67805555555556,
+        "latitude": 40.80916666666667
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q28260",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1553",
+      "nickname": "Cornhusker State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1553",
+      "flagAsset": "flags/US-NE.png",
+      "flagCredit": "Liamgabby79",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Nebraska.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-NV",
+      "name": "Nevada",
+      "capital": "Carson City",
+      "capitalCoordinate": {
+        "longitude": -119.75388888889,
+        "latitude": 39.160833333333
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q40881",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1227",
+      "nickname": "Silver State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1227",
+      "flagAsset": "flags/US-NV.png",
+      "flagCredit": "Caleb Moore",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Nevada.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-NH",
+      "name": "New Hampshire",
+      "capital": "Concord",
+      "capitalCoordinate": {
+        "longitude": -71.538055555556,
+        "latitude": 43.206666666667
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q28249",
+      "sourceURL": "https://www.wikidata.org/wiki/Q759",
+      "nickname": "The Granite State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q759",
+      "flagAsset": "flags/US-NH.png",
+      "flagCredit": "Xrmap flag collection",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_New_Hampshire.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-NJ",
+      "name": "New Jersey",
+      "capital": "Trenton",
+      "capitalCoordinate": {
+        "longitude": -74.76583333333333,
+        "latitude": 40.22027777777778
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q25330",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1408",
+      "nickname": "The Garden State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1408",
+      "flagAsset": "flags/US-NJ.png",
+      "flagCredit": "author of xrmap, with modifications by Denelson83 and ChrisRuvolo",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_New_Jersey.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-NM",
+      "name": "New Mexico",
+      "capital": "Santa Fe",
+      "capitalCoordinate": {
+        "longitude": -105.96666666667,
+        "latitude": 35.666666666667
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q38555",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1522",
+      "nickname": "Land of Enchantment",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1522",
+      "flagAsset": "flags/US-NM.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_New_Mexico.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-NY",
+      "name": "New York",
+      "capital": "Albany",
+      "capitalCoordinate": {
+        "longitude": -73.766666666667,
+        "latitude": 42.65
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q24861",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1384",
+      "nickname": "The Empire State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1384",
+      "flagAsset": "flags/US-NY.png",
+      "flagCredit": "State of New York",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_New_York.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-NC",
+      "name": "North Carolina",
+      "capital": "Raleigh",
+      "capitalCoordinate": {
+        "longitude": -78.64,
+        "latitude": 35.78
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q41087",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1454",
+      "nickname": "Old North State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1454",
+      "flagAsset": "flags/US-NC.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_North_Carolina.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-ND",
+      "name": "North Dakota",
+      "capital": "Bismarck",
+      "capitalCoordinate": {
+        "longitude": -100.78375,
+        "latitude": 46.80833333333333
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q37066",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1207",
+      "nickname": "Peace Garden State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1207",
+      "flagAsset": "flags/US-ND.png",
+      "flagCredit": "Unknown authorUnknown author",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_North_Dakota.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-OH",
+      "name": "Ohio",
+      "capital": "Columbus",
+      "capitalCoordinate": {
+        "longitude": -83.00055555555555,
+        "latitude": 39.96222222222222
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q16567",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1397",
+      "nickname": "The Buckeye State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1397",
+      "flagAsset": "flags/US-OH.png",
+      "flagCredit": "John Eisenmann",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Ohio.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-OK",
+      "name": "Oklahoma",
+      "capital": "Oklahoma City",
+      "capitalCoordinate": {
+        "longitude": -97.53527777777778,
+        "latitude": 35.48222222222222
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q34863",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1649",
+      "nickname": "Sooner State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1649",
+      "flagAsset": "flags/US-OK.png",
+      "flagCredit": "xrmap",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Oklahoma.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-OR",
+      "name": "Oregon",
+      "capital": "Salem",
+      "capitalCoordinate": {
+        "longitude": -123.03888888888889,
+        "latitude": 44.94
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q43919",
+      "sourceURL": "https://www.wikidata.org/wiki/Q824",
+      "nickname": "Beaver State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q824",
+      "flagAsset": "flags/US-OR.png",
+      "flagCredit": "User:Denelson83",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Oregon.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-PA",
+      "name": "Pennsylvania",
+      "capital": "Harrisburg",
+      "capitalCoordinate": {
+        "longitude": -76.88338167672302,
+        "latitude": 40.264554871390665
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q25280",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1400",
+      "nickname": "Keystone State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1400",
+      "flagAsset": "flags/US-PA.png",
+      "flagCredit": "Simtropolitan, Jean-Pierre Demailly (old version)\npermission=\n\n\n\nInsignia\n\nThis image shows a flag, a coat of arms, a seal or some other official insignia. The use of such symbols is restricted in many countries. These restrictions are independent of the copyright status.",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Pennsylvania.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-RI",
+      "name": "Rhode Island",
+      "capital": "Providence",
+      "capitalCoordinate": {
+        "longitude": -71.41283,
+        "latitude": 41.82399
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q18383",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1387",
+      "nickname": "The Ocean State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1387",
+      "flagAsset": "flags/US-RI.png",
+      "flagCredit": "Xrmap flag collection 2.7",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Rhode_Island.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-SC",
+      "name": "South Carolina",
+      "capital": "Columbia",
+      "capitalCoordinate": {
+        "longitude": -81.044166666667,
+        "latitude": 34.000555555556
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q38453",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1456",
+      "nickname": "The Palmetto State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1456",
+      "flagAsset": "flags/US-SC.png",
+      "flagCredit": "Design by South Carolina General Assembly, SVG by Steve Hall",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_South_Carolina.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-SD",
+      "name": "South Dakota",
+      "capital": "Pierre",
+      "capitalCoordinate": {
+        "longitude": -100.35113888888888,
+        "latitude": 44.36836111111111
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q40747",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1211",
+      "nickname": "The Mount Rushmore State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1211",
+      "flagAsset": "flags/US-SD.png",
+      "flagCredit": "xrmap",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_South_Dakota.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-TN",
+      "name": "Tennessee",
+      "capital": "Nashville",
+      "capitalCoordinate": {
+        "longitude": -86.77444444444444,
+        "latitude": 36.16222222222222
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q23197",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1509",
+      "nickname": "The Volunteer State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1509",
+      "flagAsset": "flags/US-TN.png",
+      "flagCredit": "-xfi-",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Tennessee.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-TX",
+      "name": "Texas",
+      "capital": "Austin",
+      "capitalCoordinate": {
+        "longitude": -97.733333333333,
+        "latitude": 30.3
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q16559",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1439",
+      "nickname": "The Lone Star State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1439",
+      "flagAsset": "flags/US-TX.png",
+      "flagCredit": "Paul B. Joiner",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Texas.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-UT",
+      "name": "Utah",
+      "capital": "Salt Lake City",
+      "capitalCoordinate": {
+        "longitude": -111.88333333333,
+        "latitude": 40.75
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q23337",
+      "sourceURL": "https://www.wikidata.org/wiki/Q829",
+      "nickname": "Beehive State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q829",
+      "flagAsset": "flags/US-UT.png",
+      "flagCredit": "The State of Utah",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Utah.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-VT",
+      "name": "Vermont",
+      "capital": "Montpelier",
+      "capitalCoordinate": {
+        "longitude": -72.5717415,
+        "latitude": 44.2658586
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q26426",
+      "sourceURL": "https://www.wikidata.org/wiki/Q16551",
+      "nickname": "The Green Mountain State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q16551",
+      "flagAsset": "flags/US-VT.png",
+      "flagCredit": "User:SimtropolitanOriginal by User:Denelson83",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Vermont.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-VA",
+      "name": "Virginia",
+      "capital": "Richmond",
+      "capitalCoordinate": {
+        "longitude": -77.43666666666667,
+        "latitude": 37.54083333333333
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q43421",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1370",
+      "nickname": "Old Dominion",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1370",
+      "flagAsset": "flags/US-VA.png",
+      "flagCredit": "LadyofHats with additional editing by 痛 and Patrickneil / Charles Keck",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Virginia.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-WA",
+      "name": "Washington",
+      "capital": "Olympia",
+      "capitalCoordinate": {
+        "longitude": -122.89305555556,
+        "latitude": 47.0425
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q42735",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1223",
+      "nickname": "The Evergreen State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1223",
+      "flagAsset": "flags/US-WA.png",
+      "flagCredit": "WA Secretary of State",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Washington.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-WV",
+      "name": "West Virginia",
+      "capital": "Charleston",
+      "capitalCoordinate": {
+        "longitude": -81.633333333333,
+        "latitude": 38.347222222222
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q44564",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1371",
+      "nickname": "Mountain State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1371",
+      "flagAsset": "flags/US-WV.png",
+      "flagCredit": "Militaryace, Denelson83",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_West_Virginia.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-WI",
+      "name": "Wisconsin",
+      "capital": "Madison",
+      "capitalCoordinate": {
+        "longitude": -89.38416666666667,
+        "latitude": 43.07472222222222
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q43788",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1537",
+      "nickname": "The Badger State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1537",
+      "flagAsset": "flags/US-WI.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Wisconsin.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "US-WY",
+      "name": "Wyoming",
+      "capital": "Cheyenne",
+      "capitalCoordinate": {
+        "longitude": -104.80194444444,
+        "latitude": 41.145555555556
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q39042",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1214",
+      "nickname": "Equality State",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.wikidata.org/wiki/Q1214",
+      "flagAsset": "flags/US-WY.png",
+      "flagCredit": "User:Dbenbenn",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Wyoming.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-BW",
+      "name": "Baden-Württemberg",
+      "capital": "Stuttgart",
+      "capitalCoordinate": {
+        "longitude": 9.18,
+        "latitude": 48.7775
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1022",
+      "sourceURL": "https://www.wikidata.org/wiki/Q985",
+      "nickname": "THE LÄND",
+      "nicknameKind": "State brand",
+      "nicknameSource": "https://stm.baden-wuerttemberg.de/de/service/presse/pressemitteilung/pid/baden-wuerttemberg-ist-the-laend",
+      "flagAsset": "flags/DE-BW.png",
+      "flagCredit": "Verfassungsausschuss des Landes Baden-Württemberg (Landesregierung)",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Baden-W%C3%BCrttemberg.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-BY",
+      "name": "Bayern",
+      "capital": "München",
+      "capitalCoordinate": {
+        "longitude": 11.575,
+        "latitude": 48.1375
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1726",
+      "sourceURL": "https://www.wikidata.org/wiki/Q980",
+      "nickname": "Traditionell anders",
+      "nicknameKind": "Tourism slogan",
+      "nicknameSource": "https://erlebe.bayern/insider/",
+      "flagAsset": "flags/DE-BY.png",
+      "flagCredit": "Digitized by User:Boris23,",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Bavaria_(striped).svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-BE",
+      "name": "Berlin",
+      "capital": "Berlin",
+      "capitalCoordinate": {
+        "longitude": 13.383333333333,
+        "latitude": 52.516666666667
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q64",
+      "sourceURL": "https://www.wikidata.org/wiki/Q64",
+      "nickname": "Wir sind ein Berlin",
+      "nicknameKind": "City campaign",
+      "nicknameSource": "https://www.berlin.de/rbmskzl/service/corporate-design/neue-marke-berlin/",
+      "flagAsset": "flags/DE-BE.png",
+      "flagCredit": "Flaggenentwurf: unbekannt\ndiese Datei: Jwnabd",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Berlin.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-BB",
+      "name": "Brandenburg",
+      "capital": "Potsdam",
+      "capitalCoordinate": {
+        "longitude": 13.0591397,
+        "latitude": 52.4009309
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1711",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1208",
+      "nickname": "Es kann so einfach sein.",
+      "nicknameKind": "State campaign",
+      "nicknameSource": "https://www.brandenburg.de/cms/detail.php/bb1.c.693644.de",
+      "flagAsset": "flags/DE-BB.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Brandenburg.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-HB",
+      "name": "Bremen",
+      "capital": "Bremen",
+      "capitalCoordinate": {
+        "longitude": 8.807222222222222,
+        "latitude": 53.075833333333335
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q24879",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1209",
+      "nickname": "Zwei-Städte-Staat",
+      "nicknameKind": "Descriptive nickname",
+      "nicknameSource": "https://landesportal.bremen.de/zwei-staedte-staat",
+      "flagAsset": "flags/DE-HB.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Bremen.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-HH",
+      "name": "Hamburg",
+      "capital": "Hamburg",
+      "capitalCoordinate": {
+        "longitude": 10,
+        "latitude": 53.55
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1055",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1055",
+      "nickname": "Tor zur Welt",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.hamburg.de/resource/blob/148106/3180edb80079f9800949c04c2ff9a69f/die-welt-bei-hammonia-data.pdf",
+      "flagAsset": "flags/DE-HH.png",
+      "flagCredit": "Greentubing",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Hamburg.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-HE",
+      "name": "Hessen",
+      "capital": "Wiesbaden",
+      "capitalCoordinate": {
+        "longitude": 8.24,
+        "latitude": 50.0825
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1721",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1199",
+      "nickname": "An Hessen führt kein Weg vorbei",
+      "nicknameKind": "State slogan",
+      "nicknameSource": "https://rp-darmstadt.hessen.de/ueber-uns/regierungsbezirk-darmstadt",
+      "flagAsset": "flags/DE-HE.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Hesse.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-NI",
+      "name": "Niedersachsen",
+      "capital": "Hannover",
+      "capitalCoordinate": {
+        "longitude": 9.7386111111111,
+        "latitude": 52.374444444444
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1715",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1197",
+      "nickname": "Niedersachsen. Klar.",
+      "nicknameKind": "State brand",
+      "nicknameSource": "https://www.stk.niedersachsen.de/master.html",
+      "flagAsset": "flags/DE-NI.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Lower_Saxony.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-MV",
+      "name": "Mecklenburg-Vorpommern",
+      "capital": "Schwerin",
+      "capitalCoordinate": {
+        "longitude": 11.415,
+        "latitude": 53.62888888888889
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1709",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1196",
+      "nickname": "Land zum Leben",
+      "nicknameKind": "State campaign",
+      "nicknameSource": "https://www.mv-tut-gut.de/startseite",
+      "flagAsset": "flags/DE-MV.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Mecklenburg-Western_Pomerania.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-NW",
+      "name": "Nordrhein-Westfalen",
+      "capital": "Düsseldorf",
+      "capitalCoordinate": {
+        "longitude": 6.776666666666666,
+        "latitude": 51.22555555555556
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1718",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1198",
+      "nickname": "Germany at its best",
+      "nicknameKind": "Investment campaign",
+      "nicknameSource": "https://dieprberater.de/de/kunden/nrw-invest-standortmarketing/",
+      "flagAsset": "flags/DE-NW.png",
+      "flagCredit": "Bundesland Nordrhein-Westfalen",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_North_Rhine-Westphalia.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-RP",
+      "name": "Rheinland-Pfalz",
+      "capital": "Mainz",
+      "capitalCoordinate": {
+        "longitude": 8.27361111111111,
+        "latitude": 49.99944444444444
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1720",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1200",
+      "nickname": "Weinland Nummer eins",
+      "nicknameKind": "Descriptive nickname",
+      "nicknameSource": "https://www.statistik.rlp.de/fileadmin/dokumente/monatshefte/2022/Juni/06-2022-405.pdf",
+      "flagAsset": "flags/DE-RP.png",
+      "flagCredit": "Madden",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Rhineland-Palatinate.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-SL",
+      "name": "Saarland",
+      "capital": "Saarbrücken",
+      "capitalCoordinate": {
+        "longitude": 7,
+        "latitude": 49.233333333333
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1724",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1201",
+      "nickname": "Großes entsteht immer im Kleinen.",
+      "nicknameKind": "State brand",
+      "nicknameSource": "https://www.saarland.de/DE/presse-informationen/informationen/saarland-marketing",
+      "flagAsset": "flags/DE-SL.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Saarland.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-SN",
+      "name": "Sachsen",
+      "capital": "Dresden",
+      "capitalCoordinate": {
+        "longitude": 13.7381437,
+        "latitude": 51.0493286
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1731",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1202",
+      "nickname": "So geht sächsisch.",
+      "nicknameKind": "State campaign",
+      "nicknameSource": "https://www.medienservice.sachsen.de/medien/news/1077657",
+      "flagAsset": "flags/DE-SN.png",
+      "flagCredit": "Madden",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Saxony.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-ST",
+      "name": "Sachsen-Anhalt",
+      "capital": "Magdeburg",
+      "capitalCoordinate": {
+        "longitude": 11.6399609,
+        "latitude": 52.1315889
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1733",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1206",
+      "nickname": "#moderndenken",
+      "nicknameKind": "State campaign",
+      "nicknameSource": "https://moderndenken.sachsen-anhalt.de/die-kampagne",
+      "flagAsset": "flags/DE-ST.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Saxony-Anhalt_(state).svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-SH",
+      "name": "Schleswig-Holstein",
+      "capital": "Kiel",
+      "capitalCoordinate": {
+        "longitude": 10.139444444444,
+        "latitude": 54.323333333333
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1707",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1194",
+      "nickname": "Der echte Norden",
+      "nicknameKind": "State brand",
+      "nicknameSource": "https://www.schleswig-holstein.de/DE/landesregierung/themen/wirtschaft/landesdachmarke/kampagne/kampagne",
+      "flagAsset": "flags/DE-SH.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Schleswig-Holstein.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    },
+    {
+      "id": "DE-TH",
+      "name": "Thüringen",
+      "capital": "Erfurt",
+      "capitalCoordinate": {
+        "longitude": 11.028888888888888,
+        "latitude": 50.97805555555556
+      },
+      "capitalSource": "https://www.wikidata.org/wiki/Q1729",
+      "sourceURL": "https://www.wikidata.org/wiki/Q1205",
+      "nickname": "Das grüne Herz Deutschlands",
+      "nicknameKind": "Nickname",
+      "nicknameSource": "https://www.uni-weimar.de/qisserver/rds?moduleCall=webInfo&publishConfFile=webInfo&publishSubDir=veranstaltung&publishid=50993&state=verpublish&status=init&vmfile=no",
+      "flagAsset": "flags/DE-TH.png",
+      "flagCredit": "Wikimedia Commons contributors",
+      "flagSource": "https://commons.wikimedia.org/wiki/File:Flag_of_Thuringia.svg",
+      "flagLicense": "Public domain",
+      "flagLicenseURL": null,
+      "flagRetrievedAt": "2026-09-14"
+    }
+  ],
+  "cities": [
+    {
+      "id": "city-US-NY-new-york",
+      "name": "New York",
+      "wiki": "New York City",
+      "country": "US",
+      "stateID": "US-NY",
+      "rank": 1,
+      "populationDefinition": "New York city, New York",
+      "qid": "Q60",
+      "coordinate": {
+        "longitude": -74.00611111111111,
+        "latitude": 40.71277777777778
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q60",
+      "population": 8584629,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CA-los-angeles",
+      "name": "Los Angeles",
+      "wiki": "Los Angeles",
+      "country": "US",
+      "stateID": "US-CA",
+      "rank": 2,
+      "populationDefinition": "Los Angeles city, California",
+      "qid": "Q65",
+      "coordinate": {
+        "longitude": -118.24368,
+        "latitude": 34.05223
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q65",
+      "population": 3869089,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-IL-chicago",
+      "name": "Chicago",
+      "wiki": "Chicago",
+      "country": "US",
+      "stateID": "US-IL",
+      "rank": 3,
+      "populationDefinition": "Chicago city, Illinois",
+      "qid": "Q1297",
+      "coordinate": {
+        "longitude": -87.62777777777778,
+        "latitude": 41.88194444444444
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1297",
+      "population": 2731585,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-TX-houston",
+      "name": "Houston",
+      "wiki": "Houston",
+      "country": "US",
+      "stateID": "US-TX",
+      "rank": 4,
+      "populationDefinition": "Houston city, Texas",
+      "qid": "Q16555",
+      "coordinate": {
+        "longitude": -95.383055555556,
+        "latitude": 29.762777777778
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16555",
+      "population": 2397315,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-AZ-phoenix",
+      "name": "Phoenix",
+      "wiki": "Phoenix, Arizona",
+      "country": "US",
+      "stateID": "US-AZ",
+      "rank": 5,
+      "populationDefinition": "Phoenix city, Arizona",
+      "qid": "Q16556",
+      "coordinate": {
+        "longitude": -112.07388888888889,
+        "latitude": 33.44833333333333
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16556",
+      "population": 1665481,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-PA-philadelphia",
+      "name": "Philadelphia",
+      "wiki": "Philadelphia",
+      "country": "US",
+      "stateID": "US-PA",
+      "rank": 6,
+      "populationDefinition": "Philadelphia city, Pennsylvania",
+      "qid": "Q1345",
+      "coordinate": {
+        "longitude": -75.163611111111,
+        "latitude": 39.952777777778
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1345",
+      "population": 1574281,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-TX-san-antonio",
+      "name": "San Antonio",
+      "wiki": "San Antonio",
+      "country": "US",
+      "stateID": "US-TX",
+      "rank": 7,
+      "populationDefinition": "San Antonio city, Texas",
+      "qid": "Q975",
+      "coordinate": {
+        "longitude": -98.49388888888889,
+        "latitude": 29.425
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q975",
+      "population": 1548422,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CA-san-diego",
+      "name": "San Diego",
+      "wiki": "San Diego",
+      "country": "US",
+      "stateID": "US-CA",
+      "rank": 8,
+      "populationDefinition": "San Diego city, California",
+      "qid": "Q16552",
+      "coordinate": {
+        "longitude": -117.1625,
+        "latitude": 32.715
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16552",
+      "population": 1406106,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-TX-dallas",
+      "name": "Dallas",
+      "wiki": "Dallas",
+      "country": "US",
+      "stateID": "US-TX",
+      "rank": 9,
+      "populationDefinition": "Dallas city, Texas",
+      "qid": "Q16557",
+      "coordinate": {
+        "longitude": -96.808888888889,
+        "latitude": 32.779166666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16557",
+      "population": 1329491,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-TX-fort-worth",
+      "name": "Fort Worth",
+      "wiki": "Fort Worth, Texas",
+      "country": "US",
+      "stateID": "US-TX",
+      "rank": 10,
+      "populationDefinition": "Fort Worth city, Texas",
+      "qid": "Q16558",
+      "coordinate": {
+        "longitude": -97.3325,
+        "latitude": 32.756388888888885
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16558",
+      "population": 1028117,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-FL-jacksonville",
+      "name": "Jacksonville",
+      "wiki": "Jacksonville, Florida",
+      "country": "US",
+      "stateID": "US-FL",
+      "rank": 11,
+      "populationDefinition": "Jacksonville city, Florida",
+      "qid": "Q16568",
+      "coordinate": {
+        "longitude": -81.65,
+        "latitude": 30.316666666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16568",
+      "population": 1017689,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-TX-austin",
+      "name": "Austin",
+      "wiki": "Austin, Texas",
+      "country": "US",
+      "stateID": "US-TX",
+      "rank": 12,
+      "populationDefinition": "Austin city, Texas",
+      "qid": "Q16559",
+      "coordinate": {
+        "longitude": -97.733333333333,
+        "latitude": 30.3
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16559",
+      "population": 1002632,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CA-san-jose",
+      "name": "San Jose",
+      "wiki": "San Jose, California",
+      "country": "US",
+      "stateID": "US-CA",
+      "rank": 13,
+      "populationDefinition": "San Jose city, California",
+      "qid": "Q16553",
+      "coordinate": {
+        "longitude": -121.87277777778,
+        "latitude": 37.304166666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16553",
+      "population": 989814,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-NC-charlotte",
+      "name": "Charlotte",
+      "wiki": "Charlotte, North Carolina",
+      "country": "US",
+      "stateID": "US-NC",
+      "rank": 14,
+      "populationDefinition": "Charlotte city, North Carolina",
+      "qid": "Q16565",
+      "coordinate": {
+        "longitude": -80.843333333333,
+        "latitude": 35.226944444444
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16565",
+      "population": 964784,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-OH-columbus",
+      "name": "Columbus",
+      "wiki": "Columbus, Ohio",
+      "country": "US",
+      "stateID": "US-OH",
+      "rank": 15,
+      "populationDefinition": "Columbus city, Ohio",
+      "qid": "Q16567",
+      "coordinate": {
+        "longitude": -83.00055555555555,
+        "latitude": 39.96222222222222
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16567",
+      "population": 938396,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-IN-indianapolis",
+      "name": "Indianapolis",
+      "wiki": "Indianapolis",
+      "country": "US",
+      "stateID": "US-IN",
+      "rank": 16,
+      "populationDefinition": "Indianapolis city (balance), Indiana",
+      "qid": "Q6346",
+      "coordinate": {
+        "longitude": -86.158055555556,
+        "latitude": 39.768611111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q6346",
+      "population": 901116,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CA-san-francisco",
+      "name": "San Francisco",
+      "wiki": "San Francisco",
+      "country": "US",
+      "stateID": "US-CA",
+      "rank": 17,
+      "populationDefinition": "San Francisco city, California",
+      "qid": "Q62",
+      "coordinate": {
+        "longitude": -122.41944444444445,
+        "latitude": 37.775
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q62",
+      "population": 826079,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-WA-seattle",
+      "name": "Seattle",
+      "wiki": "Seattle",
+      "country": "US",
+      "stateID": "US-WA",
+      "rank": 18,
+      "populationDefinition": "Seattle city, Washington",
+      "qid": "Q5083",
+      "coordinate": {
+        "longitude": -122.33,
+        "latitude": 47.605
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q5083",
+      "population": 784777,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CO-denver",
+      "name": "Denver",
+      "wiki": "Denver",
+      "country": "US",
+      "stateID": "US-CO",
+      "rank": 19,
+      "populationDefinition": "Denver city, Colorado",
+      "qid": "Q16554",
+      "coordinate": {
+        "longitude": -104.98472222222,
+        "latitude": 39.739166666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16554",
+      "population": 740613,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-TN-nashville",
+      "name": "Nashville",
+      "wiki": "Nashville, Tennessee",
+      "country": "US",
+      "stateID": "US-TN",
+      "rank": 20,
+      "populationDefinition": "Nashville-Davidson metropolitan government (balance), Tennessee",
+      "qid": "Q23197",
+      "coordinate": {
+        "longitude": -86.77444444444444,
+        "latitude": 36.16222222222222
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q23197",
+      "population": 721074,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-OK-oklahoma-city",
+      "name": "Oklahoma City",
+      "wiki": "Oklahoma City",
+      "country": "US",
+      "stateID": "US-OK",
+      "rank": 21,
+      "populationDefinition": "Oklahoma City city, Oklahoma",
+      "qid": "Q34863",
+      "coordinate": {
+        "longitude": -97.53527777777778,
+        "latitude": 35.48222222222222
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q34863",
+      "population": 719849,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-DC-washington",
+      "name": "Washington",
+      "wiki": "Washington, D.C.",
+      "country": "US",
+      "stateID": "US-DC",
+      "rank": 22,
+      "populationDefinition": "Washington city, District of Columbia",
+      "qid": "Q61",
+      "coordinate": {
+        "longitude": -77.036666666667,
+        "latitude": 38.895
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q61",
+      "population": 693645,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-TX-el-paso",
+      "name": "El Paso",
+      "wiki": "El Paso, Texas",
+      "country": "US",
+      "stateID": "US-TX",
+      "rank": 23,
+      "populationDefinition": "El Paso city, Texas",
+      "qid": "Q16562",
+      "coordinate": {
+        "longitude": -106.48861111111,
+        "latitude": 31.759166666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16562",
+      "population": 683012,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-NV-las-vegas",
+      "name": "Las Vegas",
+      "wiki": "Las Vegas",
+      "country": "US",
+      "stateID": "US-NV",
+      "rank": 24,
+      "populationDefinition": "Las Vegas city, Nevada",
+      "qid": "Q23768",
+      "coordinate": {
+        "longitude": -115.14861111111111,
+        "latitude": 36.16722222222222
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q23768",
+      "population": 679817,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-MA-boston",
+      "name": "Boston",
+      "wiki": "Boston",
+      "country": "US",
+      "stateID": "US-MA",
+      "rank": 25,
+      "populationDefinition": "Boston city, Massachusetts",
+      "qid": "Q100",
+      "coordinate": {
+        "longitude": -71.05777777777777,
+        "latitude": 42.360277777777775
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q100",
+      "population": 672973,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-MI-detroit",
+      "name": "Detroit",
+      "wiki": "Detroit",
+      "country": "US",
+      "stateID": "US-MI",
+      "rank": 26,
+      "populationDefinition": "Detroit city, Michigan",
+      "qid": "Q12439",
+      "coordinate": {
+        "longitude": -83.0475,
+        "latitude": 42.331666666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q12439",
+      "population": 649095,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-KY-louisville",
+      "name": "Louisville",
+      "wiki": "Louisville, Kentucky",
+      "country": "US",
+      "stateID": "US-KY",
+      "rank": 27,
+      "populationDefinition": "Louisville/Jefferson County metro government (balance), Kentucky",
+      "qid": "Q43668",
+      "coordinate": {
+        "longitude": -85.75138888888888,
+        "latitude": 38.25611111111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q43668",
+      "population": 641962,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-OR-portland",
+      "name": "Portland",
+      "wiki": "Portland, Oregon",
+      "country": "US",
+      "stateID": "US-OR",
+      "rank": 28,
+      "populationDefinition": "Portland city, Oregon",
+      "qid": "Q6106",
+      "coordinate": {
+        "longitude": -122.67916666666666,
+        "latitude": 45.515
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q6106",
+      "population": 635109,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-TN-memphis",
+      "name": "Memphis",
+      "wiki": "Memphis, Tennessee",
+      "country": "US",
+      "stateID": "US-TN",
+      "rank": 29,
+      "populationDefinition": "Memphis city, Tennessee",
+      "qid": "Q16563",
+      "coordinate": {
+        "longitude": -90.05194444444444,
+        "latitude": 35.14611111111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16563",
+      "population": 609647,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-MD-baltimore",
+      "name": "Baltimore",
+      "wiki": "Baltimore",
+      "country": "US",
+      "stateID": "US-MD",
+      "rank": 30,
+      "populationDefinition": "Baltimore city, Maryland",
+      "qid": "Q5092",
+      "coordinate": {
+        "longitude": -76.615,
+        "latitude": 39.286388888889
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q5092",
+      "population": 569997,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-WI-milwaukee",
+      "name": "Milwaukee",
+      "wiki": "Milwaukee",
+      "country": "US",
+      "stateID": "US-WI",
+      "rank": 31,
+      "populationDefinition": "Milwaukee city, Wisconsin",
+      "qid": "Q37836",
+      "coordinate": {
+        "longitude": -87.95,
+        "latitude": 43.05
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q37836",
+      "population": 562407,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-NM-albuquerque",
+      "name": "Albuquerque",
+      "wiki": "Albuquerque, New Mexico",
+      "country": "US",
+      "stateID": "US-NM",
+      "rank": 32,
+      "populationDefinition": "Albuquerque city, New Mexico",
+      "qid": "Q34804",
+      "coordinate": {
+        "longitude": -106.65027777777777,
+        "latitude": 35.08444444444444
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q34804",
+      "population": 556588,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CA-fresno",
+      "name": "Fresno",
+      "wiki": "Fresno, California",
+      "country": "US",
+      "stateID": "US-CA",
+      "rank": 33,
+      "populationDefinition": "Fresno city, California",
+      "qid": "Q43301",
+      "coordinate": {
+        "longitude": -119.79222222222,
+        "latitude": 36.781666666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q43301",
+      "population": 555549,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-AZ-tucson",
+      "name": "Tucson",
+      "wiki": "Tucson, Arizona",
+      "country": "US",
+      "stateID": "US-AZ",
+      "rank": 34,
+      "populationDefinition": "Tucson city, Arizona",
+      "qid": "Q18575",
+      "coordinate": {
+        "longitude": -110.92638888889,
+        "latitude": 32.221666666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q18575",
+      "population": 548371,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CA-sacramento",
+      "name": "Sacramento",
+      "wiki": "Sacramento, California",
+      "country": "US",
+      "stateID": "US-CA",
+      "rank": 35,
+      "populationDefinition": "Sacramento city, California",
+      "qid": "Q18013",
+      "coordinate": {
+        "longitude": -121.48611111111,
+        "latitude": 38.575277777778
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q18013",
+      "population": 536449,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-GA-atlanta",
+      "name": "Atlanta",
+      "wiki": "Atlanta",
+      "country": "US",
+      "stateID": "US-GA",
+      "rank": 36,
+      "populationDefinition": "Atlanta city, Georgia",
+      "qid": "Q23556",
+      "coordinate": {
+        "longitude": -84.38972222222222,
+        "latitude": 33.754444444444445
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q23556",
+      "population": 529110,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-MO-kansas-city",
+      "name": "Kansas City",
+      "wiki": "Kansas City, Missouri",
+      "country": "US",
+      "stateID": "US-MO",
+      "rank": 37,
+      "populationDefinition": "Kansas City city, Missouri",
+      "qid": "Q41819",
+      "coordinate": {
+        "longitude": -94.583333333333,
+        "latitude": 39.05
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q41819",
+      "population": 521220,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-AZ-mesa",
+      "name": "Mesa",
+      "wiki": "Mesa, Arizona",
+      "country": "US",
+      "stateID": "US-AZ",
+      "rank": 38,
+      "populationDefinition": "Mesa city, Arizona",
+      "qid": "Q49261",
+      "coordinate": {
+        "longitude": -111.83138888889,
+        "latitude": 33.415
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q49261",
+      "population": 513656,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-NC-raleigh",
+      "name": "Raleigh",
+      "wiki": "Raleigh, North Carolina",
+      "country": "US",
+      "stateID": "US-NC",
+      "rank": 39,
+      "populationDefinition": "Raleigh city, North Carolina",
+      "qid": "Q41087",
+      "coordinate": {
+        "longitude": -78.64,
+        "latitude": 35.78
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q41087",
+      "population": 506306,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CO-colorado-springs",
+      "name": "Colorado Springs",
+      "wiki": "Colorado Springs, Colorado",
+      "country": "US",
+      "stateID": "US-CO",
+      "rank": 40,
+      "populationDefinition": "Colorado Springs city, Colorado",
+      "qid": "Q49258",
+      "coordinate": {
+        "longitude": -104.79194444444,
+        "latitude": 38.863333333333
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q49258",
+      "population": 494743,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-FL-miami",
+      "name": "Miami",
+      "wiki": "Miami",
+      "country": "US",
+      "stateID": "US-FL",
+      "rank": 41,
+      "populationDefinition": "Miami city, Florida",
+      "qid": "Q8652",
+      "coordinate": {
+        "longitude": -80.19361111111111,
+        "latitude": 25.774166666666666
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q8652",
+      "population": 489812,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-NE-omaha",
+      "name": "Omaha",
+      "wiki": "Omaha, Nebraska",
+      "country": "US",
+      "stateID": "US-NE",
+      "rank": 42,
+      "populationDefinition": "Omaha city, Nebraska",
+      "qid": "Q43199",
+      "coordinate": {
+        "longitude": -95.9375,
+        "latitude": 41.25861111111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q43199",
+      "population": 488797,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-VA-virginia-beach",
+      "name": "Virginia Beach",
+      "wiki": "Virginia Beach, Virginia",
+      "country": "US",
+      "stateID": "US-VA",
+      "rank": 43,
+      "populationDefinition": "Virginia Beach city, Virginia",
+      "qid": "Q49259",
+      "coordinate": {
+        "longitude": -75.9779,
+        "latitude": 36.8506
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q49259",
+      "population": 453737,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CA-long-beach",
+      "name": "Long Beach",
+      "wiki": "Long Beach, California",
+      "country": "US",
+      "stateID": "US-CA",
+      "rank": 44,
+      "populationDefinition": "Long Beach city, California",
+      "qid": "Q16739",
+      "coordinate": {
+        "longitude": -118.19555555555556,
+        "latitude": 33.768055555555556
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q16739",
+      "population": 450469,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CA-oakland",
+      "name": "Oakland",
+      "wiki": "Oakland, California",
+      "country": "US",
+      "stateID": "US-CA",
+      "rank": 45,
+      "populationDefinition": "Oakland city, California",
+      "qid": "Q17042",
+      "coordinate": {
+        "longitude": -122.25,
+        "latitude": 37.8
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q17042",
+      "population": 440838,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-MN-minneapolis",
+      "name": "Minneapolis",
+      "wiki": "Minneapolis",
+      "country": "US",
+      "stateID": "US-MN",
+      "rank": 46,
+      "populationDefinition": "Minneapolis city, Minnesota",
+      "qid": "Q36091",
+      "coordinate": {
+        "longitude": -93.26916666666666,
+        "latitude": 44.981944444444444
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q36091",
+      "population": 430324,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CA-bakersfield",
+      "name": "Bakersfield",
+      "wiki": "Bakersfield, California",
+      "country": "US",
+      "stateID": "US-CA",
+      "rank": 47,
+      "populationDefinition": "Bakersfield city, California",
+      "qid": "Q49256",
+      "coordinate": {
+        "longitude": -119.0188888888889,
+        "latitude": 35.373333333333335
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q49256",
+      "population": 422165,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-OK-tulsa",
+      "name": "Tulsa",
+      "wiki": "Tulsa, Oklahoma",
+      "country": "US",
+      "stateID": "US-OK",
+      "rank": 48,
+      "populationDefinition": "Tulsa city, Oklahoma",
+      "qid": "Q44989",
+      "coordinate": {
+        "longitude": -95.937222222222,
+        "latitude": 36.131388888889
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q44989",
+      "population": 416209,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-FL-tampa",
+      "name": "Tampa",
+      "wiki": "Tampa, Florida",
+      "country": "US",
+      "stateID": "US-FL",
+      "rank": 49,
+      "populationDefinition": "Tampa city, Florida",
+      "qid": "Q49255",
+      "coordinate": {
+        "longitude": -82.45861111111111,
+        "latitude": 27.9475
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q49255",
+      "population": 413554,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-US-CO-aurora",
+      "name": "Aurora",
+      "wiki": "Aurora, Colorado",
+      "country": "US",
+      "stateID": "US-CO",
+      "rank": 50,
+      "populationDefinition": "Aurora city, Colorado",
+      "qid": "Q49246",
+      "coordinate": {
+        "longitude": -104.8125,
+        "latitude": 39.710833333333
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q49246",
+      "population": 410053,
+      "populationDate": "2025-07-01",
+      "populationSource": "census-2025"
+    },
+    {
+      "id": "city-DE-BE-berlin",
+      "name": "Berlin",
+      "wiki": "Berlin",
+      "country": "DE",
+      "stateID": "DE-BE",
+      "rank": 1,
+      "populationDefinition": "Municipality within administrative boundaries",
+      "qid": "Q64",
+      "coordinate": {
+        "longitude": 13.383333333333,
+        "latitude": 52.516666666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q64",
+      "population": 3685265,
+      "populationDate": "2024-12-31",
+      "populationSource": "destatis-2024"
+    },
+    {
+      "id": "city-DE-HH-hamburg",
+      "name": "Hamburg",
+      "wiki": "Hamburg",
+      "country": "DE",
+      "stateID": "DE-HH",
+      "rank": 2,
+      "populationDefinition": "Municipality within administrative boundaries",
+      "qid": "Q1055",
+      "coordinate": {
+        "longitude": 10,
+        "latitude": 53.55
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1055",
+      "population": 1862565,
+      "populationDate": "2024-12-31",
+      "populationSource": "destatis-2024"
+    },
+    {
+      "id": "city-DE-BY-munich",
+      "name": "München",
+      "wiki": "Munich",
+      "country": "DE",
+      "stateID": "DE-BY",
+      "rank": 3,
+      "populationDefinition": "Municipality within administrative boundaries",
+      "qid": "Q1726",
+      "coordinate": {
+        "longitude": 11.575,
+        "latitude": 48.1375
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1726",
+      "population": 1505005,
+      "populationDate": "2024-12-31",
+      "populationSource": "destatis-2024"
+    },
+    {
+      "id": "city-DE-NW-cologne",
+      "name": "Köln",
+      "wiki": "Cologne",
+      "country": "DE",
+      "stateID": "DE-NW",
+      "rank": 4,
+      "populationDefinition": "Municipality within administrative boundaries",
+      "qid": "Q365",
+      "coordinate": {
+        "longitude": 6.9577777777778,
+        "latitude": 50.942222222222
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q365",
+      "population": 1024621,
+      "populationDate": "2024-12-31",
+      "populationSource": "destatis-2024"
+    },
+    {
+      "id": "city-DE-HE-frankfurt",
+      "name": "Frankfurt am Main",
+      "wiki": "Frankfurt",
+      "country": "DE",
+      "stateID": "DE-HE",
+      "rank": 5,
+      "populationDefinition": "Municipality within administrative boundaries",
+      "qid": "Q1794",
+      "coordinate": {
+        "longitude": 8.682222222222222,
+        "latitude": 50.11055555555556
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1794",
+      "population": 756021,
+      "populationDate": "2024-12-31",
+      "populationSource": "destatis-2024"
+    },
+    {
+      "id": "city-DE-NW-düsseldorf",
+      "name": "Düsseldorf",
+      "wiki": "Düsseldorf",
+      "country": "DE",
+      "stateID": "DE-NW",
+      "rank": 6,
+      "populationDefinition": "Municipality within administrative boundaries",
+      "qid": "Q1718",
+      "coordinate": {
+        "longitude": 6.776666666666666,
+        "latitude": 51.22555555555556
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1718",
+      "population": 618685,
+      "populationDate": "2024-12-31",
+      "populationSource": "destatis-2024"
+    },
+    {
+      "id": "city-DE-BW-stuttgart",
+      "name": "Stuttgart",
+      "wiki": "Stuttgart",
+      "country": "DE",
+      "stateID": "DE-BW",
+      "rank": 7,
+      "populationDefinition": "Municipality within administrative boundaries",
+      "qid": "Q1022",
+      "coordinate": {
+        "longitude": 9.18,
+        "latitude": 48.7775
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1022",
+      "population": 612663,
+      "populationDate": "2024-12-31",
+      "populationSource": "destatis-2024"
+    },
+    {
+      "id": "city-DE-SN-leipzig",
+      "name": "Leipzig",
+      "wiki": "Leipzig",
+      "country": "DE",
+      "stateID": "DE-SN",
+      "rank": 8,
+      "populationDefinition": "Municipality within administrative boundaries",
+      "qid": "Q2079",
+      "coordinate": {
+        "longitude": 12.3747329,
+        "latitude": 51.3406321
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q2079",
+      "population": 611850,
+      "populationDate": "2024-12-31",
+      "populationSource": "destatis-2024"
+    },
+    {
+      "id": "city-DE-NW-dortmund",
+      "name": "Dortmund",
+      "wiki": "Dortmund",
+      "country": "DE",
+      "stateID": "DE-NW",
+      "rank": 9,
+      "populationDefinition": "Municipality within administrative boundaries",
+      "qid": "Q1295",
+      "coordinate": {
+        "longitude": 7.4652777777778,
+        "latitude": 51.513888888889
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1295",
+      "population": 603462,
+      "populationDate": "2024-12-31",
+      "populationSource": "destatis-2024"
+    },
+    {
+      "id": "city-DE-HB-bremen",
+      "name": "Bremen",
+      "wiki": "Bremen",
+      "country": "DE",
+      "stateID": "DE-HB",
+      "rank": 10,
+      "populationDefinition": "Municipality within administrative boundaries",
+      "qid": "Q24879",
+      "coordinate": {
+        "longitude": 8.807222222222222,
+        "latitude": 53.075833333333335
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q24879",
+      "population": 586271,
+      "populationDate": "2024-12-31",
+      "populationSource": "destatis-2024"
+    }
+  ],
+  "landmarks": [
+    {
+      "id": "landmark-US-NY-1",
+      "name": "Statue of Liberty",
+      "wiki": "Statue of Liberty",
+      "country": "US",
+      "stateID": "US-NY",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q9202",
+      "coordinate": {
+        "longitude": -74.044425277778,
+        "latitude": 40.689209166667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q9202"
+    },
+    {
+      "id": "landmark-US-PA-2",
+      "name": "Liberty Bell",
+      "wiki": "Liberty Bell",
+      "country": "US",
+      "stateID": "US-PA",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q390306",
+      "coordinate": {
+        "longitude": -75.1503,
+        "latitude": 39.9495
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q390306"
+    },
+    {
+      "id": "landmark-US-SD-3",
+      "name": "Mount Rushmore",
+      "wiki": "Mount Rushmore",
+      "country": "US",
+      "stateID": "US-SD",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q83497",
+      "coordinate": {
+        "longitude": -103.45916666666666,
+        "latitude": 43.87888888888889
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q83497"
+    },
+    {
+      "id": "landmark-US-CA-4",
+      "name": "Golden Gate Bridge",
+      "wiki": "Golden Gate Bridge",
+      "country": "US",
+      "stateID": "US-CA",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q44440",
+      "coordinate": {
+        "longitude": -122.47861111111,
+        "latitude": 37.819722222222
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q44440"
+    },
+    {
+      "id": "landmark-US-AZ-5",
+      "name": "Grand Canyon — Mather Point",
+      "wiki": "Mather Point",
+      "country": "US",
+      "stateID": "US-AZ",
+      "pointDefinition": "Mather Point viewpoint on the South Rim",
+      "qid": "Q49469591",
+      "coordinate": {
+        "longitude": -112.10805555556,
+        "latitude": 36.061666666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q49469591"
+    },
+    {
+      "id": "landmark-US-WY-6",
+      "name": "Old Faithful",
+      "wiki": "Old Faithful",
+      "country": "US",
+      "stateID": "US-WY",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q858794",
+      "coordinate": {
+        "longitude": -110.82813888888889,
+        "latitude": 44.46047222222222
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q858794"
+    },
+    {
+      "id": "landmark-US-CA-7",
+      "name": "Half Dome",
+      "wiki": "Half Dome",
+      "country": "US",
+      "stateID": "US-CA",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q925252",
+      "coordinate": {
+        "longitude": -119.53316666667,
+        "latitude": 37.746
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q925252"
+    },
+    {
+      "id": "landmark-US-DC-8",
+      "name": "Lincoln Memorial",
+      "wiki": "Lincoln Memorial",
+      "country": "US",
+      "stateID": "US-DC",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q213559",
+      "coordinate": {
+        "longitude": -77.050138888889,
+        "latitude": 38.889277777778
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q213559"
+    },
+    {
+      "id": "landmark-US-DC-9",
+      "name": "Washington Monument",
+      "wiki": "Washington Monument",
+      "country": "US",
+      "stateID": "US-DC",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q178114",
+      "coordinate": {
+        "longitude": -77.035244444444,
+        "latitude": 38.889475
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q178114"
+    },
+    {
+      "id": "landmark-US-DC-10",
+      "name": "United States Capitol",
+      "wiki": "United States Capitol",
+      "country": "US",
+      "stateID": "US-DC",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q54109",
+      "coordinate": {
+        "longitude": -77.00916666666667,
+        "latitude": 38.889722222222225
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q54109"
+    },
+    {
+      "id": "landmark-US-DC-11",
+      "name": "White House",
+      "wiki": "White House",
+      "country": "US",
+      "stateID": "US-DC",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q35525",
+      "coordinate": {
+        "longitude": -77.03666666666666,
+        "latitude": 38.897777777777776
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q35525"
+    },
+    {
+      "id": "landmark-US-NY-12",
+      "name": "Empire State Building",
+      "wiki": "Empire State Building",
+      "country": "US",
+      "stateID": "US-NY",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q9188",
+      "coordinate": {
+        "longitude": -73.98555555555555,
+        "latitude": 40.748333333333335
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q9188"
+    },
+    {
+      "id": "landmark-US-NY-13",
+      "name": "Brooklyn Bridge",
+      "wiki": "Brooklyn Bridge",
+      "country": "US",
+      "stateID": "US-NY",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q125006",
+      "coordinate": {
+        "longitude": -73.99633333333334,
+        "latitude": 40.705666666666666
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q125006"
+    },
+    {
+      "id": "landmark-US-NY-14",
+      "name": "Times Square",
+      "wiki": "Times Square",
+      "country": "US",
+      "stateID": "US-NY",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q11259",
+      "coordinate": {
+        "longitude": -73.98583333333333,
+        "latitude": 40.7575
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q11259"
+    },
+    {
+      "id": "landmark-US-NY-15",
+      "name": "Bethesda Terrace and Fountain",
+      "wiki": "Bethesda Terrace and Fountain",
+      "country": "US",
+      "stateID": "US-NY",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q532029",
+      "coordinate": {
+        "longitude": -73.9711,
+        "latitude": 40.7741
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q532029"
+    },
+    {
+      "id": "landmark-US-MO-16",
+      "name": "Gateway Arch",
+      "wiki": "Gateway Arch",
+      "country": "US",
+      "stateID": "US-MO",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q2027162",
+      "coordinate": {
+        "longitude": -90.18497222222223,
+        "latitude": 38.62461111111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q2027162"
+    },
+    {
+      "id": "landmark-US-WA-17",
+      "name": "Space Needle",
+      "wiki": "Space Needle",
+      "country": "US",
+      "stateID": "US-WA",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q5317",
+      "coordinate": {
+        "longitude": -122.3491,
+        "latitude": 47.6204
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q5317"
+    },
+    {
+      "id": "landmark-US-NV-18",
+      "name": "Hoover Dam",
+      "wiki": "Hoover Dam",
+      "country": "US",
+      "stateID": "US-NV",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q172822",
+      "coordinate": {
+        "longitude": -114.73777777777778,
+        "latitude": 36.01583333333333
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q172822"
+    },
+    {
+      "id": "landmark-US-CA-19",
+      "name": "Hollywood Sign",
+      "wiki": "Hollywood Sign",
+      "country": "US",
+      "stateID": "US-CA",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q180376",
+      "coordinate": {
+        "longitude": -118.32169444444,
+        "latitude": 34.134102777778
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q180376"
+    },
+    {
+      "id": "landmark-US-CA-20",
+      "name": "Alcatraz Island",
+      "wiki": "Alcatraz Island",
+      "country": "US",
+      "stateID": "US-CA",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q131354",
+      "coordinate": {
+        "longitude": -122.4228329,
+        "latitude": 37.8267199
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q131354"
+    },
+    {
+      "id": "landmark-US-PA-21",
+      "name": "Independence Hall",
+      "wiki": "Independence Hall",
+      "country": "US",
+      "stateID": "US-PA",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q390028",
+      "coordinate": {
+        "longitude": -75.15,
+        "latitude": 39.948888888889
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q390028"
+    },
+    {
+      "id": "landmark-US-SC-22",
+      "name": "Fort Sumter",
+      "wiki": "Fort Sumter",
+      "country": "US",
+      "stateID": "US-SC",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q737517",
+      "coordinate": {
+        "longitude": -79.874444,
+        "latitude": 32.7525
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q737517"
+    },
+    {
+      "id": "landmark-US-FL-23",
+      "name": "Castillo de San Marcos",
+      "wiki": "Castillo de San Marcos",
+      "country": "US",
+      "stateID": "US-FL",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q101094405",
+      "coordinate": {
+        "longitude": -81.31138888888889,
+        "latitude": 29.897777777777776
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q101094405"
+    },
+    {
+      "id": "landmark-US-FL-24",
+      "name": "Kennedy Space Center Visitor Complex",
+      "wiki": "Kennedy Space Center Visitor Complex",
+      "country": "US",
+      "stateID": "US-FL",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q6389687",
+      "coordinate": {
+        "longitude": -80.6819,
+        "latitude": 28.5233
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q6389687"
+    },
+    {
+      "id": "landmark-US-FL-25",
+      "name": "Magic Kingdom",
+      "wiki": "Magic Kingdom",
+      "country": "US",
+      "stateID": "US-FL",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q1324340",
+      "coordinate": {
+        "longitude": -81.581111111111,
+        "latitude": 28.418611111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1324340"
+    },
+    {
+      "id": "landmark-US-LA-26",
+      "name": "Jackson Square (New Orleans)",
+      "wiki": "Jackson Square (New Orleans)",
+      "country": "US",
+      "stateID": "US-LA",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q3157436",
+      "coordinate": {
+        "longitude": -90.06305555555555,
+        "latitude": 29.9575
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q3157436"
+    },
+    {
+      "id": "landmark-US-TN-27",
+      "name": "Graceland",
+      "wiki": "Graceland",
+      "country": "US",
+      "stateID": "US-TN",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q545360",
+      "coordinate": {
+        "longitude": -90.02583333333334,
+        "latitude": 35.04611111111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q545360"
+    },
+    {
+      "id": "landmark-US-TN-28",
+      "name": "Parthenon (Nashville)",
+      "wiki": "Parthenon (Nashville)",
+      "country": "US",
+      "stateID": "US-TN",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q1467467",
+      "coordinate": {
+        "longitude": -86.8135,
+        "latitude": 36.1496
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1467467"
+    },
+    {
+      "id": "landmark-US-IL-29",
+      "name": "Cloud Gate",
+      "wiki": "Cloud Gate",
+      "country": "US",
+      "stateID": "US-IL",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q589099",
+      "coordinate": {
+        "longitude": -87.6233,
+        "latitude": 41.8827
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q589099"
+    },
+    {
+      "id": "landmark-US-IL-30",
+      "name": "Willis Tower",
+      "wiki": "Willis Tower",
+      "country": "US",
+      "stateID": "US-IL",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q29294",
+      "coordinate": {
+        "longitude": -87.635833,
+        "latitude": 41.878611
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q29294"
+    },
+    {
+      "id": "landmark-US-MI-31",
+      "name": "The Henry Ford",
+      "wiki": "The Henry Ford",
+      "country": "US",
+      "stateID": "US-MI",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q3521242",
+      "coordinate": {
+        "longitude": -83.234078,
+        "latitude": 42.303583
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q3521242"
+    },
+    {
+      "id": "landmark-US-OH-32",
+      "name": "Rock and Roll Hall of Fame",
+      "wiki": "Rock and Roll Hall of Fame",
+      "country": "US",
+      "stateID": "US-OH",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q179191",
+      "coordinate": {
+        "longitude": -81.695555555556,
+        "latitude": 41.508611111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q179191"
+    },
+    {
+      "id": "landmark-US-MN-33",
+      "name": "Mall of America",
+      "wiki": "Mall of America",
+      "country": "US",
+      "stateID": "US-MN",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q659219",
+      "coordinate": {
+        "longitude": -93.242222222222,
+        "latitude": 44.854166666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q659219"
+    },
+    {
+      "id": "landmark-US-WY-34",
+      "name": "Devils Tower",
+      "wiki": "Devils Tower",
+      "country": "US",
+      "stateID": "US-WY",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q306201",
+      "coordinate": {
+        "longitude": -104.71527777778,
+        "latitude": 44.590277777778
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q306201"
+    },
+    {
+      "id": "landmark-US-SD-35",
+      "name": "Crazy Horse Memorial",
+      "wiki": "Crazy Horse Memorial",
+      "country": "US",
+      "stateID": "US-SD",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q1139250",
+      "coordinate": {
+        "longitude": -103.624386,
+        "latitude": 43.836789
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1139250"
+    },
+    {
+      "id": "landmark-US-UT-36",
+      "name": "Delicate Arch",
+      "wiki": "Delicate Arch",
+      "country": "US",
+      "stateID": "US-UT",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q2300616",
+      "coordinate": {
+        "longitude": -109.49944444444,
+        "latitude": 38.743611111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q2300616"
+    },
+    {
+      "id": "landmark-US-UT-37",
+      "name": "Angels Landing",
+      "wiki": "Angels Landing",
+      "country": "US",
+      "stateID": "US-UT",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q2563959",
+      "coordinate": {
+        "longitude": -112.948,
+        "latitude": 37.2694
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q2563959"
+    },
+    {
+      "id": "landmark-US-AZ-38",
+      "name": "Monument Valley — Mitten Buttes",
+      "wiki": "West and East Mitten Buttes",
+      "country": "US",
+      "stateID": "US-AZ",
+      "pointDefinition": "Reference point for the Mitten Buttes",
+      "qid": "Q7987055",
+      "coordinate": {
+        "longitude": -110.083,
+        "latitude": 36.99
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q7987055"
+    },
+    {
+      "id": "landmark-US-CO-39",
+      "name": "Cliff Palace",
+      "wiki": "Cliff Palace",
+      "country": "US",
+      "stateID": "US-CO",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q2979068",
+      "coordinate": {
+        "longitude": -108.47277777778,
+        "latitude": 37.166666666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q2979068"
+    },
+    {
+      "id": "landmark-US-NM-40",
+      "name": "Carlsbad Caverns National Park",
+      "wiki": "Carlsbad Caverns National Park",
+      "country": "US",
+      "stateID": "US-NM",
+      "pointDefinition": "Park reference point from Wikidata; not an entrance",
+      "qid": "Q273195",
+      "coordinate": {
+        "longitude": -104.44388888889,
+        "latitude": 32.175277777778
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q273195"
+    },
+    {
+      "id": "landmark-US-NM-41",
+      "name": "White Sands National Park",
+      "wiki": "White Sands National Park",
+      "country": "US",
+      "stateID": "US-NM",
+      "pointDefinition": "Park reference point from Wikidata; not an entrance",
+      "qid": "Q1200164",
+      "coordinate": {
+        "longitude": -106.171667,
+        "latitude": 32.779722
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1200164"
+    },
+    {
+      "id": "landmark-US-TX-42",
+      "name": "Alamo Mission",
+      "wiki": "Alamo Mission",
+      "country": "US",
+      "stateID": "US-TX",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q2636724",
+      "coordinate": {
+        "longitude": -98.486111,
+        "latitude": 29.425833
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q2636724"
+    },
+    {
+      "id": "landmark-US-TX-43",
+      "name": "Dealey Plaza",
+      "wiki": "Dealey Plaza",
+      "country": "US",
+      "stateID": "US-TX",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q1181004",
+      "coordinate": {
+        "longitude": -96.8086111111111,
+        "latitude": 32.77861111111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1181004"
+    },
+    {
+      "id": "landmark-US-TX-44",
+      "name": "San Jacinto Monument",
+      "wiki": "San Jacinto Monument",
+      "country": "US",
+      "stateID": "US-TX",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q1111991",
+      "coordinate": {
+        "longitude": -95.0803,
+        "latitude": 29.7489
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1111991"
+    },
+    {
+      "id": "landmark-US-HI-45",
+      "name": "USS Arizona Memorial",
+      "wiki": "USS Arizona Memorial",
+      "country": "US",
+      "stateID": "US-HI",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q2004262",
+      "coordinate": {
+        "longitude": -157.95,
+        "latitude": 21.3649
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q2004262"
+    },
+    {
+      "id": "landmark-US-AK-46",
+      "name": "Denali",
+      "wiki": "Denali",
+      "country": "US",
+      "stateID": "US-AK",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q130018",
+      "coordinate": {
+        "longitude": -151.00626111111112,
+        "latitude": 63.06910277777778
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q130018"
+    },
+    {
+      "id": "landmark-US-NY-47",
+      "name": "American Falls",
+      "wiki": "American Falls",
+      "country": "US",
+      "stateID": "US-NY",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q1320475",
+      "coordinate": {
+        "longitude": -79.07,
+        "latitude": 43.085
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q1320475"
+    },
+    {
+      "id": "landmark-US-MA-48",
+      "name": "Faneuil Hall",
+      "wiki": "Faneuil Hall",
+      "country": "US",
+      "stateID": "US-MA",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q49137",
+      "coordinate": {
+        "longitude": -71.056315,
+        "latitude": 42.359987
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q49137"
+    },
+    {
+      "id": "landmark-US-ME-49",
+      "name": "Portland Head Light",
+      "wiki": "Portland Head Light",
+      "country": "US",
+      "stateID": "US-ME",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q2105159",
+      "coordinate": {
+        "longitude": -70.207778,
+        "latitude": 43.623056
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q2105159"
+    },
+    {
+      "id": "landmark-US-OR-50",
+      "name": "Multnomah Falls",
+      "wiki": "Multnomah Falls",
+      "country": "US",
+      "stateID": "US-OR",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q37319",
+      "coordinate": {
+        "longitude": -122.11536111111,
+        "latitude": 45.57595
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q37319"
+    },
+    {
+      "id": "landmark-DE-BE-51",
+      "name": "Brandenburg Gate",
+      "wiki": "Brandenburg Gate",
+      "country": "DE",
+      "stateID": "DE-BE",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q82425",
+      "coordinate": {
+        "longitude": 13.377722222222,
+        "latitude": 52.516272222222
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q82425"
+    },
+    {
+      "id": "landmark-DE-NW-52",
+      "name": "Cologne Cathedral",
+      "wiki": "Cologne Cathedral",
+      "country": "DE",
+      "stateID": "DE-NW",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q4176",
+      "coordinate": {
+        "longitude": 6.958333333333333,
+        "latitude": 50.94138888888889
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q4176"
+    },
+    {
+      "id": "landmark-DE-BY-53",
+      "name": "Neuschwanstein Castle",
+      "wiki": "Neuschwanstein Castle",
+      "country": "DE",
+      "stateID": "DE-BY",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q4152",
+      "coordinate": {
+        "longitude": 10.74944180794,
+        "latitude": 47.5574885428434
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q4152"
+    },
+    {
+      "id": "landmark-DE-BE-54",
+      "name": "Reichstag building",
+      "wiki": "Reichstag building",
+      "country": "DE",
+      "stateID": "DE-BE",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q151897",
+      "coordinate": {
+        "longitude": 13.376111111111111,
+        "latitude": 52.51861111111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q151897"
+    },
+    {
+      "id": "landmark-DE-BE-55",
+      "name": "Fernsehturm Berlin",
+      "wiki": "Fernsehturm Berlin",
+      "country": "DE",
+      "stateID": "DE-BE",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q151356",
+      "coordinate": {
+        "longitude": 13.409444444444444,
+        "latitude": 52.520833333333336
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q151356"
+    },
+    {
+      "id": "landmark-DE-HH-56",
+      "name": "Elbphilharmonie",
+      "wiki": "Elbphilharmonie",
+      "country": "DE",
+      "stateID": "DE-HH",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q673223",
+      "coordinate": {
+        "longitude": 9.98419444,
+        "latitude": 53.54141667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q673223"
+    },
+    {
+      "id": "landmark-DE-HB-57",
+      "name": "Bremen Roland",
+      "wiki": "Bremen Roland",
+      "country": "DE",
+      "stateID": "DE-HB",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q19665",
+      "coordinate": {
+        "longitude": 8.80731,
+        "latitude": 53.0759
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q19665"
+    },
+    {
+      "id": "landmark-DE-BB-58",
+      "name": "Sanssouci",
+      "wiki": "Sanssouci",
+      "country": "DE",
+      "stateID": "DE-BB",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q151330",
+      "coordinate": {
+        "longitude": 13.038626,
+        "latitude": 52.403257
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q151330"
+    },
+    {
+      "id": "landmark-DE-SN-59",
+      "name": "Dresden Frauenkirche",
+      "wiki": "Frauenkirche, Dresden",
+      "country": "DE",
+      "stateID": "DE-SN",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q157229",
+      "coordinate": {
+        "longitude": 13.741666666667,
+        "latitude": 51.051944444444
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q157229"
+    },
+    {
+      "id": "landmark-DE-SN-60",
+      "name": "Zwinger (Dresden)",
+      "wiki": "Zwinger (Dresden)",
+      "country": "DE",
+      "stateID": "DE-SN",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q155107",
+      "coordinate": {
+        "longitude": 13.733888888889,
+        "latitude": 51.053055555556
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q155107"
+    },
+    {
+      "id": "landmark-DE-SN-61",
+      "name": "Bastei",
+      "wiki": "Bastei",
+      "country": "DE",
+      "stateID": "DE-SN",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q671486",
+      "coordinate": {
+        "longitude": 14.066666666667,
+        "latitude": 50.966666666667
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q671486"
+    },
+    {
+      "id": "landmark-DE-TH-62",
+      "name": "Wartburg",
+      "wiki": "Wartburg",
+      "country": "DE",
+      "stateID": "DE-TH",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q151545",
+      "coordinate": {
+        "longitude": 10.30638888888889,
+        "latitude": 50.96611111111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q151545"
+    },
+    {
+      "id": "landmark-DE-BW-63",
+      "name": "Heidelberg Castle",
+      "wiki": "Heidelberg Castle",
+      "country": "DE",
+      "stateID": "DE-BW",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q327265",
+      "coordinate": {
+        "longitude": 8.7158333333333,
+        "latitude": 49.410555555556
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q327265"
+    },
+    {
+      "id": "landmark-DE-RP-64",
+      "name": "Porta Nigra",
+      "wiki": "Porta Nigra",
+      "country": "DE",
+      "stateID": "DE-RP",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q152339",
+      "coordinate": {
+        "longitude": 6.6438888888889,
+        "latitude": 49.759722222222
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q152339"
+    },
+    {
+      "id": "landmark-DE-NW-65",
+      "name": "Aachen Cathedral",
+      "wiki": "Aachen Cathedral",
+      "country": "DE",
+      "stateID": "DE-NW",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q5908",
+      "coordinate": {
+        "longitude": 6.0839222222222,
+        "latitude": 50.77475
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q5908"
+    },
+    {
+      "id": "landmark-DE-BW-66",
+      "name": "Ulm Minster",
+      "wiki": "Ulm Minster",
+      "country": "DE",
+      "stateID": "DE-BW",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q44562",
+      "coordinate": {
+        "longitude": 9.9925,
+        "latitude": 48.398611111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q44562"
+    },
+    {
+      "id": "landmark-DE-BY-67",
+      "name": "Würzburg Residence",
+      "wiki": "Würzburg Residence",
+      "country": "DE",
+      "stateID": "DE-BY",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q156316",
+      "coordinate": {
+        "longitude": 9.93888904324529,
+        "latitude": 49.7927976174702
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q156316"
+    },
+    {
+      "id": "landmark-DE-BW-68",
+      "name": "Hohenzollern Castle",
+      "wiki": "Hohenzollern Castle",
+      "country": "DE",
+      "stateID": "DE-BW",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q156457",
+      "coordinate": {
+        "longitude": 8.9674,
+        "latitude": 48.32356111111111
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q156457"
+    },
+    {
+      "id": "landmark-DE-BY-69",
+      "name": "Zugspitze",
+      "wiki": "Zugspitze",
+      "country": "DE",
+      "stateID": "DE-BY",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q3375",
+      "coordinate": {
+        "longitude": 10.986314,
+        "latitude": 47.421217
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q3375"
+    },
+    {
+      "id": "landmark-DE-HE-70",
+      "name": "Hercules monument (Kassel)",
+      "wiki": "Hercules monument (Kassel)",
+      "country": "DE",
+      "stateID": "DE-HE",
+      "pointDefinition": "Mapped landmark point",
+      "qid": "Q321252",
+      "coordinate": {
+        "longitude": 9.39278,
+        "latitude": 51.3164
+      },
+      "sourceURL": "https://www.wikidata.org/wiki/Q321252"
+    }
+  ]
+}

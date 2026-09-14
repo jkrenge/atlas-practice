@@ -1,0 +1,602 @@
+[
+  {
+    "id": "city-US-NY-new-york",
+    "name": "New York",
+    "wiki": "New York City",
+    "country": "US",
+    "stateID": "US-NY",
+    "rank": 1,
+    "populationDefinition": "New York city, New York",
+    "qid": "Q60"
+  },
+  {
+    "id": "city-US-CA-los-angeles",
+    "name": "Los Angeles",
+    "wiki": "Los Angeles",
+    "country": "US",
+    "stateID": "US-CA",
+    "rank": 2,
+    "populationDefinition": "Los Angeles city, California",
+    "qid": "Q65"
+  },
+  {
+    "id": "city-US-IL-chicago",
+    "name": "Chicago",
+    "wiki": "Chicago",
+    "country": "US",
+    "stateID": "US-IL",
+    "rank": 3,
+    "populationDefinition": "Chicago city, Illinois",
+    "qid": "Q1297"
+  },
+  {
+    "id": "city-US-TX-houston",
+    "name": "Houston",
+    "wiki": "Houston",
+    "country": "US",
+    "stateID": "US-TX",
+    "rank": 4,
+    "populationDefinition": "Houston city, Texas",
+    "qid": "Q16555"
+  },
+  {
+    "id": "city-US-AZ-phoenix",
+    "name": "Phoenix",
+    "wiki": "Phoenix, Arizona",
+    "country": "US",
+    "stateID": "US-AZ",
+    "rank": 5,
+    "populationDefinition": "Phoenix city, Arizona",
+    "qid": "Q16556"
+  },
+  {
+    "id": "city-US-PA-philadelphia",
+    "name": "Philadelphia",
+    "wiki": "Philadelphia",
+    "country": "US",
+    "stateID": "US-PA",
+    "rank": 6,
+    "populationDefinition": "Philadelphia city, Pennsylvania",
+    "qid": "Q1345"
+  },
+  {
+    "id": "city-US-TX-san-antonio",
+    "name": "San Antonio",
+    "wiki": "San Antonio",
+    "country": "US",
+    "stateID": "US-TX",
+    "rank": 7,
+    "populationDefinition": "San Antonio city, Texas",
+    "qid": "Q975"
+  },
+  {
+    "id": "city-US-CA-san-diego",
+    "name": "San Diego",
+    "wiki": "San Diego",
+    "country": "US",
+    "stateID": "US-CA",
+    "rank": 8,
+    "populationDefinition": "San Diego city, California",
+    "qid": "Q16552"
+  },
+  {
+    "id": "city-US-TX-dallas",
+    "name": "Dallas",
+    "wiki": "Dallas",
+    "country": "US",
+    "stateID": "US-TX",
+    "rank": 9,
+    "populationDefinition": "Dallas city, Texas",
+    "qid": "Q16557"
+  },
+  {
+    "id": "city-US-TX-fort-worth",
+    "name": "Fort Worth",
+    "wiki": "Fort Worth, Texas",
+    "country": "US",
+    "stateID": "US-TX",
+    "rank": 10,
+    "populationDefinition": "Fort Worth city, Texas",
+    "qid": "Q16558"
+  },
+  {
+    "id": "city-US-FL-jacksonville",
+    "name": "Jacksonville",
+    "wiki": "Jacksonville, Florida",
+    "country": "US",
+    "stateID": "US-FL",
+    "rank": 11,
+    "populationDefinition": "Jacksonville city, Florida",
+    "qid": "Q16568"
+  },
+  {
+    "id": "city-US-TX-austin",
+    "name": "Austin",
+    "wiki": "Austin, Texas",
+    "country": "US",
+    "stateID": "US-TX",
+    "rank": 12,
+    "populationDefinition": "Austin city, Texas",
+    "qid": "Q16559"
+  },
+  {
+    "id": "city-US-CA-san-jose",
+    "name": "San Jose",
+    "wiki": "San Jose, California",
+    "country": "US",
+    "stateID": "US-CA",
+    "rank": 13,
+    "populationDefinition": "San Jose city, California",
+    "qid": "Q16553"
+  },
+  {
+    "id": "city-US-NC-charlotte",
+    "name": "Charlotte",
+    "wiki": "Charlotte, North Carolina",
+    "country": "US",
+    "stateID": "US-NC",
+    "rank": 14,
+    "populationDefinition": "Charlotte city, North Carolina",
+    "qid": "Q16565"
+  },
+  {
+    "id": "city-US-OH-columbus",
+    "name": "Columbus",
+    "wiki": "Columbus, Ohio",
+    "country": "US",
+    "stateID": "US-OH",
+    "rank": 15,
+    "populationDefinition": "Columbus city, Ohio",
+    "qid": "Q16567"
+  },
+  {
+    "id": "city-US-IN-indianapolis",
+    "name": "Indianapolis",
+    "wiki": "Indianapolis",
+    "country": "US",
+    "stateID": "US-IN",
+    "rank": 16,
+    "populationDefinition": "Indianapolis city (balance), Indiana",
+    "qid": "Q6346"
+  },
+  {
+    "id": "city-US-CA-san-francisco",
+    "name": "San Francisco",
+    "wiki": "San Francisco",
+    "country": "US",
+    "stateID": "US-CA",
+    "rank": 17,
+    "populationDefinition": "San Francisco city, California",
+    "qid": "Q62"
+  },
+  {
+    "id": "city-US-WA-seattle",
+    "name": "Seattle",
+    "wiki": "Seattle",
+    "country": "US",
+    "stateID": "US-WA",
+    "rank": 18,
+    "populationDefinition": "Seattle city, Washington",
+    "qid": "Q5083"
+  },
+  {
+    "id": "city-US-CO-denver",
+    "name": "Denver",
+    "wiki": "Denver",
+    "country": "US",
+    "stateID": "US-CO",
+    "rank": 19,
+    "populationDefinition": "Denver city, Colorado",
+    "qid": "Q16554"
+  },
+  {
+    "id": "city-US-TN-nashville",
+    "name": "Nashville",
+    "wiki": "Nashville, Tennessee",
+    "country": "US",
+    "stateID": "US-TN",
+    "rank": 20,
+    "populationDefinition": "Nashville-Davidson metropolitan government (balance), Tennessee",
+    "qid": "Q23197"
+  },
+  {
+    "id": "city-US-OK-oklahoma-city",
+    "name": "Oklahoma City",
+    "wiki": "Oklahoma City",
+    "country": "US",
+    "stateID": "US-OK",
+    "rank": 21,
+    "populationDefinition": "Oklahoma City city, Oklahoma",
+    "qid": "Q34863"
+  },
+  {
+    "id": "city-US-DC-washington",
+    "name": "Washington",
+    "wiki": "Washington, D.C.",
+    "country": "US",
+    "stateID": "US-DC",
+    "rank": 22,
+    "populationDefinition": "Washington city, District of Columbia",
+    "qid": "Q61"
+  },
+  {
+    "id": "city-US-TX-el-paso",
+    "name": "El Paso",
+    "wiki": "El Paso, Texas",
+    "country": "US",
+    "stateID": "US-TX",
+    "rank": 23,
+    "populationDefinition": "El Paso city, Texas",
+    "qid": "Q16562"
+  },
+  {
+    "id": "city-US-NV-las-vegas",
+    "name": "Las Vegas",
+    "wiki": "Las Vegas",
+    "country": "US",
+    "stateID": "US-NV",
+    "rank": 24,
+    "populationDefinition": "Las Vegas city, Nevada",
+    "qid": "Q23768"
+  },
+  {
+    "id": "city-US-MA-boston",
+    "name": "Boston",
+    "wiki": "Boston",
+    "country": "US",
+    "stateID": "US-MA",
+    "rank": 25,
+    "populationDefinition": "Boston city, Massachusetts",
+    "qid": "Q100"
+  },
+  {
+    "id": "city-US-MI-detroit",
+    "name": "Detroit",
+    "wiki": "Detroit",
+    "country": "US",
+    "stateID": "US-MI",
+    "rank": 26,
+    "populationDefinition": "Detroit city, Michigan",
+    "qid": "Q12439"
+  },
+  {
+    "id": "city-US-KY-louisville",
+    "name": "Louisville",
+    "wiki": "Louisville, Kentucky",
+    "country": "US",
+    "stateID": "US-KY",
+    "rank": 27,
+    "populationDefinition": "Louisville/Jefferson County metro government (balance), Kentucky",
+    "qid": "Q43668"
+  },
+  {
+    "id": "city-US-OR-portland",
+    "name": "Portland",
+    "wiki": "Portland, Oregon",
+    "country": "US",
+    "stateID": "US-OR",
+    "rank": 28,
+    "populationDefinition": "Portland city, Oregon",
+    "qid": "Q6106"
+  },
+  {
+    "id": "city-US-TN-memphis",
+    "name": "Memphis",
+    "wiki": "Memphis, Tennessee",
+    "country": "US",
+    "stateID": "US-TN",
+    "rank": 29,
+    "populationDefinition": "Memphis city, Tennessee",
+    "qid": "Q16563"
+  },
+  {
+    "id": "city-US-MD-baltimore",
+    "name": "Baltimore",
+    "wiki": "Baltimore",
+    "country": "US",
+    "stateID": "US-MD",
+    "rank": 30,
+    "populationDefinition": "Baltimore city, Maryland",
+    "qid": "Q5092"
+  },
+  {
+    "id": "city-US-WI-milwaukee",
+    "name": "Milwaukee",
+    "wiki": "Milwaukee",
+    "country": "US",
+    "stateID": "US-WI",
+    "rank": 31,
+    "populationDefinition": "Milwaukee city, Wisconsin",
+    "qid": "Q37836"
+  },
+  {
+    "id": "city-US-NM-albuquerque",
+    "name": "Albuquerque",
+    "wiki": "Albuquerque, New Mexico",
+    "country": "US",
+    "stateID": "US-NM",
+    "rank": 32,
+    "populationDefinition": "Albuquerque city, New Mexico",
+    "qid": "Q34804"
+  },
+  {
+    "id": "city-US-CA-fresno",
+    "name": "Fresno",
+    "wiki": "Fresno, California",
+    "country": "US",
+    "stateID": "US-CA",
+    "rank": 33,
+    "populationDefinition": "Fresno city, California",
+    "qid": "Q43301"
+  },
+  {
+    "id": "city-US-AZ-tucson",
+    "name": "Tucson",
+    "wiki": "Tucson, Arizona",
+    "country": "US",
+    "stateID": "US-AZ",
+    "rank": 34,
+    "populationDefinition": "Tucson city, Arizona",
+    "qid": "Q18575"
+  },
+  {
+    "id": "city-US-CA-sacramento",
+    "name": "Sacramento",
+    "wiki": "Sacramento, California",
+    "country": "US",
+    "stateID": "US-CA",
+    "rank": 35,
+    "populationDefinition": "Sacramento city, California",
+    "qid": "Q18013"
+  },
+  {
+    "id": "city-US-GA-atlanta",
+    "name": "Atlanta",
+    "wiki": "Atlanta",
+    "country": "US",
+    "stateID": "US-GA",
+    "rank": 36,
+    "populationDefinition": "Atlanta city, Georgia",
+    "qid": "Q23556"
+  },
+  {
+    "id": "city-US-MO-kansas-city",
+    "name": "Kansas City",
+    "wiki": "Kansas City, Missouri",
+    "country": "US",
+    "stateID": "US-MO",
+    "rank": 37,
+    "populationDefinition": "Kansas City city, Missouri",
+    "qid": "Q41819"
+  },
+  {
+    "id": "city-US-AZ-mesa",
+    "name": "Mesa",
+    "wiki": "Mesa, Arizona",
+    "country": "US",
+    "stateID": "US-AZ",
+    "rank": 38,
+    "populationDefinition": "Mesa city, Arizona",
+    "qid": "Q49261"
+  },
+  {
+    "id": "city-US-NC-raleigh",
+    "name": "Raleigh",
+    "wiki": "Raleigh, North Carolina",
+    "country": "US",
+    "stateID": "US-NC",
+    "rank": 39,
+    "populationDefinition": "Raleigh city, North Carolina",
+    "qid": "Q41087"
+  },
+  {
+    "id": "city-US-CO-colorado-springs",
+    "name": "Colorado Springs",
+    "wiki": "Colorado Springs, Colorado",
+    "country": "US",
+    "stateID": "US-CO",
+    "rank": 40,
+    "populationDefinition": "Colorado Springs city, Colorado",
+    "qid": "Q49258"
+  },
+  {
+    "id": "city-US-FL-miami",
+    "name": "Miami",
+    "wiki": "Miami",
+    "country": "US",
+    "stateID": "US-FL",
+    "rank": 41,
+    "populationDefinition": "Miami city, Florida",
+    "qid": "Q8652"
+  },
+  {
+    "id": "city-US-NE-omaha",
+    "name": "Omaha",
+    "wiki": "Omaha, Nebraska",
+    "country": "US",
+    "stateID": "US-NE",
+    "rank": 42,
+    "populationDefinition": "Omaha city, Nebraska",
+    "qid": "Q43199"
+  },
+  {
+    "id": "city-US-VA-virginia-beach",
+    "name": "Virginia Beach",
+    "wiki": "Virginia Beach, Virginia",
+    "country": "US",
+    "stateID": "US-VA",
+    "rank": 43,
+    "populationDefinition": "Virginia Beach city, Virginia",
+    "qid": "Q49259"
+  },
+  {
+    "id": "city-US-CA-long-beach",
+    "name": "Long Beach",
+    "wiki": "Long Beach, California",
+    "country": "US",
+    "stateID": "US-CA",
+    "rank": 44,
+    "populationDefinition": "Long Beach city, California",
+    "qid": "Q16739"
+  },
+  {
+    "id": "city-US-CA-oakland",
+    "name": "Oakland",
+    "wiki": "Oakland, California",
+    "country": "US",
+    "stateID": "US-CA",
+    "rank": 45,
+    "populationDefinition": "Oakland city, California",
+    "qid": "Q17042"
+  },
+  {
+    "id": "city-US-MN-minneapolis",
+    "name": "Minneapolis",
+    "wiki": "Minneapolis",
+    "country": "US",
+    "stateID": "US-MN",
+    "rank": 46,
+    "populationDefinition": "Minneapolis city, Minnesota",
+    "qid": "Q36091"
+  },
+  {
+    "id": "city-US-CA-bakersfield",
+    "name": "Bakersfield",
+    "wiki": "Bakersfield, California",
+    "country": "US",
+    "stateID": "US-CA",
+    "rank": 47,
+    "populationDefinition": "Bakersfield city, California",
+    "qid": "Q49256"
+  },
+  {
+    "id": "city-US-OK-tulsa",
+    "name": "Tulsa",
+    "wiki": "Tulsa, Oklahoma",
+    "country": "US",
+    "stateID": "US-OK",
+    "rank": 48,
+    "populationDefinition": "Tulsa city, Oklahoma",
+    "qid": "Q44989"
+  },
+  {
+    "id": "city-US-FL-tampa",
+    "name": "Tampa",
+    "wiki": "Tampa, Florida",
+    "country": "US",
+    "stateID": "US-FL",
+    "rank": 49,
+    "populationDefinition": "Tampa city, Florida",
+    "qid": "Q49255"
+  },
+  {
+    "id": "city-US-CO-aurora",
+    "name": "Aurora",
+    "wiki": "Aurora, Colorado",
+    "country": "US",
+    "stateID": "US-CO",
+    "rank": 50,
+    "populationDefinition": "Aurora city, Colorado",
+    "qid": "Q49246"
+  },
+  {
+    "id": "city-DE-BE-berlin",
+    "name": "Berlin",
+    "wiki": "Berlin",
+    "country": "DE",
+    "stateID": "DE-BE",
+    "rank": 1,
+    "populationDefinition": "Municipality within administrative boundaries",
+    "qid": "Q64"
+  },
+  {
+    "id": "city-DE-HH-hamburg",
+    "name": "Hamburg",
+    "wiki": "Hamburg",
+    "country": "DE",
+    "stateID": "DE-HH",
+    "rank": 2,
+    "populationDefinition": "Municipality within administrative boundaries",
+    "qid": "Q1055"
+  },
+  {
+    "id": "city-DE-BY-munich",
+    "name": "München",
+    "wiki": "Munich",
+    "country": "DE",
+    "stateID": "DE-BY",
+    "rank": 3,
+    "populationDefinition": "Municipality within administrative boundaries",
+    "qid": "Q1726"
+  },
+  {
+    "id": "city-DE-NW-cologne",
+    "name": "Köln",
+    "wiki": "Cologne",
+    "country": "DE",
+    "stateID": "DE-NW",
+    "rank": 4,
+    "populationDefinition": "Municipality within administrative boundaries",
+    "qid": "Q365"
+  },
+  {
+    "id": "city-DE-HE-frankfurt",
+    "name": "Frankfurt am Main",
+    "wiki": "Frankfurt",
+    "country": "DE",
+    "stateID": "DE-HE",
+    "rank": 5,
+    "populationDefinition": "Municipality within administrative boundaries",
+    "qid": "Q1794"
+  },
+  {
+    "id": "city-DE-NW-düsseldorf",
+    "name": "Düsseldorf",
+    "wiki": "Düsseldorf",
+    "country": "DE",
+    "stateID": "DE-NW",
+    "rank": 6,
+    "populationDefinition": "Municipality within administrative boundaries",
+    "qid": "Q1718"
+  },
+  {
+    "id": "city-DE-BW-stuttgart",
+    "name": "Stuttgart",
+    "wiki": "Stuttgart",
+    "country": "DE",
+    "stateID": "DE-BW",
+    "rank": 7,
+    "populationDefinition": "Municipality within administrative boundaries",
+    "qid": "Q1022"
+  },
+  {
+    "id": "city-DE-SN-leipzig",
+    "name": "Leipzig",
+    "wiki": "Leipzig",
+    "country": "DE",
+    "stateID": "DE-SN",
+    "rank": 8,
+    "populationDefinition": "Municipality within administrative boundaries",
+    "qid": "Q2079"
+  },
+  {
+    "id": "city-DE-NW-dortmund",
+    "name": "Dortmund",
+    "wiki": "Dortmund",
+    "country": "DE",
+    "stateID": "DE-NW",
+    "rank": 9,
+    "populationDefinition": "Municipality within administrative boundaries",
+    "qid": "Q1295"
+  },
+  {
+    "id": "city-DE-HB-bremen",
+    "name": "Bremen",
+    "wiki": "Bremen",
+    "country": "DE",
+    "stateID": "DE-HB",
+    "rank": 10,
+    "populationDefinition": "Municipality within administrative boundaries",
+    "qid": "Q24879"
+  }
+]

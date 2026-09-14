@@ -14,14 +14,14 @@ US_STATES = set('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA 
                 'WA WV WI WY'.split())
 GERMAN_STATES = set('BB BE BW BY HB HE HH MV NI NW RP SH SL SN ST TH'.split())
 EXPECTED_COUNTS = {
-    'us-states': 50, 'germany-states': 16, 'nyc-boroughs': 5, 'nyc-neighborhoods': 197,
+    'nyc-local-neighborhoods': 266, 'us-states': 50, 'germany-states': 16, 'nyc-boroughs': 5, 'nyc-neighborhoods': 197,
     'world-countries': 204, 'africa-countries': 53, 'asia-countries': 48,
     'europe-countries': 48, 'north-america-countries': 26,
     'south-america-countries': 12, 'oceania-countries': 14,
 }
-GEOMETRY_COUNTS = {'us-states': 51, 'germany-states': 16, 'nyc-boroughs': 5,
+GEOMETRY_COUNTS = {'nyc-local-neighborhoods': 266, 'us-states': 51, 'germany-states': 16, 'nyc-boroughs': 5,
                    'nyc-neighborhoods': 262, 'world-countries': 242}
-SOURCE_IDS = {'natural-earth-admin1', 'natural-earth-countries', 'nyc-boroughs', 'nyc-nta2020'}
+SOURCE_IDS = {'nyc-pediacities', 'natural-earth-admin1', 'natural-earth-countries', 'nyc-boroughs', 'nyc-nta2020'}
 
 
 def check(condition, message):
@@ -165,8 +165,8 @@ def main():
         check(len(matches) == 1 and matches[0]['properties']['borough'] == 'Manhattan',
               f'Missing requested neighborhood: {name}')
         check(shape(matches[0]['geometry']).is_valid, f'Invalid requested neighborhood: {name}')
-    print('PASS: 11 active map packs, 576 valid area features, 769 city points, and source hashes.')
-    print('CANDIDATE ONLY: 266 finer NYC areas; 2 known invalid geometries; license unverified.')
+    print('PASS: 12 active map packs, 842 valid area features, 769 legacy city points, and source hashes.')
+    print('Original NYC snapshot retained; two geometries repaired only in the active learning pack.')
 
 
 if __name__ == '__main__':

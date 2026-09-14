@@ -59,7 +59,7 @@ struct MapViewport: Equatable {
     }
     mutating func zoom(to newScale: CGFloat, anchor: CGPoint, size: CGSize) {
         let position = map(anchor, size: size)
-        scale = min(8, max(1, newScale))
+        scale = min(32, max(1, newScale))
         offset = CGSize(width: anchor.x - size.width / 2 - (position.x - size.width / 2) * scale,
                         height: anchor.y - size.height / 2 - (position.y - size.height / 2) * scale)
         if scale == 1 { offset = .zero }
@@ -191,6 +191,18 @@ struct MapLayout {
         let point = viewport.map(screen, size: size)
         guard let shape = shapes.first(where: { $0.path.contains(point, using: .evenOdd) }) else { return nil }
         return regions[shape.region].coordinate(point)
+    }
+
+    // Point questions accept coastlines and water within a geographic inset.
+    // Gaps between the differently projected US insets have no coordinate.
+    func locationPin(_ screen: CGPoint, viewport: MapViewport) -> MapPin? {
+        let point = viewport.map(screen, size: size)
+        guard let index = regions.firstIndex(where: { $0.frame.contains(point) }),
+              let shape = shapes.first(where: { $0.region == index }) else { return nil }
+        let coordinate = regions[index].coordinate(point)
+        guard coordinate.latitude.isFinite, coordinate.longitude.isFinite,
+              (-90...90).contains(coordinate.latitude), (-180...180).contains(coordinate.longitude) else { return nil }
+        return MapPin(coordinate: coordinate, regionID: shape.id)
     }
 
     private static func signedArea(_ ring: [CGPoint]) -> CGFloat {

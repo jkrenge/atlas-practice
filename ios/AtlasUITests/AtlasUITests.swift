@@ -15,7 +15,7 @@ final class AtlasUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["questionPrompt"].waitForExistence(timeout: 5))
     }
     func tap(_ element: XCUIElement) {
-        for _ in 0..<5 where !element.isHittable {
+        for _ in 0..<9 where !element.isHittable {
             // Scroll in the page margin; dragging on the map pans the map.
             let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.98, dy: 0.8))
             start.press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.98, dy: 0.3)))
@@ -101,4 +101,78 @@ final class AtlasUITests: XCTestCase {
         waitForExpectations(timeout: 5)
         XCTAssertEqual(selected.label, "Bayern")
     }
+    func testCapitalsFlagsAndNicknames() {
+        for mode in ["capital", "flag", "nickname"] {
+            if mode != "capital" { app.terminate(); app.launch() }
+            open("us-states", mode: mode)
+            if mode == "capital" { XCTAssertTrue(app.buttons["choice-US-WA"].label.contains("Olympia")) }
+            if mode == "flag" { XCTAssertTrue(app.images["quiz-flag"].exists) }
+            if mode == "nickname" { XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "Evergreen")).firstMatch.exists) }
+            tap(app.buttons["choice-US-WA"])
+            XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("That's right."))
+        }
+    }
+    func testCityPopulationModeUsesDatedFigures() {
+        open("us-states", mode: "population")
+        XCTAssertEqual(app.staticTexts["questionPrompt"].label, "How many people live in New York?")
+        XCTAssertTrue(app.buttons["choice-city-US-NY-new-york"].label.contains("8,584,629"))
+        tap(app.buttons["choice-city-US-NY-new-york"])
+        XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("2025-07-01"))
+    }
+    func testLandmarkLocationPinAndDistance() {
+        open("us-states", mode: "landmarkLocation")
+        XCTAssertEqual(app.staticTexts["questionPrompt"].label, "Locate Statue of Liberty")
+        XCTAssertFalse(app.buttons["check-location"].isEnabled)
+        let map = app.images["geographicMap"]
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.50, dy: 0.40)).tap()
+        XCTAssertTrue(app.buttons["check-location"].isEnabled)
+        tap(app.buttons["check-location"])
+        XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("km from Statue of Liberty"))
+        tap(app.buttons["continue-session"])
+        XCTAssertFalse(app.buttons["check-location"].isEnabled)
+    }
+    func testCoordinateEntryAndCapitalLocation() {
+        open("us-states", mode: "capitalLocation")
+        XCTAssertEqual(app.staticTexts["questionPrompt"].label, "Locate Olympia")
+        tap(app.buttons["Enter coordinates"])
+        app.textFields["latitude-input"].tap()
+        app.textFields["latitude-input"].typeText("47.04")
+        app.textFields["longitude-input"].tap()
+        app.textFields["longitude-input"].typeText("-122.90")
+        tap(app.buttons["place-coordinate-pin"])
+        tap(app.buttons["check-location"])
+        XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("That's right."))
+    }
+    func testGermanCityLocationsAndReferenceData() {
+        open("germany-states", mode: "cityLocation")
+        XCTAssertEqual(app.staticTexts["questionPrompt"].label, "Locate Berlin")
+        tap(app.buttons["show-answer"])
+        XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("Berlin"))
+        app.terminate(); app.launch()
+        tap(app.buttons["map-germany-states"])
+        tap(app.buttons["browse-facts"])
+        tap(app.buttons["Cities"])
+        XCTAssertTrue(app.staticTexts["3,685,265 residents"].exists || app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "3,685,265")).firstMatch.exists)
+    }
+    func testNYCNeighborhoodSelection() {
+        open("nyc-local-neighborhoods", mode: "find")
+        tap(app.buttons["Use area list"])
+        let search = app.searchFields.firstMatch
+        search.tap(); search.typeText("Chinatown")
+        tap(app.buttons["area-http://nyc.pediacities.com/Resource/Neighborhood/Chinatown"])
+        XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.exists)
+    }
+    func testTimerExpiresAndLocksTheAnswer() {
+        app.terminate()
+        app.launchArguments += ["--timer-test"]
+        app.launch()
+        open("us-states", mode: "capital")
+        let feedback = app.staticTexts["answerFeedback"].firstMatch
+        XCTAssertTrue(feedback.waitForExistence(timeout: 8))
+        XCTAssertTrue(feedback.label.contains("Time’s up."))
+        XCTAssertFalse(app.buttons["choice-US-WA"].exists)
+        tap(app.buttons["continue-session"])
+        XCTAssertTrue(app.staticTexts["question-timer"].exists)
+    }
+
 }

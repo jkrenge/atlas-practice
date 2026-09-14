@@ -2,11 +2,65 @@ import Foundation
 import Observation
 
 enum PracticeMode: String, Codable, CaseIterable, Identifiable {
-    case find, name
+    case find, name, capital, flag, nickname, capitalLocation, cityLocation, population, landmarkLocation
     var id: String { rawValue }
-    var title: String { self == .find ? "Find the area" : "Name the area" }
-    var instruction: String { self == .find ? "Read a name. Find its place on the map." : "Look at the highlighted area. Choose its name." }
-    var symbol: String { self == .find ? "hand.tap" : "text.bubble" }
+    var title: String {
+        switch self {
+        case .find: "Find the area"
+        case .name: "Name the area"
+        case .capital: "State capitals"
+        case .flag: "State flags"
+        case .nickname: "Nicknames & slogans"
+        case .capitalLocation: "Locate capitals"
+        case .cityLocation: "Locate cities"
+        case .population: "City populations"
+        case .landmarkLocation: "Locate landmarks"
+        }
+    }
+    var instruction: String {
+        switch self {
+        case .find: "Read a name. Find its place on the map."
+        case .name: "Look at the highlighted area. Choose its name."
+        case .capital: "Match each state to its capital."
+        case .flag: "Recognize the state from its flag."
+        case .nickname: "Connect a name or campaign slogan to a state."
+        case .capitalLocation: "Drop a pin at a state capital."
+        case .cityLocation: "Find the largest cities on the map."
+        case .population: "Choose a city's population from dated official figures."
+        case .landmarkLocation: "Place famous sights on the map."
+        }
+    }
+    var symbol: String {
+        switch self {
+        case .find: "hand.tap"
+        case .name: "text.bubble"
+        case .capital: "building.columns"
+        case .flag: "flag"
+        case .nickname: "quote.bubble"
+        case .capitalLocation, .cityLocation: "mappin.and.ellipse"
+        case .population: "person.3"
+        case .landmarkLocation: "binoculars"
+        }
+    }
+    var isLocation: Bool { [.capitalLocation, .cityLocation, .landmarkLocation].contains(self) }
+    var usesMap: Bool { self == .find || self == .name || isLocation }
+    static func available(in pack: MapPack) -> [Self] {
+        ["us-states", "germany-states"].contains(pack.id) ? allCases : [.find, .name]
+    }
+}
+
+struct QuestionTimer {
+    private(set) var remaining: TimeInterval
+    private var lastTick: TimeInterval?
+    var expired: Bool { remaining <= 0 }
+    init(seconds: Int) { remaining = Double(seconds) }
+    mutating func resume(now: TimeInterval) { lastTick = now }
+    mutating func tick(now: TimeInterval) {
+        guard let lastTick else { return }
+        remaining = max(0, remaining - max(0, now - lastTick))
+        self.lastTick = now
+    }
+    mutating func pause(now: TimeInterval) { tick(now: now); lastTick = nil }
 }
 
 struct PracticeSession {
@@ -19,6 +73,9 @@ struct PracticeSession {
     struct Answer {
         let selected: Area?
         let correct: Bool
+        var guess: MapPin? = nil
+        var distanceKM: Double? = nil
+        var timedOut = false
     }
     private(set) var questions: [Question]
     private(set) var index = 0
@@ -28,12 +85,14 @@ struct PracticeSession {
     private(set) var missed: [Area] = []
     let mode: PracticeMode
     let primaryCount: Int
+    let secondsAllowed: Int
     var isComplete: Bool { index >= questions.count }
     var current: Question? { isComplete ? nil : questions[index] }
     var answeredCount: Int { index + (answer == nil ? 0 : 1) }
 
-    init(areas: [Area], mode: PracticeMode, count: Int = 6, ordered: Bool = false) {
+    init(areas: [Area], mode: PracticeMode, count: Int = 6, ordered: Bool = false, secondsAllowed: Int = 0) {
         self.mode = mode
+        self.secondsAllowed = secondsAllowed
         let pool = ordered ? areas : areas.shuffled()
         primaryCount = min(count, pool.count)
         questions = pool.prefix(primaryCount).map { area in
@@ -44,12 +103,23 @@ struct PracticeSession {
     }
 
     mutating func submit(_ selected: Area?) {
+        guard let question = current else { return }
+        record(Answer(selected: selected, correct: selected == question.area))
+    }
+
+    mutating func submitLocation(_ guess: MapPin, target: MapPin, toleranceKM: Double) {
+        let distance = guess.coordinate.distanceKM(to: target.coordinate)
+        record(Answer(selected: nil, correct: distance <= toleranceKM, guess: guess, distanceKM: distance))
+    }
+
+    mutating func expire() { record(Answer(selected: nil, correct: false, timedOut: true)) }
+
+    private mutating func record(_ result: Answer) {
         guard let question = current, answer == nil else { return }
-        let correct = selected == question.area
-        answer = Answer(selected: selected, correct: correct)
+        answer = result
         if question.isReview {
-            if correct { reviewedCorrect += 1 }
-        } else if correct {
+            if result.correct { reviewedCorrect += 1 }
+        } else if result.correct {
             firstAttemptCorrect += 1
         } else {
             missed.append(question.area)
@@ -84,12 +154,15 @@ final class ProgressStore {
         records = defaults.data(forKey: "practiceProgress.v1")
             .flatMap { try? JSONDecoder().decode([String: PracticeRecord].self, from: $0) } ?? [:]
     }
-    func record(for map: String, mode: PracticeMode) -> PracticeRecord {
-        records[map + "." + mode.rawValue] ?? PracticeRecord()
+    func record(for map: String, mode: PracticeMode, secondsAllowed: Int = 0) -> PracticeRecord {
+        records[key(map, mode, secondsAllowed)] ?? PracticeRecord()
+    }
+    private func key(_ map: String, _ mode: PracticeMode, _ seconds: Int) -> String {
+        map + "." + mode.rawValue + (seconds == 0 ? "" : ".\(seconds)s")
     }
     func save(_ session: PracticeSession, map: String) {
         guard session.isComplete else { return }
-        let key = map + "." + session.mode.rawValue
+        let key = key(map, session.mode, session.secondsAllowed)
         var record = records[key] ?? PracticeRecord()
         record.sessions += 1
         record.firstCorrect += session.firstAttemptCorrect

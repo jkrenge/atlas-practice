@@ -5,7 +5,7 @@ import CoreGraphics
 
 @Test func allCatalogPacksResolveAndDecode() throws {
     let library = try MapLibrary()
-    #expect(library.catalog.maps.count == 11)
+    #expect(library.catalog.maps.count == 12)
     for entry in library.catalog.maps {
         let pack = try library.load(entry.id)
         #expect(pack.areas.count == entry.areaCount)
@@ -151,4 +151,150 @@ import CoreGraphics
     #expect(restored.record(for: "us-states", mode: .find).firstCorrect == 1)
     #expect(restored.record(for: "us-states", mode: .name).sessions == 0)
     #expect(restored.record(for: "germany-states", mode: .find).sessions == 0)
+}
+
+@Test func learningContentIsCompleteAndFlagsDecode() throws {
+    let content = try LearningContent.load()
+    let library = try MapLibrary()
+    for (id, count) in [("us-states", 50), ("germany-states", 16)] {
+        let pack = try library.load(id)
+        let states = content.states(in: pack)
+        #expect(states.count == count)
+        #expect(Set(states.map(\.id)) == Set(pack.areas.map(\.id)))
+        for state in states {
+            #expect(!state.capital.isEmpty && !state.nickname.isEmpty && !state.flagCredit.isEmpty)
+            let image = try #require(LearningContent.flag(state))
+            #expect(image.size.width >= 300 && image.size.height >= 100)
+        }
+    }
+    #expect(content.state("US-CA")?.capital == "Sacramento")
+    #expect(content.state("DE-BY")?.capital == "München")
+    #expect(content.state("DE-BE")?.capital == "Berlin")
+    #expect(content.state("DE-HH")?.capital == "Hamburg")
+    #expect(content.state("US-MN")?.flagLicense.isEmpty == false)
+}
+
+@Test func cityPopulationsHaveConsistentDatedRankings() throws {
+    let content = try LearningContent.load()
+    for (country, count, date) in [("US", 50, "2025-07-01"), ("DE", 10, "2024-12-31")] {
+        let cities = content.cities.filter { $0.country == country }
+        #expect(cities.count == count)
+        #expect(cities.map(\.rank) == Array(1...count).map(Optional.some))
+        #expect(cities.allSatisfy { $0.populationDate == date && ($0.population ?? 0) > 0 })
+        #expect(zip(cities, cities.dropFirst()).allSatisfy { $0.population! > $1.population! })
+    }
+    #expect(content.cities.first?.population == 8_584_629)
+    #expect(content.cities.first { $0.name == "Berlin" }?.population == 3_685_265)
+    #expect(content.landmarks.filter { $0.country == "US" }.count == 50)
+    #expect(content.landmarks.filter { $0.country == "DE" }.count == 20)
+    #expect(Set((content.cities + content.landmarks).map(\.id)).count == 130)
+}
+
+@Test func everyModeHasUsableQuestionsAndUniqueAnswerLabels() throws {
+    let content = try LearningContent.load()
+    for id in ["us-states", "germany-states", "nyc-local-neighborhoods"] {
+        let pack = try MapLibrary().load(id)
+        for mode in PracticeMode.available(in: pack) {
+            let areas = content.areas(in: pack, mode: mode)
+            #expect(!areas.isEmpty)
+            let session = PracticeSession(areas: areas, mode: mode)
+            for question in session.questions {
+                #expect(question.choices.contains(question.area))
+                let labels = question.choices.map { content.answerLabel($0, mode: mode) }
+                #expect(Set(labels).count == labels.count)
+                #expect(!content.prompt(question.area, mode: mode, areaType: pack.manifest.areaType).isEmpty)
+            }
+        }
+    }
+}
+
+@Test func allLearningLocationsRoundTripThroughCorrectInsets() throws {
+    let content = try LearningContent.load()
+    for id in ["us-states", "germany-states"] {
+        let pack = try MapLibrary().load(id)
+        for size in [CGSize(width: 360, height: 360), CGSize(width: 780, height: 320)] {
+            let layout = MapLayout(pack: pack, size: size)
+            for mode in [PracticeMode.cityLocation, .capitalLocation, .landmarkLocation] {
+                for area in content.areas(in: pack, mode: mode) {
+                    let target = try #require(content.location(area, mode: mode))
+                    let viewport = MapViewport(scale: 3, offset: CGSize(width: 12, height: -31))
+                    let screen = try #require(layout.screen(target.coordinate, areaID: target.regionID, viewport: viewport))
+                    let result = try #require(layout.locationPin(screen, viewport: viewport), "Cannot place \(area.name)")
+                    #expect(result.coordinate.distanceKM(to: target.coordinate) < 0.001)
+                }
+            }
+        }
+    }
+}
+
+@Test func pointQuestionsAcceptWaterButRejectInsetGaps() throws {
+    let pack = try MapLibrary().load("us-states")
+    let layout = MapLayout(pack: pack, size: CGSize(width: 400, height: 400))
+    let water = Coordinate(-74.5, 37)
+    let point = try #require(layout.screen(water, areaID: "US-NY", viewport: MapViewport()))
+    #expect(layout.coordinate(point, viewport: MapViewport()) == nil)
+    #expect(layout.locationPin(point, viewport: MapViewport()) != nil)
+    #expect(layout.locationPin(CGPoint(x: 220, y: 301), viewport: MapViewport()) == nil)
+}
+
+@Test func locationDistanceUsesEarthCoordinatesAndRecordsOnlyOnce() throws {
+    #expect(abs(Coordinate(0, 0).distanceKM(to: Coordinate(1, 0)) - 111.195) < 0.01)
+    #expect(Coordinate(179.9, 0).distanceKM(to: Coordinate(-179.9, 0)) < 23)
+    #expect(Coordinate(-74, 40).distanceKM(to: Coordinate(13, 52)) > 6000)
+    let area = Area(id: "statue", name: "Statue of Liberty")
+    let target = MapPin(coordinate: Coordinate(-74.04443, 40.68921), regionID: "US-NY")
+    var session = PracticeSession(areas: [area], mode: .landmarkLocation)
+    session.submitLocation(target, target: target, toleranceKM: 50)
+    session.expire()
+    #expect(session.answer?.correct == true)
+    #expect(session.answer?.distanceKM == 0)
+    #expect(session.firstAttemptCorrect == 1)
+    var missed = PracticeSession(areas: [area], mode: .landmarkLocation)
+    missed.submitLocation(MapPin(coordinate: Coordinate(-150, 64), regionID: "US-AK"), target: target, toleranceKM: 50)
+    #expect(missed.answer?.correct == false)
+    #expect(missed.questions.count == 2)
+}
+
+@Test func timerPausesResumesAndExpiresWithoutDoubleScoring() {
+    var timer = QuestionTimer(seconds: 30)
+    timer.resume(now: 100)
+    timer.tick(now: 108)
+    #expect(timer.remaining == 22)
+    timer.pause(now: 110)
+    timer.tick(now: 500)
+    #expect(timer.remaining == 20)
+    timer.resume(now: 500)
+    timer.tick(now: 519)
+    #expect(!timer.expired && timer.remaining == 1)
+    timer.tick(now: 530)
+    #expect(timer.expired && timer.remaining == 0)
+    let area = Area(id: "a", name: "A")
+    var session = PracticeSession(areas: [area], mode: .capital, secondsAllowed: 30)
+    session.expire(); session.expire(); session.submit(area)
+    #expect(session.questions.count == 2 && session.firstAttemptCorrect == 0)
+    #expect(session.answer?.timedOut == true)
+    session.advance(); session.expire(); session.advance()
+    #expect(session.isComplete && session.questions.count == 2)
+}
+
+@MainActor
+@Test func timerSettingsKeepSeparateProgress() throws {
+    let suite = "AtlasTimerTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    let store = ProgressStore(defaults: defaults)
+    let area = Area(id: "US-AL", name: "Alabama")
+    var session = PracticeSession(areas: [area], mode: .capital, secondsAllowed: 30)
+    session.submit(area); session.advance(); store.save(session, map: "us-states")
+    #expect(store.record(for: "us-states", mode: .capital, secondsAllowed: 30).sessions == 1)
+    #expect(store.record(for: "us-states", mode: .capital).sessions == 0)
+    #expect(store.record(for: "us-states", mode: .flag, secondsAllowed: 30).sessions == 0)
+}
+
+@Test func requestedNYCNeighborhoodsArePlayable() throws {
+    let pack = try MapLibrary().load("nyc-local-neighborhoods")
+    #expect(pack.areas.count == 266)
+    for name in ["Chinatown", "Nolita", "Tribeca", "Financial District", "Country Club", "Marine Park"] {
+        #expect(pack.areas.contains { $0.name == name })
+    }
 }

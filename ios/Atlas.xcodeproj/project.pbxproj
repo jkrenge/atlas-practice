@@ -14,8 +14,11 @@
 		898743BBB9B292EBE47E0478 /* AtlasUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DF13257DDCAA13F34C37FA /* AtlasUITests.swift */; };
 		8D28FE030C7EE76B688E65BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA986E23356244005C7DA505 /* Assets.xcassets */; };
 		97F64F47C99747F2D425C52B /* AtlasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B039968FC134F8A1AC6E2337 /* AtlasApp.swift */; };
+		9FFF41BB7E0FF97B6C9510AE /* content in Resources */ = {isa = PBXBuildFile; fileRef = 05320D814ADF73716AFE4B01 /* content */; };
 		B5FF92B1711B21EC278F86DC /* AtlasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7805FF9C57EBD9F5977D7D06 /* AtlasTests.swift */; };
+		E1073772EBD22297DAD663A2 /* LearningContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72F71F27F06A67E960EA21D /* LearningContent.swift */; };
 		E3DEEE9A1D665CC9E7870123 /* MapGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE7CF3FE9829B3C9A291B84 /* MapGeometry.swift */; };
+		E73663AB86D235E915DC254F /* ReferenceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A375F4398251EF76ECF46 /* ReferenceScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		05320D814ADF73716AFE4B01 /* content */ = {isa = PBXFileReference; lastKnownFileType = folder; name = content; path = ../content; sourceTree = SOURCE_ROOT; };
 		413A56C9FFE04C7BBD65B964 /* Atlas.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CAFA8A4B31EB0A34156C781 /* AtlasTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AtlasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7805FF9C57EBD9F5977D7D06 /* AtlasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasTests.swift; sourceTree = "<group>"; };
@@ -47,7 +51,9 @@
 		B039968FC134F8A1AC6E2337 /* AtlasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasApp.swift; sourceTree = "<group>"; };
 		B42BE47194F7D61D5BF2ED0D /* maps */ = {isa = PBXFileReference; lastKnownFileType = folder; name = maps; path = ../maps; sourceTree = SOURCE_ROOT; };
 		D22F876F1DE9D1ABBCA827F0 /* AtlasUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AtlasUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD1A375F4398251EF76ECF46 /* ReferenceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceScreen.swift; sourceTree = "<group>"; };
 		EAE29AF65D993E2F58BC602F /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		F72F71F27F06A67E960EA21D /* LearningContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningContent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -72,10 +78,12 @@
 			children = (
 				AA986E23356244005C7DA505 /* Assets.xcassets */,
 				B039968FC134F8A1AC6E2337 /* AtlasApp.swift */,
+				F72F71F27F06A67E960EA21D /* LearningContent.swift */,
 				8D412A935C90EEBEB6BB11A2 /* MapData.swift */,
 				7FE7CF3FE9829B3C9A291B84 /* MapGeometry.swift */,
 				EAE29AF65D993E2F58BC602F /* MapView.swift */,
 				812E06878A3ADF78709117E4 /* PracticeSession.swift */,
+				DD1A375F4398251EF76ECF46 /* ReferenceScreen.swift */,
 			);
 			path = Atlas;
 			sourceTree = "<group>";
@@ -104,6 +112,7 @@
 		BDF4A770C51A9F9223F8A9A7 /* geoguessr-ios-app */ = {
 			isa = PBXGroup;
 			children = (
+				05320D814ADF73716AFE4B01 /* content */,
 				B42BE47194F7D61D5BF2ED0D /* maps */,
 			);
 			name = "geoguessr-ios-app";
@@ -208,6 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D28FE030C7EE76B688E65BB /* Assets.xcassets in Resources */,
+				9FFF41BB7E0FF97B6C9510AE /* content in Resources */,
 				157509FA91D342489E9018B2 /* maps in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -220,10 +230,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				97F64F47C99747F2D425C52B /* AtlasApp.swift in Sources */,
+				E1073772EBD22297DAD663A2 /* LearningContent.swift in Sources */,
 				8070BFC00D3B1D9CADF33CDB /* MapData.swift in Sources */,
 				E3DEEE9A1D665CC9E7870123 /* MapGeometry.swift in Sources */,
 				07D5BAA416905911E522C297 /* MapView.swift in Sources */,
 				4D6903CE28043A76B1A94CA5 /* PracticeSession.swift in Sources */,
+				E73663AB86D235E915DC254F /* ReferenceScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

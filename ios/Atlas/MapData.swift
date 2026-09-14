@@ -26,7 +26,7 @@ struct MapManifest: Decodable {
     let areas: [Area]
 }
 
-struct Coordinate: Equatable {
+struct Coordinate: Equatable, Decodable {
     let longitude: Double
     let latitude: Double
     init(_ longitude: Double, _ latitude: Double) {
@@ -89,7 +89,7 @@ enum MapLoadError: LocalizedError {
 struct MapLibrary {
     let root: URL
     let catalog: MapCatalog
-    static let starterIDs = ["us-states", "germany-states", "nyc-boroughs"]
+    static let starterIDs = ["us-states", "germany-states", "nyc-boroughs", "nyc-local-neighborhoods"]
 
     init(bundle: Bundle = .main) throws {
         guard let root = bundle.resourceURL?.appendingPathComponent("maps", isDirectory: true) else {

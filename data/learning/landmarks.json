@@ -1,0 +1,632 @@
+[
+  {
+    "id": "landmark-US-NY-1",
+    "name": "Statue of Liberty",
+    "wiki": "Statue of Liberty",
+    "country": "US",
+    "stateID": "US-NY",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q9202"
+  },
+  {
+    "id": "landmark-US-PA-2",
+    "name": "Liberty Bell",
+    "wiki": "Liberty Bell",
+    "country": "US",
+    "stateID": "US-PA",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q390306"
+  },
+  {
+    "id": "landmark-US-SD-3",
+    "name": "Mount Rushmore",
+    "wiki": "Mount Rushmore",
+    "country": "US",
+    "stateID": "US-SD",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q83497"
+  },
+  {
+    "id": "landmark-US-CA-4",
+    "name": "Golden Gate Bridge",
+    "wiki": "Golden Gate Bridge",
+    "country": "US",
+    "stateID": "US-CA",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q44440"
+  },
+  {
+    "id": "landmark-US-AZ-5",
+    "name": "Grand Canyon — Mather Point",
+    "wiki": "Mather Point",
+    "country": "US",
+    "stateID": "US-AZ",
+    "pointDefinition": "Mather Point viewpoint on the South Rim",
+    "qid": "Q49469591"
+  },
+  {
+    "id": "landmark-US-WY-6",
+    "name": "Old Faithful",
+    "wiki": "Old Faithful",
+    "country": "US",
+    "stateID": "US-WY",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q858794"
+  },
+  {
+    "id": "landmark-US-CA-7",
+    "name": "Half Dome",
+    "wiki": "Half Dome",
+    "country": "US",
+    "stateID": "US-CA",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q925252"
+  },
+  {
+    "id": "landmark-US-DC-8",
+    "name": "Lincoln Memorial",
+    "wiki": "Lincoln Memorial",
+    "country": "US",
+    "stateID": "US-DC",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q213559"
+  },
+  {
+    "id": "landmark-US-DC-9",
+    "name": "Washington Monument",
+    "wiki": "Washington Monument",
+    "country": "US",
+    "stateID": "US-DC",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q178114"
+  },
+  {
+    "id": "landmark-US-DC-10",
+    "name": "United States Capitol",
+    "wiki": "United States Capitol",
+    "country": "US",
+    "stateID": "US-DC",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q54109"
+  },
+  {
+    "id": "landmark-US-DC-11",
+    "name": "White House",
+    "wiki": "White House",
+    "country": "US",
+    "stateID": "US-DC",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q35525"
+  },
+  {
+    "id": "landmark-US-NY-12",
+    "name": "Empire State Building",
+    "wiki": "Empire State Building",
+    "country": "US",
+    "stateID": "US-NY",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q9188"
+  },
+  {
+    "id": "landmark-US-NY-13",
+    "name": "Brooklyn Bridge",
+    "wiki": "Brooklyn Bridge",
+    "country": "US",
+    "stateID": "US-NY",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q125006"
+  },
+  {
+    "id": "landmark-US-NY-14",
+    "name": "Times Square",
+    "wiki": "Times Square",
+    "country": "US",
+    "stateID": "US-NY",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q11259"
+  },
+  {
+    "id": "landmark-US-NY-15",
+    "name": "Bethesda Terrace and Fountain",
+    "wiki": "Bethesda Terrace and Fountain",
+    "country": "US",
+    "stateID": "US-NY",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q532029"
+  },
+  {
+    "id": "landmark-US-MO-16",
+    "name": "Gateway Arch",
+    "wiki": "Gateway Arch",
+    "country": "US",
+    "stateID": "US-MO",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q2027162"
+  },
+  {
+    "id": "landmark-US-WA-17",
+    "name": "Space Needle",
+    "wiki": "Space Needle",
+    "country": "US",
+    "stateID": "US-WA",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q5317"
+  },
+  {
+    "id": "landmark-US-NV-18",
+    "name": "Hoover Dam",
+    "wiki": "Hoover Dam",
+    "country": "US",
+    "stateID": "US-NV",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q172822"
+  },
+  {
+    "id": "landmark-US-CA-19",
+    "name": "Hollywood Sign",
+    "wiki": "Hollywood Sign",
+    "country": "US",
+    "stateID": "US-CA",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q180376"
+  },
+  {
+    "id": "landmark-US-CA-20",
+    "name": "Alcatraz Island",
+    "wiki": "Alcatraz Island",
+    "country": "US",
+    "stateID": "US-CA",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q131354"
+  },
+  {
+    "id": "landmark-US-PA-21",
+    "name": "Independence Hall",
+    "wiki": "Independence Hall",
+    "country": "US",
+    "stateID": "US-PA",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q390028"
+  },
+  {
+    "id": "landmark-US-SC-22",
+    "name": "Fort Sumter",
+    "wiki": "Fort Sumter",
+    "country": "US",
+    "stateID": "US-SC",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q737517"
+  },
+  {
+    "id": "landmark-US-FL-23",
+    "name": "Castillo de San Marcos",
+    "wiki": "Castillo de San Marcos",
+    "country": "US",
+    "stateID": "US-FL",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q101094405"
+  },
+  {
+    "id": "landmark-US-FL-24",
+    "name": "Kennedy Space Center Visitor Complex",
+    "wiki": "Kennedy Space Center Visitor Complex",
+    "country": "US",
+    "stateID": "US-FL",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q6389687"
+  },
+  {
+    "id": "landmark-US-FL-25",
+    "name": "Magic Kingdom",
+    "wiki": "Magic Kingdom",
+    "country": "US",
+    "stateID": "US-FL",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q1324340"
+  },
+  {
+    "id": "landmark-US-LA-26",
+    "name": "Jackson Square (New Orleans)",
+    "wiki": "Jackson Square (New Orleans)",
+    "country": "US",
+    "stateID": "US-LA",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q3157436"
+  },
+  {
+    "id": "landmark-US-TN-27",
+    "name": "Graceland",
+    "wiki": "Graceland",
+    "country": "US",
+    "stateID": "US-TN",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q545360"
+  },
+  {
+    "id": "landmark-US-TN-28",
+    "name": "Parthenon (Nashville)",
+    "wiki": "Parthenon (Nashville)",
+    "country": "US",
+    "stateID": "US-TN",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q1467467"
+  },
+  {
+    "id": "landmark-US-IL-29",
+    "name": "Cloud Gate",
+    "wiki": "Cloud Gate",
+    "country": "US",
+    "stateID": "US-IL",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q589099"
+  },
+  {
+    "id": "landmark-US-IL-30",
+    "name": "Willis Tower",
+    "wiki": "Willis Tower",
+    "country": "US",
+    "stateID": "US-IL",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q29294"
+  },
+  {
+    "id": "landmark-US-MI-31",
+    "name": "The Henry Ford",
+    "wiki": "The Henry Ford",
+    "country": "US",
+    "stateID": "US-MI",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q3521242"
+  },
+  {
+    "id": "landmark-US-OH-32",
+    "name": "Rock and Roll Hall of Fame",
+    "wiki": "Rock and Roll Hall of Fame",
+    "country": "US",
+    "stateID": "US-OH",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q179191"
+  },
+  {
+    "id": "landmark-US-MN-33",
+    "name": "Mall of America",
+    "wiki": "Mall of America",
+    "country": "US",
+    "stateID": "US-MN",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q659219"
+  },
+  {
+    "id": "landmark-US-WY-34",
+    "name": "Devils Tower",
+    "wiki": "Devils Tower",
+    "country": "US",
+    "stateID": "US-WY",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q306201"
+  },
+  {
+    "id": "landmark-US-SD-35",
+    "name": "Crazy Horse Memorial",
+    "wiki": "Crazy Horse Memorial",
+    "country": "US",
+    "stateID": "US-SD",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q1139250"
+  },
+  {
+    "id": "landmark-US-UT-36",
+    "name": "Delicate Arch",
+    "wiki": "Delicate Arch",
+    "country": "US",
+    "stateID": "US-UT",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q2300616"
+  },
+  {
+    "id": "landmark-US-UT-37",
+    "name": "Angels Landing",
+    "wiki": "Angels Landing",
+    "country": "US",
+    "stateID": "US-UT",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q2563959"
+  },
+  {
+    "id": "landmark-US-AZ-38",
+    "name": "Monument Valley — Mitten Buttes",
+    "wiki": "West and East Mitten Buttes",
+    "country": "US",
+    "stateID": "US-AZ",
+    "pointDefinition": "Reference point for the Mitten Buttes",
+    "qid": "Q7987055"
+  },
+  {
+    "id": "landmark-US-CO-39",
+    "name": "Cliff Palace",
+    "wiki": "Cliff Palace",
+    "country": "US",
+    "stateID": "US-CO",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q2979068"
+  },
+  {
+    "id": "landmark-US-NM-40",
+    "name": "Carlsbad Caverns National Park",
+    "wiki": "Carlsbad Caverns National Park",
+    "country": "US",
+    "stateID": "US-NM",
+    "pointDefinition": "Park reference point from Wikidata; not an entrance",
+    "qid": "Q273195"
+  },
+  {
+    "id": "landmark-US-NM-41",
+    "name": "White Sands National Park",
+    "wiki": "White Sands National Park",
+    "country": "US",
+    "stateID": "US-NM",
+    "pointDefinition": "Park reference point from Wikidata; not an entrance",
+    "qid": "Q1200164"
+  },
+  {
+    "id": "landmark-US-TX-42",
+    "name": "Alamo Mission",
+    "wiki": "Alamo Mission",
+    "country": "US",
+    "stateID": "US-TX",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q2636724"
+  },
+  {
+    "id": "landmark-US-TX-43",
+    "name": "Dealey Plaza",
+    "wiki": "Dealey Plaza",
+    "country": "US",
+    "stateID": "US-TX",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q1181004"
+  },
+  {
+    "id": "landmark-US-TX-44",
+    "name": "San Jacinto Monument",
+    "wiki": "San Jacinto Monument",
+    "country": "US",
+    "stateID": "US-TX",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q1111991"
+  },
+  {
+    "id": "landmark-US-HI-45",
+    "name": "USS Arizona Memorial",
+    "wiki": "USS Arizona Memorial",
+    "country": "US",
+    "stateID": "US-HI",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q2004262"
+  },
+  {
+    "id": "landmark-US-AK-46",
+    "name": "Denali",
+    "wiki": "Denali",
+    "country": "US",
+    "stateID": "US-AK",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q130018"
+  },
+  {
+    "id": "landmark-US-NY-47",
+    "name": "American Falls",
+    "wiki": "American Falls",
+    "country": "US",
+    "stateID": "US-NY",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q1320475"
+  },
+  {
+    "id": "landmark-US-MA-48",
+    "name": "Faneuil Hall",
+    "wiki": "Faneuil Hall",
+    "country": "US",
+    "stateID": "US-MA",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q49137"
+  },
+  {
+    "id": "landmark-US-ME-49",
+    "name": "Portland Head Light",
+    "wiki": "Portland Head Light",
+    "country": "US",
+    "stateID": "US-ME",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q2105159"
+  },
+  {
+    "id": "landmark-US-OR-50",
+    "name": "Multnomah Falls",
+    "wiki": "Multnomah Falls",
+    "country": "US",
+    "stateID": "US-OR",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q37319"
+  },
+  {
+    "id": "landmark-DE-BE-51",
+    "name": "Brandenburg Gate",
+    "wiki": "Brandenburg Gate",
+    "country": "DE",
+    "stateID": "DE-BE",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q82425"
+  },
+  {
+    "id": "landmark-DE-NW-52",
+    "name": "Cologne Cathedral",
+    "wiki": "Cologne Cathedral",
+    "country": "DE",
+    "stateID": "DE-NW",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q4176"
+  },
+  {
+    "id": "landmark-DE-BY-53",
+    "name": "Neuschwanstein Castle",
+    "wiki": "Neuschwanstein Castle",
+    "country": "DE",
+    "stateID": "DE-BY",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q4152"
+  },
+  {
+    "id": "landmark-DE-BE-54",
+    "name": "Reichstag building",
+    "wiki": "Reichstag building",
+    "country": "DE",
+    "stateID": "DE-BE",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q151897"
+  },
+  {
+    "id": "landmark-DE-BE-55",
+    "name": "Fernsehturm Berlin",
+    "wiki": "Fernsehturm Berlin",
+    "country": "DE",
+    "stateID": "DE-BE",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q151356"
+  },
+  {
+    "id": "landmark-DE-HH-56",
+    "name": "Elbphilharmonie",
+    "wiki": "Elbphilharmonie",
+    "country": "DE",
+    "stateID": "DE-HH",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q673223"
+  },
+  {
+    "id": "landmark-DE-HB-57",
+    "name": "Bremen Roland",
+    "wiki": "Bremen Roland",
+    "country": "DE",
+    "stateID": "DE-HB",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q19665"
+  },
+  {
+    "id": "landmark-DE-BB-58",
+    "name": "Sanssouci",
+    "wiki": "Sanssouci",
+    "country": "DE",
+    "stateID": "DE-BB",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q151330"
+  },
+  {
+    "id": "landmark-DE-SN-59",
+    "name": "Dresden Frauenkirche",
+    "wiki": "Frauenkirche, Dresden",
+    "country": "DE",
+    "stateID": "DE-SN",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q157229"
+  },
+  {
+    "id": "landmark-DE-SN-60",
+    "name": "Zwinger (Dresden)",
+    "wiki": "Zwinger (Dresden)",
+    "country": "DE",
+    "stateID": "DE-SN",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q155107"
+  },
+  {
+    "id": "landmark-DE-SN-61",
+    "name": "Bastei",
+    "wiki": "Bastei",
+    "country": "DE",
+    "stateID": "DE-SN",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q671486"
+  },
+  {
+    "id": "landmark-DE-TH-62",
+    "name": "Wartburg",
+    "wiki": "Wartburg",
+    "country": "DE",
+    "stateID": "DE-TH",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q151545"
+  },
+  {
+    "id": "landmark-DE-BW-63",
+    "name": "Heidelberg Castle",
+    "wiki": "Heidelberg Castle",
+    "country": "DE",
+    "stateID": "DE-BW",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q327265"
+  },
+  {
+    "id": "landmark-DE-RP-64",
+    "name": "Porta Nigra",
+    "wiki": "Porta Nigra",
+    "country": "DE",
+    "stateID": "DE-RP",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q152339"
+  },
+  {
+    "id": "landmark-DE-NW-65",
+    "name": "Aachen Cathedral",
+    "wiki": "Aachen Cathedral",
+    "country": "DE",
+    "stateID": "DE-NW",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q5908"
+  },
+  {
+    "id": "landmark-DE-BW-66",
+    "name": "Ulm Minster",
+    "wiki": "Ulm Minster",
+    "country": "DE",
+    "stateID": "DE-BW",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q44562"
+  },
+  {
+    "id": "landmark-DE-BY-67",
+    "name": "Würzburg Residence",
+    "wiki": "Würzburg Residence",
+    "country": "DE",
+    "stateID": "DE-BY",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q156316"
+  },
+  {
+    "id": "landmark-DE-BW-68",
+    "name": "Hohenzollern Castle",
+    "wiki": "Hohenzollern Castle",
+    "country": "DE",
+    "stateID": "DE-BW",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q156457"
+  },
+  {
+    "id": "landmark-DE-BY-69",
+    "name": "Zugspitze",
+    "wiki": "Zugspitze",
+    "country": "DE",
+    "stateID": "DE-BY",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q3375"
+  },
+  {
+    "id": "landmark-DE-HE-70",
+    "name": "Hercules monument (Kassel)",
+    "wiki": "Hercules monument (Kassel)",
+    "country": "DE",
+    "stateID": "DE-HE",
+    "pointDefinition": "Mapped landmark point",
+    "qid": "Q321252"
+  }
+]

@@ -1,0 +1,18 @@
+{
+ "DE-BW":{"text":"THE LÄND","kind":"State brand","source":"https://stm.baden-wuerttemberg.de/de/service/presse/pressemitteilung/pid/baden-wuerttemberg-ist-the-laend"},
+ "DE-BY":{"text":"Traditionell anders","kind":"Tourism slogan","source":"https://erlebe.bayern/insider/"},
+ "DE-BE":{"text":"Wir sind ein Berlin","kind":"City campaign","source":"https://www.berlin.de/rbmskzl/service/corporate-design/neue-marke-berlin/"},
+ "DE-BB":{"text":"Es kann so einfach sein.","kind":"State campaign","source":"https://www.brandenburg.de/cms/detail.php/bb1.c.693644.de"},
+ "DE-HB":{"text":"Zwei-Städte-Staat","kind":"Descriptive nickname","source":"https://landesportal.bremen.de/zwei-staedte-staat"},
+ "DE-HH":{"text":"Tor zur Welt","kind":"Nickname","source":"https://www.hamburg.de/resource/blob/148106/3180edb80079f9800949c04c2ff9a69f/die-welt-bei-hammonia-data.pdf"},
+ "DE-HE":{"text":"An Hessen führt kein Weg vorbei","kind":"State slogan","source":"https://rp-darmstadt.hessen.de/ueber-uns/regierungsbezirk-darmstadt"},
+ "DE-NI":{"text":"Niedersachsen. Klar.","kind":"State brand","source":"https://www.stk.niedersachsen.de/master.html"},
+ "DE-MV":{"text":"Land zum Leben","kind":"State campaign","source":"https://www.mv-tut-gut.de/startseite"},
+ "DE-NW":{"text":"Germany at its best","kind":"Investment campaign","source":"https://dieprberater.de/de/kunden/nrw-invest-standortmarketing/"},
+ "DE-RP":{"text":"Weinland Nummer eins","kind":"Descriptive nickname","source":"https://www.statistik.rlp.de/fileadmin/dokumente/monatshefte/2022/Juni/06-2022-405.pdf"},
+ "DE-SL":{"text":"Großes entsteht immer im Kleinen.","kind":"State brand","source":"https://www.saarland.de/DE/presse-informationen/informationen/saarland-marketing"},
+ "DE-SN":{"text":"So geht sächsisch.","kind":"State campaign","source":"https://www.medienservice.sachsen.de/medien/news/1077657"},
+ "DE-ST":{"text":"#moderndenken","kind":"State campaign","source":"https://moderndenken.sachsen-anhalt.de/die-kampagne"},
+ "DE-SH":{"text":"Der echte Norden","kind":"State brand","source":"https://www.schleswig-holstein.de/DE/landesregierung/themen/wirtschaft/landesdachmarke/kampagne/kampagne"},
+ "DE-TH":{"text":"Das grüne Herz Deutschlands","kind":"Nickname","source":"https://www.uni-weimar.de/qisserver/rds?moduleCall=webInfo&publishConfFile=webInfo&publishSubDir=veranstaltung&publishid=50993&state=verpublish&status=init&vmfile=no"}
+}

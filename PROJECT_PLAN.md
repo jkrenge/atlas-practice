@@ -3,7 +3,7 @@
 ## Implemented
 
 - Native SwiftUI app, iOS 18 target, generated Xcode project, and repeatable build/test/run script.
-- Four playable maps: 50 US states, 16 German states, five official NYC boroughs, and 266 finer NYC named areas. All twelve prepared map packs decode.
+- Four playable maps: 50 US states, 16 German states, five official NYC boroughs, and 47 NYC practice areas (37 unchanged Manhattan areas and 10 across the other boroughs). All twelve prepared map packs decode.
 - Geographic polygon rendering, holes, reversible projections, Alaska/Hawaii insets, 32× zoom, pan, and linked small-state markers. Point questions use geographic coordinates and accept coastline/water positions inside an inset.
 - Nine US/German modes: Find the area, Name the area, State capitals, State flags, Nicknames & slogans, Locate capitals, Locate cities, City populations, and Locate landmarks. NYC maps use the two area modes.
 - Offline database: 66 state capitals/names/flags, 50 US and 10 German city populations, and 50 US plus 20 German landmark coordinates. Browse facts includes images, population dates, coordinate definitions, and source links.

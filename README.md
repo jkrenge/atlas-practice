@@ -1,6 +1,6 @@
 # Atlas Practice for iOS
 
-A native SwiftUI geography learning app with 50 US states, 16 German states, five NYC boroughs, and 266 NYC neighborhood areas. Learn state capitals, flags, nicknames and campaign slogans; locate capitals, the 50 largest US cities and 10 largest German cities; estimate city populations; and place 50 US and 20 German landmarks on the map.
+A native SwiftUI geography learning app with 50 US states, 16 German states, five NYC boroughs, and 47 NYC practice areas. Learn state capitals, flags, nicknames and campaign slogans; locate capitals, the 50 largest US cities and 10 largest German cities; estimate city populations; and place 50 US and 20 German landmarks on the map.
 
 Choose untimed practice or a 30/60-second countdown per question. Pause and resume, review missed answers once, and keep separate local scores by map, mode, and timer setting. Location questions use movable pins and geographic distance: within 50 km for US maps or 20 km for Germany counts as correct. Browse every fact and its source before playing.
 
@@ -33,7 +33,7 @@ All playable geometry uses GeoJSON with WGS 84 longitude and latitude coordinate
 | United States | 51 | 50 states; DC is background |
 | Germany | 16 | 16 federal states |
 | NYC boroughs | 5 | 5 boroughs |
-| NYC local neighborhoods | 266 | 266 named areas |
+| NYC neighborhoods | 47 | 37 Manhattan areas plus 10 outside Manhattan |
 | NYC statistical neighborhoods | 262 | 197 residential 2020 NTAs |
 | World | 242 | 204 provisionally eligible source records |
 | Africa | Shared world geometry | 53 |
@@ -45,7 +45,7 @@ All playable geometry uses GeoJSON with WGS 84 longitude and latitude coordinate
 
 The country lists follow Natural Earth's classifications. The count of 204 is not a claim about the number of sovereign countries. The six continent lists contain 201 questions in total: the source places Seychelles, Mauritius, and Maldives in `Seven seas (open ocean)`, so they appear only in the World list. Continent membership and disputed areas need curriculum review. There is no Antarctica country quiz.
 
-The app selector includes the US, Germany, NYC boroughs, and the finer NYC neighborhood pack. The separate official NTA dataset remains a statistical reference. Chinatown, Nolita, Tribeca, and Financial District have separate geometry in the neighborhood game. The unmodified mirror remains in `data/candidates`; only the active pack repairs the Country Club and Marine Park self-intersections.
+The app selector includes the US, Germany, NYC boroughs, and the focused NYC neighborhood pack. The separate official NTA dataset remains a statistical reference. Chinatown, Nolita, Tribeca, and Financial District have separate geometry in the neighborhood game. Manhattan keeps all 37 source areas. Bed-Stuy, DUMBO, Williamsburg, Greenpoint, and Long Island City stay separate. West Brooklyn, South & East Brooklyn, and Queens (other areas) combine the remaining Brooklyn and Queens neighborhoods. The Bronx and Staten Island each use one official borough polygon. These broad groups are practice areas. The unmodified mirror remains in `data/candidates`; repairs occur before grouping. See [group membership](data/nyc-learning-groups.json). The focused map has a new ID, so earlier scores from the 266-area map stay separate.
 
 `content/learning.json` contains 66 state facts, 60 ranked cities, and 70 curated sights. US city populations use Census Vintage 2025, July 1, 2025; German cities use Destatis, December 31, 2024. These are city/municipal populations, not metro areas. US consolidated-government balances and Washington, DC follow the Census ranking. Landmarks form a curated learning list, not a measured popularity ranking. Each point has a source link, and park reference points are labeled.
 

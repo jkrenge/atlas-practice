@@ -7,6 +7,7 @@ from pathlib import Path
 import shapefile
 from shapely import make_valid
 from shapely.geometry import shape, mapping, MultiPolygon
+from shapely.ops import unary_union
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / 'data/sources'
@@ -52,6 +53,21 @@ def verify_sources():
         actual = hashlib.sha256((SOURCES / filename).read_bytes()).hexdigest()
         if actual != checksum:
             raise ValueError(f'Source checksum mismatch: {filename}')
+
+
+def focused_neighborhoods(local, boroughs):
+    # Keep Manhattan intact. Outside Manhattan, use the explicit practice groups.
+    result = [f for f in local if f['properties']['borough'] == 'Manhattan']
+    sources = {'nyc-pediacities': {f['id']: f for f in local},
+               'nyc-boroughs': {f['id']: f for f in boroughs}}
+    for group in json.loads((ROOT / 'data/nyc-learning-groups.json').read_text()):
+        members = [sources[group['sourceId']][i] for i in group['sourceAreaIDs']]
+        geometry = (members[0]['geometry'] if len(members) == 1 else
+                    mapping(unary_union([shape(f['geometry']) for f in members])))
+        result.append(feature(group['id'], group['name'], geometry,
+                              borough=group['borough'], sourceId=group['sourceId'],
+                              sourceAreaIDs=group['sourceAreaIDs'], quizEligible=True))
+    return result
 
 
 def main():
@@ -148,12 +164,13 @@ def main():
         p = candidate['properties']
         local.append(feature(candidate['id'], p['neighborhood'], mapping(geometry),
                              borough=p['borough'], quizEligible=True))
-    catalog.append(pack('nyc-local-neighborhoods', 'NYC neighborhoods', 'neighborhood', local, 'nyc-pediacities'))
+    focused = focused_neighborhoods(local, boroughs)
+    catalog.append(pack('nyc-neighborhoods-focused', 'NYC neighborhoods', 'area', focused, 'nyc-learning-areas'))
     write(ROOT / 'maps/catalog.json', {'schemaVersion': 2, 'maps': catalog})
     write(ROOT / 'data/nyc-neighborhood-repairs.json', repairs)
     print(json.dumps(catalog, indent=2))
     print(f'US city and town points: {len(cities)}')
-    print(f'NYC local neighborhoods: {len(local)}; repaired geometries: {len(repairs)}')
+    print(f'NYC practice areas: {len(focused)}; source neighborhoods: {len(local)}; repaired geometries: {len(repairs)}')
 
 
 if __name__ == '__main__':

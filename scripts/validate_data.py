@@ -4,7 +4,9 @@ import json
 import math
 import xml.etree.ElementTree as ET
 
-from shapely.geometry import shape
+from shapely import make_valid
+from shapely.geometry import shape, MultiPolygon
+from shapely.ops import unary_union
 from shapely.validation import explain_validity
 
 from compile_maps import ROOT, verify_sources
@@ -14,14 +16,14 @@ US_STATES = set('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA 
                 'WA WV WI WY'.split())
 GERMAN_STATES = set('BB BE BW BY HB HE HH MV NI NW RP SH SL SN ST TH'.split())
 EXPECTED_COUNTS = {
-    'nyc-local-neighborhoods': 266, 'us-states': 50, 'germany-states': 16, 'nyc-boroughs': 5, 'nyc-neighborhoods': 197,
+    'nyc-neighborhoods-focused': 47, 'us-states': 50, 'germany-states': 16, 'nyc-boroughs': 5, 'nyc-neighborhoods': 197,
     'world-countries': 204, 'africa-countries': 53, 'asia-countries': 48,
     'europe-countries': 48, 'north-america-countries': 26,
     'south-america-countries': 12, 'oceania-countries': 14,
 }
-GEOMETRY_COUNTS = {'nyc-local-neighborhoods': 266, 'us-states': 51, 'germany-states': 16, 'nyc-boroughs': 5,
+GEOMETRY_COUNTS = {'nyc-neighborhoods-focused': 47, 'us-states': 51, 'germany-states': 16, 'nyc-boroughs': 5,
                    'nyc-neighborhoods': 262, 'world-countries': 242}
-SOURCE_IDS = {'nyc-pediacities', 'natural-earth-admin1', 'natural-earth-countries', 'nyc-boroughs', 'nyc-nta2020'}
+SOURCE_IDS = {'nyc-learning-areas', 'natural-earth-admin1', 'natural-earth-countries', 'nyc-boroughs', 'nyc-nta2020'}
 
 
 def check(condition, message):
@@ -90,6 +92,62 @@ def collection(path, *, points=False, name_key='name', known_invalid=frozenset()
     return features, bounds
 
 
+def check_focused_neighborhoods(candidates):
+    focused = read(ROOT / 'maps/nyc-neighborhoods-focused/areas.geojson')['features']
+    by_id = {f['id']: f for f in focused}
+    manhattan = [f for f in candidates if f['properties']['borough'] == 'Manhattan']
+    check(len(manhattan) == 37, 'Manhattan source count changed')
+    check({f['id'] for f in focused if f['properties']['borough'] == 'Manhattan'} ==
+          {f['id'] for f in manhattan}, 'Manhattan neighborhood set changed')
+    for f in manhattan:
+        check(by_id[f['id']]['geometry'] == f['geometry'] and
+              by_id[f['id']]['properties']['name'] == f['properties']['neighborhood'],
+              f"Manhattan changed: {f['id']}")
+
+    groups = read(ROOT / 'data/nyc-learning-groups.json')
+    check(unique(groups, 'NYC practice groups') == set(by_id) - {f['id'] for f in manhattan},
+          'Practice group IDs do not match the focused map')
+    check({g['name'] for g in groups} == {'Bed-Stuy', 'DUMBO', 'Williamsburg', 'Greenpoint',
+          'West Brooklyn', 'South & East Brooklyn', 'Long Island City',
+          'Queens (other areas)', 'The Bronx', 'Staten Island'}, 'Unexpected practice areas')
+    for name, source_name in [('Bed-Stuy', 'Bedford_Stuyvesant'), ('DUMBO', 'DUMBO'),
+                              ('Williamsburg', 'Williamsburg'), ('Greenpoint', 'Greenpoint'),
+                              ('Long Island City', 'Long_Island_City')]:
+        group = next(g for g in groups if g['name'] == name)
+        identifier = 'http://nyc.pediacities.com/Resource/Neighborhood/' + source_name
+        check(group['id'] == identifier and group['sourceAreaIDs'] == [identifier],
+              f'Requested neighborhood must stay separate: {name}')
+    sources = {'nyc-pediacities': {f['id']: f for f in candidates},
+               'nyc-boroughs': {f['id']: f for f in read(ROOT / 'maps/nyc-boroughs/areas.geojson')['features']}}
+    used = []
+    for group in groups:
+        f = by_id[group['id']]
+        ids = group['sourceAreaIDs']
+        check(bool(ids) and len(ids) == len(set(ids)), 'Empty or duplicate group members')
+        check(all(f['properties'][key] == group[key] for key in
+                  ('name', 'borough', 'sourceId', 'sourceAreaIDs')), 'Group metadata mismatch')
+        members = [sources[group['sourceId']][i] for i in ids]
+        if group['sourceId'] == 'nyc-pediacities':
+            used.extend(ids)
+            check(all(m['properties']['borough'] == group['borough'] for m in members),
+                  'Practice group crosses boroughs')
+        else:
+            check((group['name'], ids) in [('The Bronx', ['NYC-BORO-2']),
+                  ('Staten Island', ['NYC-BORO-5'])], 'Wrong official borough boundary')
+        if len(members) == 1:
+            check(f['geometry'] == members[0]['geometry'], 'Single area boundary changed')
+        else:
+            shapes = [make_valid(shape(m['geometry'])) for m in members]
+            shapes = [MultiPolygon([p for p in g.geoms if p.geom_type == 'Polygon'])
+                      if g.geom_type == 'GeometryCollection' else g for g in shapes]
+            check(shape(f['geometry']).equals(unary_union(shapes)),
+                  f"Group does not preserve member coverage: {group['name']}")
+    expected = {f['id'] for f in candidates if f['properties']['borough'] in ('Brooklyn', 'Queens')}
+    check(len(used) == len(set(used)) and set(used) == expected,
+          'Brooklyn/Queens source areas must each belong to one group')
+    print('NYC: 37 Manhattan boundaries unchanged; 10 other areas; full source-member coverage.')
+
+
 def main():
     verify_sources()
     catalog = read(ROOT / 'maps/catalog.json')
@@ -102,7 +160,7 @@ def main():
         check(m['id'] == entry['id'] and m['name'] == entry['name'], 'Catalog/manifest mismatch')
         check(m['schemaVersion'] == 2 and m['coordinateSystem'] == 'OGC:CRS84', 'Invalid map contract')
         check(m['sourceId'] in SOURCE_IDS, f"Undocumented source: {m['sourceId']}")
-        check(m['areaType'] in ('state', 'borough', 'neighborhood', 'country'), 'Invalid area type')
+        check(m['areaType'] in ('state', 'borough', 'neighborhood', 'country', 'area'), 'Invalid area type')
         path = asset(manifest_path.parent, m['geometryAsset'])
         if path not in geometries:
             features, bounds = collection(path)
@@ -165,8 +223,9 @@ def main():
         check(len(matches) == 1 and matches[0]['properties']['borough'] == 'Manhattan',
               f'Missing requested neighborhood: {name}')
         check(shape(matches[0]['geometry']).is_valid, f'Invalid requested neighborhood: {name}')
-    print('PASS: 12 active map packs, 842 valid area features, 769 legacy city points, and source hashes.')
-    print('Original NYC snapshot retained; two geometries repaired only in the active learning pack.')
+    check_focused_neighborhoods(candidates)
+    print('PASS: 12 active map packs, 623 valid area features, 769 legacy city points, and source hashes.')
+    print('Original NYC snapshot retained; repairs applied before practice groups are merged.')
 
 
 if __name__ == '__main__':

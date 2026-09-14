@@ -15,7 +15,7 @@ Resolve asset paths relative to the folder that contains `map.json`. A path can 
 | `schemaVersion` | Integer `2`. Reject unsupported versions. |
 | `id` | Unique map ID, such as `us-states`. |
 | `name` | Display name. |
-| `areaType` | Display term: `state`, `borough`, `neighborhood`, or `country`. Do not branch game logic on this field. |
+| `areaType` | Display term: `state`, `borough`, `neighborhood`, `country`, or `area`. Do not branch game logic on this field. |
 | `coordinateSystem` | `OGC:CRS84`: WGS 84 coordinates in **longitude, latitude** order, in degrees. |
 | `geometryAsset` | Relative path to a GeoJSON FeatureCollection. |
 | `sourceId` | Dataset key documented in `data/SOURCES.md`. |
@@ -37,6 +37,7 @@ Each feature has a unique string `id`, a nonempty `properties.name`, and `proper
 | --- | --- | --- |
 | US and Germany | Source ISO 3166-2, such as `US-CO` or `DE-BY` | `nameEnglish` |
 | NYC boroughs | `NYC-BORO-` plus `borocode` | `boroughCode` |
+| NYC focused practice areas | Original source URI for retained neighborhoods; `NYC-PRACTICE-` plus group name for merged areas; official borough ID for the Bronx and Staten Island | `borough`; outside Manhattan: `sourceId`, `sourceAreaIDs` |
 | NYC NTAs | `NYC-` plus `nta2020` | `borough`, `ntaType` |
 | World countries | `NE-` plus Natural Earth `NE_ID` | `continent`, `sourceType`, `adminCode` |
 

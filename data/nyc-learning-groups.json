@@ -1,0 +1,200 @@
+[
+  {
+    "id": "http://nyc.pediacities.com/Resource/Neighborhood/Bedford_Stuyvesant",
+    "name": "Bed-Stuy",
+    "borough": "Brooklyn",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Bedford_Stuyvesant"
+    ]
+  },
+  {
+    "id": "http://nyc.pediacities.com/Resource/Neighborhood/DUMBO",
+    "name": "DUMBO",
+    "borough": "Brooklyn",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/DUMBO"
+    ]
+  },
+  {
+    "id": "http://nyc.pediacities.com/Resource/Neighborhood/Williamsburg",
+    "name": "Williamsburg",
+    "borough": "Brooklyn",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Williamsburg"
+    ]
+  },
+  {
+    "id": "http://nyc.pediacities.com/Resource/Neighborhood/Greenpoint",
+    "name": "Greenpoint",
+    "borough": "Brooklyn",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Greenpoint"
+    ]
+  },
+  {
+    "id": "NYC-PRACTICE-WEST-BROOKLYN",
+    "name": "West Brooklyn",
+    "borough": "Brooklyn",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Brooklyn_Heights",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Downtown_Brooklyn",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Boerum_Hill",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Cobble_Hill",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Carroll_Gardens",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Red_Hook",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Columbia_St",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Vinegar_Hill",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Fort_Greene",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Clinton_Hill",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Navy_Yard",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Heights",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Park_Slope",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Gowanus",
+      "http://nyc.pediacities.com/Resource/Neighborhood/South_Slope",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Sunset_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Bay_Ridge",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Fort_Hamilton"
+    ]
+  },
+  {
+    "id": "NYC-PRACTICE-SOUTH-EAST-BROOKLYN",
+    "name": "South & East Brooklyn",
+    "borough": "Brooklyn",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Bath_Beach",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Bensonhurst",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Bergen_Beach",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Borough_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Brighton_Beach",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Brownsville",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Bushwick",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Canarsie",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Coney_Island",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Crown_Heights",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Cypress_Hills",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Dyker_Heights",
+      "http://nyc.pediacities.com/Resource/Neighborhood/East_Flatbush",
+      "http://nyc.pediacities.com/Resource/Neighborhood/East_New_York",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Flatbush",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Flatlands",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Floyd_Bennett_Field",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Gerritsen_Beach",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Gravesend",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Green_Wood_Cemetery",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Jamaica_Bay",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Kensington",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Manhattan_Beach",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Marine_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Midwood",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Mill_Basin",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Plum_Beach",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Lefferts_Gardens",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Sea_Gate",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Sheepshead_Bay",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Windsor_Terrace"
+    ]
+  },
+  {
+    "id": "http://nyc.pediacities.com/Resource/Neighborhood/Long_Island_City",
+    "name": "Long Island City",
+    "borough": "Queens",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Long_Island_City"
+    ]
+  },
+  {
+    "id": "NYC-PRACTICE-OTHER-QUEENS",
+    "name": "Queens (other areas)",
+    "borough": "Queens",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Alley_Pond_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Arverne",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Astoria",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Bay_Terrace",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Bayside",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Bayswater",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Belle_Harbor",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Bellerose",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Breezy_Point",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Briarwood",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Broad_Channel",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Cambria_Heights",
+      "http://nyc.pediacities.com/Resource/Neighborhood/College_Point",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Corona",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Cunningham_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Ditmars_Steinway",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Douglaston",
+      "http://nyc.pediacities.com/Resource/Neighborhood/East_Elmhurst",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Edgemere",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Elmhurst",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Far_Rockaway",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Floral_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Flushing",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Flushing_Meadows_Corona_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Forest_Hills",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Forest_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Fresh_Meadows",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Glen_Oaks",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Glendale",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Hollis",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Hollis_Hills",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Holliswood",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Howard_Beach",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Jackson_Heights",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Jamaica",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Jamaica_Estates",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Jamaica_Hills",
+      "http://nyc.pediacities.com/Resource/Neighborhood/John_F_Kennedy_International_Airport",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Kew_Gardens",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Kew_Gardens_Hills",
+      "http://nyc.pediacities.com/Resource/Neighborhood/LaGuardia_Airport",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Laurelton",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Little_Neck",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Maspeth",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Middle_Village",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Neponsit",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Ozone_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Queens_Village",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Rego_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Richmond_Hill",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Ridgewood",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Rockaway_Beach",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Rockaway_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Rosedale",
+      "http://nyc.pediacities.com/Resource/Neighborhood/South_Ozone_Park",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Springfield_Gardens",
+      "http://nyc.pediacities.com/Resource/Neighborhood/St_Albans",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Sunnyside",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Whitestone",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Woodhaven",
+      "http://nyc.pediacities.com/Resource/Neighborhood/Woodside"
+    ]
+  },
+  {
+    "id": "NYC-BORO-2",
+    "name": "The Bronx",
+    "borough": "Bronx",
+    "sourceId": "nyc-boroughs",
+    "sourceAreaIDs": [
+      "NYC-BORO-2"
+    ]
+  },
+  {
+    "id": "NYC-BORO-5",
+    "name": "Staten Island",
+    "borough": "Staten Island",
+    "sourceId": "nyc-boroughs",
+    "sourceAreaIDs": [
+      "NYC-BORO-5"
+    ]
+  }
+]

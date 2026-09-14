@@ -155,12 +155,31 @@ final class AtlasUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["3,685,265 residents"].exists || app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "3,685,265")).firstMatch.exists)
     }
     func testNYCNeighborhoodSelection() {
-        open("nyc-local-neighborhoods", mode: "find")
+        open("nyc-neighborhoods-focused", mode: "find")
         tap(app.buttons["Use area list"])
         let search = app.searchFields.firstMatch
         search.tap(); search.typeText("Chinatown")
         tap(app.buttons["area-http://nyc.pediacities.com/Resource/Neighborhood/Chinatown"])
         XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.exists)
+    }
+    func testNYCPracticeGroupsAndNameMode() {
+        tap(app.buttons["map-nyc-neighborhoods-focused"])
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label BEGINSWITH %@", "47 areas: 37 in Manhattan")).firstMatch.exists)
+        tap(app.buttons["start-find"])
+        for (query, id) in [("Bed-Stuy", "http://nyc.pediacities.com/Resource/Neighborhood/Bedford_Stuyvesant"),
+                            ("Long Island City", "http://nyc.pediacities.com/Resource/Neighborhood/Long_Island_City"),
+                            ("Staten Island", "NYC-BORO-5")] {
+            tap(app.buttons["Use area list"])
+            let search = app.searchFields.firstMatch
+            search.tap(); search.typeText(query)
+            tap(app.buttons["area-\(id)"])
+            XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains(query))
+            tap(app.buttons["continue-session"])
+        }
+        app.terminate(); app.launch()
+        open("nyc-neighborhoods-focused", mode: "name")
+        tap(app.buttons["choice-http://nyc.pediacities.com/Resource/Neighborhood/Battery_Park_City"])
+        XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("That's right."))
     }
     func testTimerExpiresAndLocksTheAnswer() {
         app.terminate()

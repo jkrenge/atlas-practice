@@ -1,6 +1,6 @@
 # NYC finer-neighborhood candidate
 
-`nyc-neighborhoods.geojson` contains 266 named areas normalized from the pinned Pediacities / Ontodia mirror. This unmodified copy stays outside the catalog; the active `nyc-local-neighborhoods` pack is a separately repaired derivative. The datHere catalog declares ODC-By, but comparison of its download with the pinned mirror remains unconfirmed. Source URLs and normalization rules are in [SOURCES.md](../SOURCES.md).
+`nyc-neighborhoods.geojson` contains 266 named areas normalized from the pinned Pediacities / Ontodia mirror. This unmodified copy stays outside the catalog; the active `nyc-neighborhoods-focused` pack combines selected repaired boundaries into 47 practice areas and uses official borough geometry for the Bronx and Staten Island. The datHere catalog declares ODC-By, but comparison of its download with the pinned mirror remains unconfirmed. Source URLs and normalization rules are in [SOURCES.md](../SOURCES.md).
 
 Chinatown, Nolita, Tribeca, and Financial District each have a separate Polygon in Manhattan. All four pass the geometry validity check. `FiDi` is a proposed display alias for Financial District; no alias field has been added.
 

@@ -102,8 +102,8 @@ struct PackScreen: View {
                     Text("30 seconds").tag(30)
                     Text("60 seconds").tag(60)
                 }.pickerStyle(.menu).accessibilityIdentifier("timer-setting")
-                if pack.id == "nyc-local-neighborhoods" {
-                    Text("266 named areas, including parks and islands. Neighborhood boundaries are approximate.")
+                if pack.id == "nyc-neighborhoods-focused" {
+                    Text("47 areas: 37 in Manhattan and 10 across the other boroughs. The larger groups are practice areas. Neighborhood boundaries are approximate.")
                         .font(.footnote).foregroundStyle(Color.atlasMuted)
                 }
                 if !content.states(in: pack).isEmpty {
@@ -501,7 +501,8 @@ struct SourcesScreen: View {
                 Link("NYC Open Data source", destination: URL(string: "https://data.cityofnewyork.us/d/gthc-hcne")!)
             }
             Section("NYC neighborhoods") {
-                Text("266 approximate named areas, including parks and islands. Original geometry by Pediacities/Ontodia, from a pinned public mirror. Two self-intersections were repaired for the learning map.")
+                Text("37 Manhattan areas and 10 areas across the other boroughs. Bed-Stuy, DUMBO, Williamsburg, Greenpoint, and Long Island City stay separate. West Brooklyn, South & East Brooklyn, and Queens (other areas) are merged practice areas. The Bronx and Staten Island use official borough boundaries.")
+                Text("Neighborhood geometry: Pediacities/Ontodia, from a pinned public mirror. Boundaries are approximate and include parks and islands. The Marine Park boundary was repaired before merging.")
                 Text("The datHere catalog declares the Open Data Commons Attribution License. Its download could not be compared with the mirror, so exact source equivalence remains unconfirmed.")
                 Link("Neighborhood catalog and attribution", destination: URL(string: "https://data.dathere.com/dataset/nyc-neighborhoods")!)
             }

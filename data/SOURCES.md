@@ -44,13 +44,28 @@ Both NYC geometry sources use longitude and latitude. Preserve their coordinates
 
 ## Pediacities / Ontodia neighborhoods
 
-The requested prototype now exposes a repaired copy as `nyc-local-neighborhoods`. The unmodified normalized mirror remains under `data/candidates`. Two self-intersections are repaired only in the active pack, with Shapely 2.1.2 `make_valid`. The repair report records affected IDs and before/after areas.
+The prototype uses this source in the `nyc-neighborhoods-focused` pack. The unmodified normalized mirror remains under `data/candidates`. Two self-intersections are repaired during compilation with Shapely 2.1.2 `make_valid`, before the learning groups are formed. The repair report records affected IDs and before/after areas.
 
 - [Pinned ix4 mirror download](https://gist.githubusercontent.com/ix4/ff7603f48283cf06fc4fb3dfb6a0635c/raw/5cdd9db840eb9235d116c5f632599dca1b925d11/nyc.geojson), saved as `nyc-pediacities-neighborhoods.geojson`.
 - [Mirror page](https://gist.github.com/ix4/ff7603f48283cf06fc4fb3dfb6a0635c), revision `5cdd9db840eb9235d116c5f632599dca1b925d11`. The boundary vintage is unknown; mirror activity is not a boundary update date.
 - The [datHere catalog API](https://data.dathere.com/api/3/action/package_show?id=nyc-neighborhoods), saved as `nyc-catalog.json`, credits Ontodia and declares **Open Data Commons Attribution License (ODC-By)**. The catalog resource download and datastore endpoint returned HTTP 403, so its exact equivalence to the pinned mirror was not confirmed. This is a prototype source limitation, not a claim that matching licensed bytes were verified. Attribution and this limit are also visible in the app.
 
-The raw snapshot has 310 records. Compilation skips seven null geometries and groups polygon parts by the existing `properties.@id`, yielding 266 named areas. IDs are the original source URIs. The original normalized copy changes no vertices. The active pack uses `make_valid` on Country Club and Marine Park only; all other geometries are unchanged. Boundaries are approximate and historical; named parks and islands are included. Credit: Neighborhood boundaries from Pediacities / Ontodia; normalized from the ix4 GeoJSON mirror.
+The raw snapshot has 310 records. Compilation skips seven null geometries and groups polygon parts by the existing `properties.@id`, yielding 266 named areas. IDs are the original source URIs. The original normalized copy changes no vertices. The compiler uses `make_valid` on Country Club and Marine Park only. Country Club is then replaced by the official Bronx boundary; Marine Park is merged into South & East Brooklyn. Boundaries are approximate and historical; named parks and islands are included. Credit: Neighborhood boundaries from Pediacities / Ontodia; normalized from the ix4 GeoJSON mirror.
+
+## `nyc-learning-areas`: focused NYC practice map
+
+`nyc-neighborhoods-focused` has 47 questions. All 37 Manhattan areas retain their source IDs, names, and geometry. Outside Manhattan, [nyc-learning-groups.json](nyc-learning-groups.json) defines ten areas and their source members:
+
+- **Bed-Stuy, DUMBO, Williamsburg, Greenpoint:** retained Brooklyn polygons. Bedford-Stuyvesant uses the shorter display name Bed-Stuy; its source ID stays unchanged.
+- **West Brooklyn:** Brooklyn Heights, Downtown Brooklyn, Boerum Hill, Cobble Hill, Carroll Gardens, Red Hook, Columbia St, Vinegar Hill, Fort Greene, Clinton Hill, Navy Yard, Prospect Heights, Park Slope, Gowanus, South Slope, Sunset Park, Bay Ridge, and Fort Hamilton.
+- **South & East Brooklyn:** the remaining 32 Brooklyn source areas.
+- **Long Island City:** retained Queens polygon.
+- **Queens (other areas):** the remaining 61 Queens source areas.
+- **The Bronx and Staten Island:** one official NYC DCP borough boundary each, from `nyc-boroughs`. No neighborhood or NTA dissolve is used for either borough.
+
+West Brooklyn, South & East Brooklyn, and Queens (other areas) are learning groups, not official neighborhoods. Shapely `unary_union` merges their repaired source polygons without inventing a new dividing line. Each Brooklyn and Queens source area belongs to exactly one group. Source gaps and overlaps can remain; validation establishes member coverage, not a complete city partition. The combined pack credits both Pediacities/Ontodia and NYC DCP. Each non-Manhattan feature records `sourceId` and `sourceAreaIDs`.
+
+The focused pack replaces the 266-area pack in the catalog and selector. Its new map ID keeps earlier practice scores separate. The original candidate and source snapshots stay available for reproducibility.
 
 ## Decorative US SVG
 

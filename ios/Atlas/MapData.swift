@@ -89,7 +89,7 @@ enum MapLoadError: LocalizedError {
 struct MapLibrary {
     let root: URL
     let catalog: MapCatalog
-    static let starterIDs = ["us-states", "germany-states", "nyc-boroughs", "nyc-local-neighborhoods"]
+    static let starterIDs = ["us-states", "germany-states", "nyc-boroughs", "nyc-neighborhoods-focused"]
 
     init(bundle: Bundle = .main) throws {
         guard let root = bundle.resourceURL?.appendingPathComponent("maps", isDirectory: true) else {

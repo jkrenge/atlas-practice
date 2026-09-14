@@ -39,7 +39,14 @@ import CoreGraphics
         ("us-states", "US-DE", Coordinate(-75.5, 39)),
         ("germany-states", "DE-BY", Coordinate(11.5, 48.7)),
         ("nyc-boroughs", "NYC-BORO-1", Coordinate(-73.965, 40.78)),
-        ("nyc-boroughs", "NYC-BORO-5", Coordinate(-74.15, 40.58))
+        ("nyc-boroughs", "NYC-BORO-5", Coordinate(-74.15, 40.58)),
+        ("nyc-neighborhoods-focused", "NYC-BORO-5", Coordinate(-74.15, 40.58)),
+        ("nyc-neighborhoods-focused", "NYC-BORO-2", Coordinate(-73.88, 40.85)),
+        ("nyc-neighborhoods-focused", "NYC-PRACTICE-WEST-BROOKLYN", Coordinate(-73.98, 40.67)),
+        ("nyc-neighborhoods-focused", "NYC-PRACTICE-SOUTH-EAST-BROOKLYN", Coordinate(-73.97, 40.59)),
+        ("nyc-neighborhoods-focused", "NYC-PRACTICE-OTHER-QUEENS", Coordinate(-73.82, 40.73)),
+        ("nyc-neighborhoods-focused", "http://nyc.pediacities.com/Resource/Neighborhood/DUMBO", Coordinate(-73.989, 40.703)),
+        ("nyc-neighborhoods-focused", "http://nyc.pediacities.com/Resource/Neighborhood/Long_Island_City", Coordinate(-73.948, 40.744))
     ]
     for (map, id, coordinate) in cases {
         let pack = try library.load(map)
@@ -192,7 +199,7 @@ import CoreGraphics
 
 @Test func everyModeHasUsableQuestionsAndUniqueAnswerLabels() throws {
     let content = try LearningContent.load()
-    for id in ["us-states", "germany-states", "nyc-local-neighborhoods"] {
+    for id in ["us-states", "germany-states", "nyc-neighborhoods-focused"] {
         let pack = try MapLibrary().load(id)
         for mode in PracticeMode.available(in: pack) {
             let areas = content.areas(in: pack, mode: mode)
@@ -292,9 +299,12 @@ import CoreGraphics
 }
 
 @Test func requestedNYCNeighborhoodsArePlayable() throws {
-    let pack = try MapLibrary().load("nyc-local-neighborhoods")
-    #expect(pack.areas.count == 266)
-    for name in ["Chinatown", "Nolita", "Tribeca", "Financial District", "Country Club", "Marine Park"] {
+    let pack = try MapLibrary().load("nyc-neighborhoods-focused")
+    #expect(pack.areas.count == 47)
+    for name in ["Chinatown", "Nolita", "Tribeca", "Financial District", "Bed-Stuy", "DUMBO", "Williamsburg", "Greenpoint", "Long Island City", "West Brooklyn", "South & East Brooklyn", "Queens (other areas)", "The Bronx", "Staten Island"] {
         #expect(pack.areas.contains { $0.name == name })
     }
+    #expect(!pack.areas.contains { ["Country Club", "Marine Park", "Allerton"].contains($0.name) })
+    #expect(MapLibrary.starterIDs.contains(pack.id))
+    #expect(!MapLibrary.starterIDs.contains("nyc-local-neighborhoods"))
 }

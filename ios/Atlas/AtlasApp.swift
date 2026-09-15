@@ -499,7 +499,7 @@ struct SourcesScreen: View {
     var body: some View {
         List {
             Section("United States and Germany") {
-                Text("Boundaries: Natural Earth, Admin 1 states and provinces, version 5.1.1. The US map excludes large lakes so shorelines remain visible. Public domain. Boundaries are simplified for learning.")
+                Text("Boundaries: Natural Earth, Admin 1 states and provinces, version 5.1.1. State maps exclude mapped lakes using Natural Earth Lakes, version 5.0.0. Public domain. Boundaries are simplified for learning.")
                 Link("Natural Earth", destination: URL(string: "https://www.naturalearthdata.com")!)
             }
             Section("New York City") {
@@ -508,7 +508,7 @@ struct SourcesScreen: View {
             }
             Section("NYC neighborhoods") {
                 Text("37 Manhattan areas and 10 areas across the other boroughs. Bed-Stuy, DUMBO, Williamsburg, Greenpoint, and Long Island City stay separate. West Brooklyn, South & East Brooklyn, and Queens (other areas) are merged practice areas. The Bronx and Staten Island use official borough boundaries.")
-                Text("Neighborhood geometry: Pediacities/Ontodia, from a pinned public mirror. Boundaries are approximate and include parks and islands. The Marine Park boundary was repaired before merging.")
+                Text("Neighborhood geometry: Pediacities/Ontodia, from a pinned public mirror. Neighborhood names and inland divisions are approximate and include parks and islands. The map is clipped to official NYC DCP borough shorelines, version 26B. The Marine Park boundary was repaired before merging.")
                 Text("The datHere catalog declares the Open Data Commons Attribution License. Its download could not be compared with the mirror, so exact source equivalence remains unconfirmed.")
                 Link("Neighborhood catalog and attribution", destination: URL(string: "https://data.dathere.com/dataset/nyc-neighborhoods")!)
             }

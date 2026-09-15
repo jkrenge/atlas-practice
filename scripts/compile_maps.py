@@ -55,8 +55,16 @@ def verify_sources():
             raise ValueError(f'Source checksum mismatch: {filename}')
 
 
+def remove_lakes(features, filename):
+    water = unary_union([shape(row.shape.__geo_interface__) for row in records(filename)])
+    for f in features:
+        geometry = shape(f['geometry'])
+        if geometry.intersects(water):
+            f['geometry'] = mapping(geometry.difference(water))
+
+
 def focused_neighborhoods(local, boroughs):
-    # Keep Manhattan intact. Outside Manhattan, use the explicit practice groups.
+    # Keep each Manhattan area. Outside Manhattan, use explicit practice groups.
     result = [f for f in local if f['properties']['borough'] == 'Manhattan']
     sources = {'nyc-pediacities': {f['id']: f for f in local},
                'nyc-boroughs': {f['id']: f for f in boroughs}}
@@ -67,6 +75,24 @@ def focused_neighborhoods(local, boroughs):
         result.append(feature(group['id'], group['name'], geometry,
                               borough=group['borough'], sourceId=group['sourceId'],
                               sourceAreaIDs=group['sourceAreaIDs'], quizEligible=True))
+    # Retain neighborhood membership and inland boundaries. Use official borough
+    # land to remove old shoreline extensions into rivers and neighboring boroughs.
+    shores = {f['properties']['name']: f for f in boroughs}
+    for f in result:
+        shore = shores[f['properties']['borough']]
+        geometry = shape(f['geometry'])
+        boundary = shape(shore['geometry'])
+        if not geometry.difference(boundary).is_empty:
+            clipped = geometry.intersection(boundary)
+            if clipped.geom_type == 'GeometryCollection':
+                # Touching shorelines can leave zero-area lines beside polygons.
+                clipped = unary_union([part for part in clipped.geoms
+                                       if part.geom_type in ('Polygon', 'MultiPolygon')])
+            if clipped.is_empty or clipped.geom_type not in ('Polygon', 'MultiPolygon'):
+                raise ValueError(f"No land remains for practice area: {f['id']}")
+            f['geometry'] = mapping(clipped)
+        f['properties']['shorelineSourceId'] = 'nyc-boroughs'
+        f['properties']['shorelineAreaID'] = shore['id']
     return result
 
 
@@ -89,7 +115,8 @@ def main():
     assert set(us_land) == {f['id'] for f in admin['USA']}
     for country, identifier, name in [('USA', 'us-states', 'United States'),
                                       ('DEU', 'germany-states', 'Germany')]:
-        source = 'natural-earth-admin1-lakes' if country == 'USA' else 'natural-earth-admin1'
+        remove_lakes(admin[country], 'ne_10m_lakes.zip')
+        source = 'natural-earth-admin1-land'
         catalog.append(pack(identifier, name, 'state', admin[country], source))
 
     boroughs = []
@@ -117,12 +144,13 @@ def main():
                                  row.shape.__geo_interface__, continent=p['CONTINENT'],
                                  sourceType=p['TYPE'], adminCode=p['ADM0_A3'],
                                  quizEligible=p['TYPE'] in ('Sovereign country', 'Country')))
-    catalog.append(pack('world-countries', 'World', 'country', countries, 'natural-earth-countries'))
+    remove_lakes(countries, 'ne_50m_lakes.zip')
+    catalog.append(pack('world-countries', 'World', 'country', countries, 'natural-earth-countries-land'))
     for continent in ['Africa', 'Asia', 'Europe', 'North America', 'South America', 'Oceania']:
         selected = [f for f in countries if f['properties']['continent'] == continent]
         identifier = continent.lower().replace(' ', '-') + '-countries'
         catalog.append(pack(identifier, continent, 'country', selected,
-                            'natural-earth-countries', '../world-countries/areas.geojson'))
+                            'natural-earth-countries-land', '../world-countries/areas.geojson'))
 
 
     cities = []

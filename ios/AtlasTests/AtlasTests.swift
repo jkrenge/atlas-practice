@@ -388,3 +388,44 @@ import UIKit
     #expect(view.layout?.size == view.bounds.size)
     #expect((geography.sublayers?.first as? CAShapeLayer)?.path !== paths[0])
 }
+
+@Test func mappedLakesAndNYCRiversDoNotSelectAreas() throws {
+    let probes: [(String, String, [Coordinate])] = [
+        ("us-states", "US-UT", [Coordinate(-112.5, 41.1), Coordinate(-81, 26.9)]),
+        ("germany-states", "DE-BW", [Coordinate(9.4, 47.62), Coordinate(12.7, 53.43), Coordinate(11.46, 53.7)]),
+        ("nyc-boroughs", "NYC-BORO-1", [Coordinate(-73.965, 40.743), Coordinate(-74.015, 40.72)]),
+        ("nyc-neighborhoods-focused", "NYC-BORO-5", [Coordinate(-73.965, 40.743), Coordinate(-74.015, 40.72),
+            Coordinate(-73.99278510511897, 40.70465085326032), Coordinate(-73.95473150505875, 40.73979288426392)])
+    ]
+    for (mapID, regionID, coordinates) in probes {
+        let pack = try MapLibrary().load(mapID)
+        for size in [CGSize(width: 360, height: 380), CGSize(width: 780, height: 320)] {
+            let layout = MapLayout(pack: pack, size: size)
+            for viewport in [MapViewport(), MapViewport(scale: 4, offset: CGSize(width: 15, height: -30))] {
+                for coordinate in coordinates {
+                    let point = try #require(layout.screen(coordinate, areaID: regionID, viewport: viewport))
+                    #expect(layout.hit(point, viewport: viewport, tolerance: 0) == .water)
+                    #expect(layout.coordinate(point, viewport: viewport) == nil)
+                    #expect(layout.locationPin(point, viewport: viewport) != nil)
+                }
+            }
+        }
+    }
+}
+
+@Test func everyPlayableAreaRetainsASelectableInteriorAfterShoreClipping() throws {
+    for id in MapLibrary.starterIDs {
+        let pack = try MapLibrary().load(id)
+        for size in [CGSize(width: 360, height: 380), CGSize(width: 780, height: 320)] {
+            let layout = MapLayout(pack: pack, size: size)
+            for area in pack.areas {
+                let shape = try #require(layout.shapes.first { $0.id == area.id })
+                #expect(shape.path.contains(shape.anchor, using: .evenOdd))
+                for viewport in [MapViewport(), MapViewport(scale: 3, offset: CGSize(width: 15, height: -30))] {
+                    let point = viewport.screen(shape.anchor, size: size)
+                    #expect(layout.hit(point, viewport: viewport, tolerance: 0) == .area(area.id))
+                }
+            }
+        }
+    }
+}

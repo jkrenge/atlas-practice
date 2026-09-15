@@ -9,7 +9,7 @@ from shapely.geometry import shape, MultiPolygon, Point
 from shapely.ops import unary_union
 from shapely.validation import explain_validity
 
-from compile_maps import ROOT, verify_sources
+from compile_maps import ROOT, verify_sources, records
 
 US_STATES = set('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN '
                 'MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA '
@@ -23,7 +23,7 @@ EXPECTED_COUNTS = {
 }
 GEOMETRY_COUNTS = {'nyc-neighborhoods-focused': 47, 'us-states': 51, 'germany-states': 16, 'nyc-boroughs': 5,
                    'nyc-neighborhoods': 262, 'world-countries': 242}
-SOURCE_IDS = {'natural-earth-admin1-lakes', 'nyc-learning-areas', 'natural-earth-admin1', 'natural-earth-countries', 'nyc-boroughs', 'nyc-nta2020'}
+SOURCE_IDS = {'natural-earth-admin1-land', 'nyc-learning-areas', 'natural-earth-countries-land', 'nyc-boroughs', 'nyc-nta2020'}
 
 
 def check(condition, message):
@@ -99,10 +99,19 @@ def check_focused_neighborhoods(candidates):
     check(len(manhattan) == 37, 'Manhattan source count changed')
     check({f['id'] for f in focused if f['properties']['borough'] == 'Manhattan'} ==
           {f['id'] for f in manhattan}, 'Manhattan neighborhood set changed')
+    boroughs = read(ROOT / 'maps/nyc-boroughs/areas.geojson')['features']
+    shores = {f['properties']['name']: f for f in boroughs}
+    for f in focused:
+        shore = shores[f['properties']['borough']]
+        check(f['properties']['shorelineSourceId'] == 'nyc-boroughs' and
+              f['properties']['shorelineAreaID'] == shore['id'], 'Missing official shoreline provenance')
+        check(shape(f['geometry']).difference(shape(shore['geometry'])).area < 1e-12,
+              f"Practice area extends outside official borough land: {f['id']}")
     for f in manhattan:
-        check(by_id[f['id']]['geometry'] == f['geometry'] and
+        expected_geometry = shape(f['geometry']).intersection(shape(shores['Manhattan']['geometry']))
+        check(shape(by_id[f['id']]['geometry']).symmetric_difference(expected_geometry).area < 1e-12 and
               by_id[f['id']]['properties']['name'] == f['properties']['neighborhood'],
-              f"Manhattan changed: {f['id']}")
+              f"Manhattan inland boundary or name changed: {f['id']}")
 
     groups = read(ROOT / 'data/nyc-learning-groups.json')
     check(unique(groups, 'NYC practice groups') == set(by_id) - {f['id'] for f in manhattan},
@@ -135,21 +144,64 @@ def check_focused_neighborhoods(candidates):
             check((group['name'], ids) in [('The Bronx', ['NYC-BORO-2']),
                   ('Staten Island', ['NYC-BORO-5'])], 'Wrong official borough boundary')
         if len(members) == 1:
-            check(f['geometry'] == members[0]['geometry'], 'Single area boundary changed')
+            expected_geometry = shape(members[0]['geometry']).intersection(shape(shores[group['borough']]['geometry']))
+            check(shape(f['geometry']).symmetric_difference(expected_geometry).area < 1e-12,
+                  'Single area inland boundary changed')
         else:
             shapes = [make_valid(shape(m['geometry'])) for m in members]
             shapes = [MultiPolygon([p for p in g.geoms if p.geom_type == 'Polygon'])
                       if g.geom_type == 'GeometryCollection' else g for g in shapes]
-            check(shape(f['geometry']).equals(unary_union(shapes)),
+            check(shape(f['geometry']).symmetric_difference(unary_union(shapes).intersection(
+                shape(shores[group['borough']]['geometry']))).area < 1e-12,
                   f"Group does not preserve member coverage: {group['name']}")
     expected = {f['id'] for f in candidates if f['properties']['borough'] in ('Brooklyn', 'Queens')}
     check(len(used) == len(set(used)) and set(used) == expected,
           'Brooklyn/Queens source areas must each belong to one group')
-    print('NYC: 37 Manhattan boundaries unchanged; 10 other areas; full source-member coverage.')
+    print('NYC: 37 Manhattan areas and 10 other areas; original membership and inland boundaries; official shorelines.')
+
+
+def check_land_sources():
+    # Compare every generated state/country feature with the pinned source.
+    # Source identities, membership and land coverage must survive lake clipping.
+    us_base = {r.record.as_dict()['iso_3166_2']: shape(r.shape.__geo_interface__)
+               for r in records('ne_10m_admin_1_states_provinces_lakes.zip')
+               if r.record.as_dict()['adm0_a3'] == 'USA'}
+    states = {r.record.as_dict()['iso_3166_2']: shape(r.shape.__geo_interface__)
+              for r in records('ne_10m_admin_1_states_provinces.zip')
+              if r.record.as_dict()['adm0_a3'] == 'DEU'}
+    countries = {'NE-' + str(r.record.as_dict()['NE_ID']): shape(r.shape.__geo_interface__)
+                 for r in records('ne_50m_admin_0_countries.zip')}
+    for map_id, source, lake_file in [('us-states', us_base, 'ne_10m_lakes.zip'),
+                                      ('germany-states', states, 'ne_10m_lakes.zip'),
+                                      ('world-countries', countries, 'ne_50m_lakes.zip')]:
+        water = unary_union([shape(r.shape.__geo_interface__) for r in records(lake_file)])
+        features = read(ROOT / 'maps' / map_id / 'areas.geojson')['features']
+        check({f['id'] for f in features} == set(source), 'Source feature IDs changed')
+        for f in features:
+            geometry = shape(f['geometry'])
+            expected = source[f['id']].difference(water)
+            check(geometry.symmetric_difference(expected).area < 1e-10,
+                  f"Land differs from source minus mapped lakes: {f['id']}")
+            check(geometry.intersection(water).area < 1e-10, f"Lake remains filled as land: {f['id']}")
+
+    water_probes = {
+        'us-states': [(-87, 43.5), (-112.5, 41.1), (-81, 26.9)],
+        'germany-states': [(9.4, 47.62), (12.7, 53.43), (11.46, 53.7)],
+        'world-countries': [(-87, 43.5), (108, 53), (33, -1), (-112.5, 41.1)],
+        'nyc-boroughs': [(-73.965, 40.743), (-74.015, 40.72)],
+        'nyc-neighborhoods-focused': [(-73.965, 40.743), (-74.015, 40.72),
+            (-73.99278510511897, 40.70465085326032), (-73.95473150505875, 40.73979288426392)],
+    }
+    for map_id, points in water_probes.items():
+        geometries = [shape(f['geometry']) for f in read(ROOT / 'maps' / map_id / 'areas.geojson')['features']]
+        for point in points:
+            check(not any(g.covers(Point(point)) for g in geometries), f'Water probe selected land: {map_id} {point}')
+    print('PASS: all 309 state/country features match source land; lake and NYC river probes remain water.')
 
 
 def main():
     verify_sources()
+    check_land_sources()
     catalog = read(ROOT / 'maps/catalog.json')
     check(catalog['schemaVersion'] == 2, 'Unsupported catalog version')
     check(unique(catalog['maps'], 'catalog') == set(EXPECTED_COUNTS), 'Unexpected map inventory')
@@ -187,7 +239,7 @@ def main():
                 check(not any(g.covers(Point(lake)) for g in land.values()), 'Great Lakes must remain water')
             for state, point in [('US-IL', (-87.65, 41.9)), ('US-MI', (-83.1, 42.4)), ('US-MI', (-87.4, 46.5))]:
                 check(land[state].contains(Point(point)), 'Lake shoreline removed state land')
-            check(m['sourceId'] == 'natural-earth-admin1-lakes', 'US map must use lake-clipped boundaries')
+            check(m['sourceId'] == 'natural-earth-admin1-land', 'US map must use lake-clipped boundaries')
             check(ids == {'US-' + i for i in US_STATES}, 'Incorrect US state set')
             check(set(by_id) == ids | {'US-DC'}, 'Incorrect US background')
             check(m['referenceSvgGeoreferenced'] is False, 'SVG must stay a visual reference')
@@ -230,7 +282,7 @@ def main():
               f'Missing requested neighborhood: {name}')
         check(shape(matches[0]['geometry']).is_valid, f'Invalid requested neighborhood: {name}')
     check_focused_neighborhoods(candidates)
-    print('PASS: 12 active map packs, 623 valid area features, 769 legacy city points, and source hashes.')
+    print('PASS: 12 catalog map packs, 623 valid area features, 769 legacy city points, and source hashes.')
     print('Original NYC snapshot retained; repairs applied before practice groups are merged.')
 
 

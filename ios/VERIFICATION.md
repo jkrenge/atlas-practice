@@ -1,5 +1,21 @@
 # iOS app verification
 
+## All-map source and shoreline review — 2026-09-14
+
+Reviewed all 12 catalog entries. Four packs are playable; the other eight remain reference data. The complete inventory and source limits are in [MAP_REVIEW.md](../data/MAP_REVIEW.md).
+
+State geometry now excludes mapped lakes from Natural Earth's 10m physical layer. World/continent geometry uses the 50m layer. The focused NYC pack is clipped to each area's own official borough shoreline. All map/question IDs and the 47-area NYC grouping remain stable. Source credits describe the derived geometry.
+
+- All 623 unique area features pass validation. All 309 state/country features match the original administrative source minus the matching lake mask. All 267 official borough/NTA features match their source geometry exactly. All 47 focused NYC areas preserve source membership and inland divisions after shore clipping.
+- Nine geographic source checksums pass. Offline recompilation reproduces all 22 generated map/source/repair files byte for byte. The learning validator passes for 66 states and flags, 60 cities, 70 landmarks, and 196 positions.
+- The Atlas Debug scheme built and passed **23 unit tests** on iPhone 17 Pro Simulator, iOS 26.5. New regressions verify water hit testing for US and German lakes, DUMBO, and Newtown Creek, plus a selectable interior for every one of the 118 playable areas at two viewport sizes with zoom/pan. Existing Great Lakes, Illinois, antimeridian, inset, distance, and native layer checks also pass.
+- **Six selected UI tests passed**: polygon taps/callouts/gestures, native pan alignment, Germany study selection, NYC neighborhood selection, NYC groups/name mode, and landmark pin/distance. Unchanged timer and full-session UI tests were not rerun in this review; their earlier evidence remains below.
+- A separate iPhone 17 Simulator run confirmed the US overview and insets, Germany state selection, and the reduced NYC map with DUMBO selection and zoom.
+
+Result bundle: the task's `work/map-audit/build/MapAudit/Logs/Test/Test-Atlas-2026.09.14_20-54-42--0400.xcresult`. Raw logs: `/private/tmp/atlas-map-audit-tests.log`, `/private/tmp/atlas-map-audit-validate.log`, `/private/tmp/atlas-map-audit-learning.log`, and `/private/tmp/atlas-map-audit-review.log`.
+
+This update was verified in Simulator. The physical iPhone still has the earlier Release installation described below; this review does not establish device behavior for the new geometry. The world and continent layouts remain unexposed pending camera, antimeridian, and curriculum work.
+
 ## Native map performance and Great Lakes — 2026-09-14
 
 The app remains native SwiftUI, UIKit, Core Graphics, and Core Animation. There is no web view, JavaScript UI, or external runtime. Map shapes now use retained `CAShapeLayer` paths. Gestures change native layer transforms; only labels, callouts, and pins need drawing. Unchanged SwiftUI updates no longer request map redraws. Question changes reset the viewport without destroying the map view. Bounds checks narrow polygon hit tests. Bundled map decoding runs outside the main actor, and UIKit caches flag images. Timer display updates occur when the displayed second changes; expiry still checks elapsed time every 200 ms.

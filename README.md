@@ -20,7 +20,7 @@ scripts/ios.sh test SIMULATOR_UDID
 scripts/ios.sh run SIMULATOR_UDID
 ```
 
-Build products and test results stay under ignored `build/`. To run on a physical iPhone, select a signing team in Xcode and a connected device. Physical-device testing and signing are not yet verified.
+Build products and test results stay under ignored `build/`. To run on a physical iPhone, select a signing team in Xcode and a connected device. The earlier signed Release build was installed on an iPhone Air. This map review update has been checked in Simulator; see the verification record for device status.
 
 See [implementation status](PROJECT_PLAN.md), [verification evidence](ios/VERIFICATION.md), and the retained [implementation brief](IMPLEMENTATION_HANDOFF.md).
 
@@ -43,9 +43,11 @@ All playable geometry uses GeoJSON with WGS 84 longitude and latitude coordinate
 | South America | Shared world geometry | 12 |
 | Oceania | Shared world geometry | 14 |
 
+State and country geometry excludes mapped lakes from Natural Earth physical layers at the same scale as its boundaries: 1:10 million for states and 1:50 million for countries. These are generalized learning maps, not survey-grade maps.
+
 The country lists follow Natural Earth's classifications. The count of 204 is not a claim about the number of sovereign countries. The six continent lists contain 201 questions in total: the source places Seychelles, Mauritius, and Maldives in `Seven seas (open ocean)`, so they appear only in the World list. Continent membership and disputed areas need curriculum review. There is no Antarctica country quiz.
 
-The app selector includes the US, Germany, NYC boroughs, and the focused NYC neighborhood pack. The separate official NTA dataset remains a statistical reference. Chinatown, Nolita, Tribeca, and Financial District have separate geometry in the neighborhood game. Manhattan keeps all 37 source areas. Bed-Stuy, DUMBO, Williamsburg, Greenpoint, and Long Island City stay separate. West Brooklyn, South & East Brooklyn, and Queens (other areas) combine the remaining Brooklyn and Queens neighborhoods. The Bronx and Staten Island each use one official borough polygon. These broad groups are practice areas. The unmodified mirror remains in `data/candidates`; repairs occur before grouping. See [group membership](data/nyc-learning-groups.json). The focused map has a new ID, so earlier scores from the 266-area map stay separate.
+The app selector includes the US, Germany, NYC boroughs, and the focused NYC neighborhood pack. The separate official NTA dataset remains a statistical reference. Chinatown, Nolita, Tribeca, and Financial District have separate geometry in the neighborhood game. Manhattan keeps all 37 source areas. Bed-Stuy, DUMBO, Williamsburg, Greenpoint, and Long Island City stay separate. West Brooklyn, South & East Brooklyn, and Queens (other areas) combine the remaining Brooklyn and Queens neighborhoods. The Bronx and Staten Island each use one official borough polygon. These broad groups are practice areas. The unmodified mirror remains in `data/candidates`; repairs occur before grouping. Each practice area is then clipped to its own official borough shoreline. This preserves membership and inland divisions but does not fill source gaps. See [group membership](data/nyc-learning-groups.json). The focused map has a new ID, so earlier scores from the 266-area map stay separate.
 
 `content/learning.json` contains 66 state facts, 60 ranked cities, and 70 curated sights. US city populations use Census Vintage 2025, July 1, 2025; German cities use Destatis, December 31, 2024. These are city/municipal populations, not metro areas. US consolidated-government balances and Washington, DC follow the Census ranking. Landmarks form a curated learning list, not a measured popularity ranking. Each point has a source link, and park reference points are labeled.
 
@@ -58,11 +60,12 @@ The older `data/us-cities.geojson` remains a cartographic reference with 769 Nat
 - `maps/*/areas.geojson`: Polygon and MultiPolygon geometry, including background areas.
 - `data/us-cities.geojson`: Retained Natural Earth city Point features.
 - `data/sources/`: Original source snapshots, committed for reproducible builds.
-- `data/source-checksums.json`: SHA-256 lock for the seven geographic snapshots.
+- `data/source-checksums.json`: SHA-256 lock for the nine geographic snapshots.
 - `content/learning.json` and `content/flags/`: offline game facts and authentic flag images.
 - `data/learning/`: reviewed identities, selections, slogan sources, and flag metadata.
 - `data/learning-checksums.json`: locks the new source snapshots, curation, and flag assets.
 - `data/SOURCES.md`: Source URLs, versions, terms, and selection rules.
+- [data/MAP_REVIEW.md](data/MAP_REVIEW.md): Review of all 12 packs, shoreline corrections, and limits.
 - `assets/us-states.svg` and `maps/us-states/map.svg`: Original and adapted visual references.
 - [MAP_FORMAT.md](MAP_FORMAT.md): Data contract and required coordinate handling.
 - [PROJECT_PLAN.md](PROJECT_PLAN.md): Implementation steps and acceptance checks.

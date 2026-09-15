@@ -37,13 +37,17 @@ Each feature has a unique string `id`, a nonempty `properties.name`, and `proper
 | --- | --- | --- |
 | US and Germany | Source ISO 3166-2, such as `US-CO` or `DE-BY` | `nameEnglish` |
 | NYC boroughs | `NYC-BORO-` plus `borocode` | `boroughCode` |
-| NYC focused practice areas | Original source URI for retained neighborhoods; `NYC-PRACTICE-` plus group name for merged areas; official borough ID for the Bronx and Staten Island | `borough`; outside Manhattan: `sourceId`, `sourceAreaIDs` |
+| NYC focused practice areas | Original source URI for retained neighborhoods; `NYC-PRACTICE-` plus group name for merged areas; official borough ID for the Bronx and Staten Island | `borough`; `shorelineSourceId`, `shorelineAreaID`; outside Manhattan: `sourceId`, `sourceAreaIDs` |
 | NYC NTAs | `NYC-` plus `nta2020` | `borough`, `ntaType` |
 | World countries | `NE-` plus Natural Earth `NE_ID` | `continent`, `sourceType`, `adminCode` |
+
+State manifests use `natural-earth-admin1-land`; world and continent manifests use `natural-earth-countries-land`. These IDs identify the original administrative boundaries minus the matching-scale physical lake mask. NYC focused areas use historical neighborhood divisions clipped to official borough land. See [source recipes](data/SOURCES.md).
 
 IDs are stable within the pinned source snapshots. Check source ID changes when data is updated. Never identify an area by its display name or array position.
 
 The manifest's `areas` list controls eligibility for the active map. A shared world feature can have `quizEligible: true` and still be outside a continent's question list. Features outside that list are background. The renderer can crop the view, but it must retain complete answer geometry. Full overseas geometry is preserved. Do not assume each country lies in one compact bounding box.
+
+Only US states, German states, NYC boroughs, and the focused NYC areas are exposed in the app. NTA, world, and continent packs are stored references. Continent manifests share complete world geometry; their camera bounds and global antimeridian rendering must be reviewed before exposure.
 
 The data contains antimeridian geometry, including Alaska's Aleutian Islands. A naive longitude minimum and maximum can span most of the world. Handle wrapping, polygon splitting, and clipping explicitly in the renderer.
 
@@ -51,21 +55,21 @@ The data contains antimeridian geometry, including Alaska's Aleutian Islands. A 
 
 `data/us-cities.geojson` is a separate FeatureCollection of `Point` features in the same longitude, latitude order. Its feature IDs use `NE-` plus `NE_ID`. Properties are `name`, `stateName`, `sourceId`, `sourcePopulationMax`, and `sourceScaleRank`. The last two are source metadata, not current population facts or a final difficulty ranking.
 
-Use the Point geometry as the city's position. Do not substitute the source's separate `LATITUDE` or `LONGITUDE` fields: they can differ from the actual geometry. No city-question manifest, distance function, or scoring curve exists yet.
+Use the Point geometry as the city's position. Do not substitute the source's separate `LATITUDE` or `LONGITUDE` fields: they can differ from the actual geometry. These legacy points are reference data. Current city, capital, and landmark questions instead use the sourced points in `content/learning.json`.
 
 ## Required rendering and tap pipeline
 
-The following is an implementation requirement, not existing code:
+The native renderer implements this pipeline for the four playable packs:
 
 ```text
 longitude/latitude -> projection -> optional inset transform -> viewport/zoom/pan -> screen
 screen tap -> inverse viewport -> inverse inset -> inverse projection -> longitude/latitude
 ```
 
-Use a defined projection with explicit parameters and an inverse. A projected map can distort distance; screen pixels and projected map units are not a geographic distance measure. Document each map's projection and its valid domain when the renderer is built. No projection parameters or view configuration are stored in this version of the manifests.
+Use a defined projection with explicit parameters and an inverse. A projected map can distort distance; screen pixels and projected map units are not a geographic distance measure. The implemented projections and inset parameters are documented in [README.md](README.md). No projection parameters or view configuration are stored in this version of the manifests.
 
-For the full US map, define separate lower-48, Alaska, and Hawaii view regions. Each region needs its own forward transform, inverse transform, clipping boundary, and screen hit region. Select the correct region before inverting a tap. Empty inset space must not map to an unrelated location. Preserve the original geographic coordinates when a region is moved or scaled.
+The US map uses separate lower-48, Alaska, and Hawaii view regions. Each region needs its own forward transform, inverse transform, clipping boundary, and screen hit region. Select the correct region before inverting a tap. Empty inset space must not map to an unrelated location. Preserve the original geographic coordinates when a region is moved or scaled.
 
 All maps must support pinch zoom and pan. Drawing, shape selection, leader lines, and callout anchors must use the same current transforms. Callout boxes for small states, including Delaware and Rhode Island, must visibly link to their actual shapes. A callout and its shape select the same area ID. A callout tap has no unique geographic coordinate and must not be used as a city-distance guess.
 
-For city mode, convert a map tap to longitude and latitude, then calculate a geodesic distance in meters to the city's Point. Test the result against known coordinate pairs. Zoom, pan, screen size, and inset scale must not change the result. The scoring curve is a later product decision.
+For city mode, convert a map tap to longitude and latitude, then calculate a geodesic distance in meters to the city's Point. Test the result against known coordinate pairs. Zoom, pan, screen size, and inset scale must not change the result. Current location questions use haversine distance and fixed thresholds of 50 km for US maps and 20 km for Germany. Water is a valid location guess inside a geographic map region.

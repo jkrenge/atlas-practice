@@ -1,19 +1,25 @@
 # Geographic data sources
 
-The original geographic snapshots were downloaded on **2026-09-13**. The lake-clipped US snapshot, new facts, and assets were retrieved on **2026-09-14**. Original bytes are retained under `data/sources/`; SHA-256 hashes are in `data/source-checksums.json`. Compilation verifies those hashes before writing output. Source data is not covered by an assumed project-wide license.
+The original geographic snapshots were downloaded on **2026-09-13**. The lake-clipped US snapshot, both physical lake datasets, new facts, and assets were retrieved on **2026-09-14**. Original bytes are retained under `data/sources/`; SHA-256 hashes are in `data/source-checksums.json`. Compilation verifies those hashes before writing output. Source data is not covered by an assumed project-wide license.
 
 ## Natural Earth
 
-Natural Earth makes its map data public domain. See the [official terms](https://www.naturalearthdata.com/about/terms-of-use/). Credit: Made with Natural Earth. The archive `VERSION.txt` files confirm the versions below, and their `.prj` files declare WGS 84 geographic coordinates. `pyshp` reads the geometry without reprojection, simplification, or vertex rounding.
+Natural Earth makes its map data public domain. See the [official terms](https://www.naturalearthdata.com/about/terms-of-use/). Credit: Made with Natural Earth. The archive `VERSION.txt` files confirm the versions below, and their `.prj` files declare WGS 84 geographic coordinates. `pyshp` reads source geometry without reprojection, simplification, or vertex rounding. Derived state and country geometry removes mapped lakes with Shapely, as specified below.
 
 | Source ID | Snapshot and direct download | Version | Output and selection |
 | --- | --- | --- | --- |
-| `natural-earth-admin1` | [ne_10m_admin_1_states_provinces.zip](https://naturalearth.s3.amazonaws.com/10m_cultural/ne_10m_admin_1_states_provinces.zip) | 5.1.1, 1:10 million | Keep `adm0_a3` DEU geometry for 16 German states. Retain USA names, IDs, and order; US geometry now comes from the lake-clipped variant below. |
-| `natural-earth-admin1-lakes` | [ne_10m_admin_1_states_provinces_lakes.zip](https://naturalearth.s3.amazonaws.com/10m_cultural/ne_10m_admin_1_states_provinces_lakes.zip) | 5.1.1, 1:10 million | Keep `adm0_a3` USA. 51 lake-clipped state features, with US-DC excluded from questions. The official variant excludes large lakes, preserving the Illinois shore of Lake Michigan and both Michigan peninsulas. |
+| `natural-earth-admin1` | [ne_10m_admin_1_states_provinces.zip](https://naturalearth.s3.amazonaws.com/10m_cultural/ne_10m_admin_1_states_provinces.zip) | 5.1.1, 1:10 million | Base geometry for 16 German states, selected by `adm0_a3` DEU. Retain USA names, IDs, and order; US geometry now comes from the lake-clipped variant below. |
+| `natural-earth-admin1-lakes` | [ne_10m_admin_1_states_provinces_lakes.zip](https://naturalearth.s3.amazonaws.com/10m_cultural/ne_10m_admin_1_states_provinces_lakes.zip) | 5.1.1, 1:10 million | Keep `adm0_a3` USA. 51 lake-clipped state features, with US-DC excluded from questions. The official variant excludes large lakes, preserving the Illinois shore of Lake Michigan and both Michigan peninsulas. The physical lake mask below also removes smaller mapped lakes. |
 | `natural-earth-countries` | [ne_50m_admin_0_countries.zip](https://naturalearth.s3.amazonaws.com/50m_cultural/ne_50m_admin_0_countries.zip) | 5.1.1, 1:50 million | Keep all 242 features. Only `TYPE` values `Sovereign country` and `Country` are provisionally eligible: 204 records. |
+| `natural-earth-lakes-10m` | [ne_10m_lakes.zip](https://naturalearth.s3.amazonaws.com/10m_physical/ne_10m_lakes.zip) | 5.0.0, 1:10 million | Basic physical lakes and reservoirs. Subtract their union from US and German state geometry. |
+| `natural-earth-lakes-50m` | [ne_50m_lakes.zip](https://naturalearth.s3.amazonaws.com/50m_physical/ne_50m_lakes.zip) | 5.0.0, 1:50 million | Subtract their union from the world country geometry shared by all six continent packs. |
 | `natural-earth-places` | [ne_10m_populated_places.zip](https://naturalearth.s3.amazonaws.com/10m_cultural/ne_10m_populated_places.zip) | 5.1.2, 1:10 million | Keep `ADM0_A3` USA: 769 city and town Points. Preserve `POP_MAX` and `SCALERANK` as source metadata. |
 
 Official documentation: [states and provinces](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-admin-1-states-provinces/), [countries](https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-admin-0-countries-2/), and [populated places](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-populated-places/).
+
+The derived manifest IDs are `natural-earth-admin1-land` and `natural-earth-countries-land`. US geometry uses Admin 1 Lakes minus 10m physical lakes; German geometry uses standard Admin 1 minus 10m physical lakes; countries use standard Admin 0 minus 50m physical lakes. IDs, names, eligibility, and order are retained. Each generated feature is checked against its pinned boundary minus the matching lake mask.
+
+The Admin 1 Lakes variant only removes the largest lakes. It does not remove the German lakes checked in this review. Physical lakes at the matching scale remove Lake Constance, Müritz, and Schweriner See, plus mapped US lakes such as Great Salt Lake and Okeechobee. The 50m physical layer also removes interior lakes such as Baikal. These are generalized cartographic datasets, not complete inventories of water bodies or survey-grade shorelines. See the official [10m lakes](https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-lakes/) and [50m lakes](https://www.naturalearthdata.com/downloads/50m-physical-vectors/50m-lakes-reservoirs/) documentation.
 
 German display names come from `name`; `name_en` remains available as `nameEnglish`. Country names use `NAME_EN` with `NAME` as fallback. Country and city IDs use `NE_ID` with the `NE-` prefix.
 
@@ -41,6 +47,8 @@ NTAs are statistical areas, not definitive neighborhood boundaries. Some cross b
 - Live [metadata](https://data.cityofnewyork.us/api/views/gthc-hcne.json) reports version **26b**; relevant fields are retained in `nyc-borough-source-metadata.json`.
 - Five shoreline borough MultiPolygons, with water areas excluded. Keep all five as questions. Use `NYC-BORO-` plus `borocode` as ID, and `boroname` as name. No NTA dissolve is used.
 
+Live metadata was checked again on 2026-09-14. Both sources still report 26b with the same row-update timestamps as the saved metadata.
+
 Both NYC geometry sources use longitude and latitude. Preserve their coordinates and polygon parts without reprojection.
 
 ## Pediacities / Ontodia neighborhoods
@@ -55,22 +63,24 @@ The raw snapshot has 310 records. Compilation skips seven null geometries and gr
 
 ## `nyc-learning-areas`: focused NYC practice map
 
-`nyc-neighborhoods-focused` has 47 questions. All 37 Manhattan areas retain their source IDs, names, and geometry. Outside Manhattan, [nyc-learning-groups.json](nyc-learning-groups.json) defines ten areas and their source members:
+`nyc-neighborhoods-focused` has 47 questions. All 37 Manhattan areas retain their source IDs, names, and inland divisions. Shorelines are clipped as described below. Outside Manhattan, [nyc-learning-groups.json](nyc-learning-groups.json) defines ten areas and their source members:
 
-- **Bed-Stuy, DUMBO, Williamsburg, Greenpoint:** retained Brooklyn polygons. Bedford-Stuyvesant uses the shorter display name Bed-Stuy; its source ID stays unchanged.
+- **Bed-Stuy, DUMBO, Williamsburg, Greenpoint:** separate Brooklyn areas. Bedford-Stuyvesant uses the shorter display name Bed-Stuy; its source ID stays unchanged.
 - **West Brooklyn:** Brooklyn Heights, Downtown Brooklyn, Boerum Hill, Cobble Hill, Carroll Gardens, Red Hook, Columbia St, Vinegar Hill, Fort Greene, Clinton Hill, Navy Yard, Prospect Heights, Park Slope, Gowanus, South Slope, Sunset Park, Bay Ridge, and Fort Hamilton.
 - **South & East Brooklyn:** the remaining 32 Brooklyn source areas.
-- **Long Island City:** retained Queens polygon.
+- **Long Island City:** a separate Queens area.
 - **Queens (other areas):** the remaining 61 Queens source areas.
 - **The Bronx and Staten Island:** one official NYC DCP borough boundary each, from `nyc-boroughs`. No neighborhood or NTA dissolve is used for either borough.
 
 West Brooklyn, South & East Brooklyn, and Queens (other areas) are learning groups, not official neighborhoods. Shapely `unary_union` merges their repaired source polygons without inventing a new dividing line. Each Brooklyn and Queens source area belongs to exactly one group. Source gaps and overlaps can remain; validation establishes member coverage, not a complete city partition. The combined pack credits both Pediacities/Ontodia and NYC DCP. Each non-Manhattan feature records `sourceId` and `sourceAreaIDs`.
 
+After grouping, intersect each area with its own official DCP borough land polygon. This removes historical shoreline extensions, including at DUMBO and along Newtown Creek, without changing group membership or inland divisions. Keep only Polygon/MultiPolygon components; zero-area shoreline contacts can produce line components that cannot be rendered as areas. Every feature records `shorelineSourceId: nyc-boroughs` and the matching `shorelineAreaID`. The Bronx and Staten Island still match the official borough geometry. This operation trims excess coverage; it does not fill gaps in the historical neighborhood source. It does not make the neighborhood divisions official.
+
 The focused pack replaces the 266-area pack in the catalog and selector. Its new map ID keeps earlier practice scores separate. The original candidate and source snapshots stay available for reproducibility.
 
 ## Decorative US SVG
 
-See [assets/SOURCE.md](../assets/SOURCE.md). This CC0 reference is separate from the geographic datasets. Neither its declared projection name nor its state IDs provides a verified screen-to-geography transform.
+See [assets/SOURCE.md](../assets/SOURCE.md). This CC0 reference is separate from the geographic datasets. Neither its declared projection name nor its state IDs provides a verified screen-to-geography transform. The native app renders and hit-tests GeoJSON; it does not render this SVG.
 
 ## State facts, flags, cities, and landmarks
 

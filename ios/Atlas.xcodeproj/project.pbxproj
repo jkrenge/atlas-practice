@@ -40,7 +40,7 @@
 
 /* Begin PBXFileReference section */
 		05320D814ADF73716AFE4B01 /* content */ = {isa = PBXFileReference; lastKnownFileType = folder; name = content; path = ../content; sourceTree = SOURCE_ROOT; };
-		413A56C9FFE04C7BBD65B964 /* Atlas.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		413A56C9FFE04C7BBD65B964 /* Atlas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CAFA8A4B31EB0A34156C781 /* AtlasTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AtlasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7805FF9C57EBD9F5977D7D06 /* AtlasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasTests.swift; sourceTree = "<group>"; };
 		7FE7CF3FE9829B3C9A291B84 /* MapGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGeometry.swift; sourceTree = "<group>"; };
@@ -276,6 +276,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 8433V6NWHP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Atlas Practice";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -407,6 +408,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 8433V6NWHP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Atlas Practice";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

@@ -1,5 +1,15 @@
 # iOS app verification
 
+## Latest device installation — 2026-09-14
+
+A signed Release build from commit `47de3a3` was installed successfully on the connected iPhone Air after the map review. The build used Xcode 26.6, the configured paid developer team, whole-module optimization, and disabled coverage instrumentation. Before installation, all 20 bundled map files and the learning JSON matched the repository byte for byte; strict code-signature verification passed.
+
+`devicectl device install app` reported success for `com.jkrenge.geography`, and a subsequent installed-app query returned Atlas Practice. Launch was denied because the phone was locked. Installation is confirmed; this is not evidence of a completed physical-phone interaction test. The installed build includes the lake and NYC shoreline corrections. No TestFlight or App Store release was performed.
+
+This record was consolidated on 2026-09-17 from the build and device-tool results in the task. Temporary logs from that installation are no longer available. Repeatable commands are in [DEVICE_INSTALL.md](DEVICE_INSTALL.md). The existing signing-team setting is now retained in both the generated Xcode project and its XcodeGen source.
+
+The dated sections below retain the validation scope at each earlier stage.
+
 ## All-map source and shoreline review — 2026-09-14
 
 Reviewed all 12 catalog entries. Four packs are playable; the other eight remain reference data. The complete inventory and source limits are in [MAP_REVIEW.md](../data/MAP_REVIEW.md).
@@ -14,7 +24,7 @@ State geometry now excludes mapped lakes from Natural Earth's 10m physical layer
 
 Result bundle: the task's `work/map-audit/build/MapAudit/Logs/Test/Test-Atlas-2026.09.14_20-54-42--0400.xcresult`. Raw logs: `/private/tmp/atlas-map-audit-tests.log`, `/private/tmp/atlas-map-audit-validate.log`, `/private/tmp/atlas-map-audit-learning.log`, and `/private/tmp/atlas-map-audit-review.log`.
 
-This update was verified in Simulator. The physical iPhone still has the earlier Release installation described below; this review does not establish device behavior for the new geometry. The world and continent layouts remain unexposed pending camera, antimeridian, and curriculum work.
+This update was verified in Simulator and subsequently installed on the physical iPhone, as recorded above. The locked-phone launch limit means physical interaction with the new geometry is not verified. The world and continent layouts remain unexposed pending camera, antimeridian, and curriculum work.
 
 ## Native map performance and Great Lakes — 2026-09-14
 

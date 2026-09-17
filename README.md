@@ -20,7 +20,7 @@ scripts/ios.sh test SIMULATOR_UDID
 scripts/ios.sh run SIMULATOR_UDID
 ```
 
-Build products and test results stay under ignored `build/`. To run on a physical iPhone, select a signing team in Xcode and a connected device. The earlier signed Release build was installed on an iPhone Air. This map review update has been checked in Simulator; see the verification record for device status.
+Build products and test results stay under ignored `build/`. To run on a physical iPhone, select a signing team in Xcode and a connected device. The signed Release build of commit `47de3a3`, including the map corrections, was installed on an iPhone Air on 2026-09-14. Installation was verified; automatic launch was blocked by the phone lock screen. See [device installation](ios/DEVICE_INSTALL.md) for repeatable commands and [verification](ios/VERIFICATION.md) for the tested scope.
 
 See [implementation status](PROJECT_PLAN.md), [verification evidence](ios/VERIFICATION.md), and the retained [implementation brief](IMPLEMENTATION_HANDOFF.md).
 

@@ -46,7 +46,7 @@ The native app renders GeoJSON. Its decorative US SVG is not used for rendering,
 
 The Atlas scheme built and passed **23 unit tests and six selected UI tests** on iPhone 17 Pro Simulator, iOS 26.5, with Xcode 26.6. Checks cover every playable area's interior at portrait and landscape viewport sizes, zoom/pan transforms, Great Lakes and Illinois, new lake/river regressions, US insets, native gestures, neighborhood selection, and landmark pin placement. See [iOS verification](../ios/VERIFICATION.md) for the result bundle and exact scope.
 
-A separate iPhone 17 Simulator inspection confirmed the US overview and insets, Germany's map and state selection, and the reduced NYC map with DUMBO selection and zoom. The new map update has not been installed on the physical phone as part of this review.
+A separate iPhone 17 Simulator inspection confirmed the US overview and insets, Germany's map and state selection, and the reduced NYC map with DUMBO selection and zoom. After this review, a signed Release build of `47de3a3` was installed on iPhone Air on 2026-09-14. Automatic launch was blocked by the phone lock screen. See [installation evidence](../ios/VERIFICATION.md).
 
 ## Limits before enabling stored country maps
 

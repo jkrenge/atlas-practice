@@ -1,0 +1,50 @@
+{
+  "us-states": {
+    "originalPoints": 63557,
+    "reducedPoints": 19132,
+    "originalBytes": 2526581,
+    "reducedBytes": 583633,
+    "maxAreaChange": 0.01,
+    "maxIntervalMeters": 6000
+  },
+  "germany-states": {
+    "originalPoints": 14731,
+    "reducedPoints": 4070,
+    "originalBytes": 571376,
+    "reducedBytes": 119696,
+    "maxAreaChange": 0.01,
+    "maxIntervalMeters": 2000
+  },
+  "nyc-boroughs": {
+    "originalPoints": 81085,
+    "reducedPoints": 4767,
+    "originalBytes": 3167477,
+    "reducedBytes": 147973,
+    "maxAreaChange": 0.01,
+    "maxIntervalMeters": 60
+  },
+  "nyc-neighborhoods-focused": {
+    "originalPoints": 59258,
+    "reducedPoints": 4514,
+    "originalBytes": 2331675,
+    "reducedBytes": 157302,
+    "maxAreaChange": 0.01,
+    "maxIntervalMeters": 60
+  },
+  "nyc-neighborhoods": {
+    "originalPoints": 115002,
+    "reducedPoints": 18541,
+    "originalBytes": 4541888,
+    "reducedBytes": 620038,
+    "maxAreaChange": 0.01,
+    "maxIntervalMeters": 60
+  },
+  "world-countries": {
+    "originalPoints": 116775,
+    "reducedPoints": 58114,
+    "originalBytes": 4318958,
+    "reducedBytes": 1797341,
+    "maxAreaChange": 0.01,
+    "maxIntervalMeters": 12000
+  }
+}

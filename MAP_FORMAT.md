@@ -25,7 +25,9 @@ Resolve asset paths relative to the folder that contains `map.json`. A path can 
 | `referenceSvgAsset` | Optional visual reference, currently present only for the US. |
 | `referenceSvgGeoreferenced` | `false` for the current SVG. It cannot map pixels to geographic coordinates. |
 
-For example, the US manifest points to `areas.geojson`, and Colorado has ID `US-CO`. A continent manifest points to `../world-countries/areas.geojson` and lists only its question areas.
+For example, the US manifest points to `areas-lowres.geojson`, and Colorado has ID `US-CO`. A continent manifest points to `../world-countries/areas-lowres.geojson` and lists only its question areas. Full source-derived `areas.geojson` files remain in the repository for validation and are excluded from the iOS bundle.
+
+The simplified assets use matched shared borders and retain all feature IDs and metadata. Small rings receive tighter simplification limits. Original NYC edge inconsistencies are normalized before simplification; existing gaps remain water, and overlapping source faces belong to the first source feature. Changes to each feature's area are limited to 1%, and known lake and river points must remain water. Higher zoom levels show less coastline detail. Geographic point coordinates are not simplified.
 
 ## Geometry and identity
 

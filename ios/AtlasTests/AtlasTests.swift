@@ -71,7 +71,7 @@ import UIKit
     #expect(layout.shapes.count == 51)
     for area in pack.areas {
         let shape = try #require(layout.shapes.first { $0.id == area.id })
-        #expect(shape.path.contains(shape.anchor, using: .evenOdd))
+        #expect(shape.contains(shape.anchor))
     }
     for callout in layout.callouts {
         #expect(callout.frame.width >= 44)
@@ -81,6 +81,19 @@ import UIKit
     #expect(layout.callouts.contains { $0.id == "US-RI" })
     let dc = try #require(layout.shapes.first { $0.id == "US-DC" })
     #expect(layout.hit(dc.anchor, viewport: MapViewport(), tolerance: 0) == .water)
+}
+
+@Test func shortLandscapeKeepsSmallAreaCalloutsReachable() throws {
+    let pack = try MapLibrary().load("us-states")
+    let size = CGSize(width: 874, height: 180)
+    let layout = MapLayout(pack: pack, size: size)
+    for callout in layout.callouts {
+        #expect(CGRect(origin: .zero, size: size).contains(callout.frame))
+        #expect(layout.hit(callout.center, viewport: MapViewport()) == .area(callout.id))
+    }
+    for (first, second) in zip(layout.callouts, layout.callouts.dropFirst()) {
+        #expect(first.frame.maxY <= second.frame.minY)
+    }
 }
 
 @Test func holesWaterBackgroundAndBordersDoNotSubmitAnswers() throws {
@@ -329,14 +342,21 @@ import UIKit
         let renderer = UIGraphicsImageRenderer(size: view.bounds.size)
         let drawStart = Date.timeIntervalSinceReferenceDate
         for step in 0..<30 {
-            view.viewport = MapViewport(scale: 2, offset: CGSize(width: step, height: 0))
-            // The vector layers are rendered by Core Animation. Measure app-side
-            // viewport and annotation work, excluding the GPU compositor.
-            _ = renderer.image { _ in view.subviews.first?.draw(view.bounds) }
+            view.applyViewport(MapViewport(scale: 2, offset: CGSize(width: step, height: 0)))
+            // Measure native viewport and annotation work. Compositor frame
+            // time is measured separately from these CPU updates.
+            _ = renderer.image { _ in view.subviews.last?.draw(view.bounds) }
             CATransaction.flush()
         }
         let drawMS = (Date.timeIntervalSinceReferenceDate - drawStart) * 1000 / 30
         print("MAP_BENCH \(id) load_ms=\(loadMS) layout_ms=\(layoutMS) cpu_update_ms=\(drawMS)")
+        let resizeStart = Date.timeIntervalSinceReferenceDate
+        for height in [650, 580, 620, 650, 580, 620] {
+            view.frame.size = CGSize(width: 402, height: height)
+            view.layoutIfNeeded()
+            CATransaction.flush()
+        }
+        print("MAP_RESIZE \(id) cpu_ms=\((Date.timeIntervalSinceReferenceDate - resizeStart) * 1000 / 6)")
     }
 }
 
@@ -362,31 +382,77 @@ import UIKit
 }
 
 @MainActor
-@Test func mapLayersReusePathsAndMatchGeographicTransforms() throws {
-    let view = GeographicMapView(pack: try MapLibrary().load("us-states"))
+@Test(arguments: MapLibrary.starterIDs)
+func previewGeometryAndRendering(_ id: String) throws {
+    let pack = try MapLibrary().load(id)
+    func elements(_ path: CGPath) -> Int {
+        var count = 0
+        path.applyWithBlock { _ in count += 1 }
+        return count
+    }
+    let original = pack.preparedLayout.shapes.reduce(0) { $0 + elements($1.path) }
+    let preview = pack.preparedLayout.shapes.reduce(0) { $0 + elements($1.previewPath) }
+    #expect(preview <= original)
+    let view = MapPreviewView(pack: pack)
+    view.frame = CGRect(x: 0, y: 0, width: 360, height: 150)
+    let start = Date()
+    let image = UIGraphicsImageRenderer(size: view.bounds.size).image { context in
+        view.layer.render(in: context.cgContext)
+    }
+    #expect(image.size == view.bounds.size)
+    #expect(view.layer.sublayers?.isEmpty ?? true)
+    print("PREVIEW \(id) elements=\(original)->\(preview) draw_ms=\(Date().timeIntervalSince(start) * 1000)")
+}
+
+@MainActor
+@Test(arguments: MapLibrary.starterIDs)
+func nativeMapReusesTilesAndKeepsTapCoordinatesAligned(_ id: String) throws {
+    let view = GeographicMapView(pack: try MapLibrary().load(id))
     view.frame = CGRect(x: 0, y: 0, width: 360, height: 380)
     view.layoutIfNeeded()
-    let layout = try #require(view.layout)
-    let geography = try #require(view.layer.sublayers?.first)
-    let layers = try #require(geography.sublayers)
-    #expect(layers.count == 52) // 51 areas and one highlight outline.
-    let paths = layers.compactMap { ($0 as? CAShapeLayer)?.path }
+    let scroll = try #require(view.subviews.first as? UIScrollView)
+    let content = try #require(view.viewForZooming(in: scroll))
+    let geography = try #require(content.subviews.first)
+    let base = try #require(geography.layer.sublayers?.first as? CATiledLayer)
+    #expect(base.bounds.size == view.bounds.size)
+    #expect(base.levelsOfDetail == 6 && base.levelsOfDetailBias == 5)
+    #expect(geography.layer.sublayers?.count == 3) // Cached tiles and two answer overlays.
+    #expect(scroll.maximumZoomScale == 32)
     for step in 1...30 {
         view.applyViewport(MapViewport(scale: 2, offset: CGSize(width: step, height: -12)))
-        view.highlight = step.isMultiple(of: 2) ? "US-IL" : "US-MI"
+        view.highlight = view.pack.areas[step % 2].id
         view.setNeedsLayout()
         view.layoutIfNeeded()
-        for (index, shape) in layout.shapes.enumerated() {
-            #expect((geography.sublayers?[index] as? CAShapeLayer)?.path === paths[index])
-            let actual = shape.anchor.applying(geography.affineTransform())
-            let expected = view.viewport.screen(shape.anchor, size: layout.size)
+        #expect(geography.layer.sublayers?.first === base)
+        for shape in try #require(view.layout).shapes {
+            let actual = geography.convert(shape.anchor, to: view)
+            let expected = view.viewport.screen(shape.anchor, size: view.bounds.size)
             #expect(abs(actual.x - expected.x) < 1e-8 && abs(actual.y - expected.y) < 1e-8)
+            #expect(shape.contains(shape.anchor))
         }
+    }
+    // Exercise UIScrollView's own delegate path, including gesture state readback.
+    scroll.zoomScale = 4
+    scroll.contentOffset.x += 20
+    for shape in try #require(view.layout).shapes {
+        let actual = geography.convert(shape.anchor, to: view)
+        let expected = view.viewport.screen(shape.anchor, size: view.bounds.size)
+        #expect(abs(actual.x - expected.x) < 1e-8 && abs(actual.y - expected.y) < 1e-8)
     }
     view.frame.size = CGSize(width: 780, height: 320)
     view.layoutIfNeeded()
-    #expect(view.layout?.size == view.bounds.size)
-    #expect((geography.sublayers?.first as? CAShapeLayer)?.path !== paths[0])
+    let resized = try #require(view.layout)
+    #expect(resized.size == view.bounds.size)
+    #expect(geography.layer.sublayers?.first !== base)
+    #expect(geography.layer.sublayers?.first is CATiledLayer)
+    for (index, shape) in resized.shapes.enumerated() {
+        #expect(shape.path === view.pack.preparedLayout.shapes[index].path)
+        let actual = geography.convert(shape.anchor, to: view)
+        let expected = view.viewport.screen(shape.anchor, size: resized.size)
+        #expect(abs(actual.x - expected.x) < 1e-8 && abs(actual.y - expected.y) < 1e-8)
+    }
+    view.applyViewport(MapViewport())
+    #expect(view.viewport == MapViewport() && scroll.zoomScale == 1)
 }
 
 @Test func mappedLakesAndNYCRiversDoNotSelectAreas() throws {
@@ -420,7 +486,7 @@ import UIKit
             let layout = MapLayout(pack: pack, size: size)
             for area in pack.areas {
                 let shape = try #require(layout.shapes.first { $0.id == area.id })
-                #expect(shape.path.contains(shape.anchor, using: .evenOdd))
+                #expect(shape.contains(shape.anchor))
                 for viewport in [MapViewport(), MapViewport(scale: 3, offset: CGSize(width: 15, height: -30))] {
                     let point = viewport.screen(shape.anchor, size: size)
                     #expect(layout.hit(point, viewport: viewport, tolerance: 0) == .area(area.id))

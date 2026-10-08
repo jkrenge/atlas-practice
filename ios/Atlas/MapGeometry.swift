@@ -85,11 +85,15 @@ struct MapRegion {
 struct MapShape {
     let id: String
     let path: CGPath
+    let previewPath: CGPath
     let anchor: CGPoint
     let region: Int
     let bounds: CGRect
+    // The retained path is in prepared-map coordinates. Anchors and bounds
+    // are fitted to the current canvas; hit testing uses the inverse fit.
+    let transform: CGAffineTransform
     func contains(_ point: CGPoint) -> Bool {
-        bounds.contains(point) && path.contains(point, using: .evenOdd)
+        bounds.contains(point) && path.contains(point.applying(transform.inverted()), using: .evenOdd)
     }
 }
 
@@ -111,29 +115,51 @@ struct MapLayout {
     let callouts: [MapCallout]
     let eligibleIDs: Set<String>
 
-    init(pack: MapPack, size: CGSize) {
+    init(pack: MapPack, size: CGSize, includesCallouts: Bool = true) {
         self.size = size
-        eligibleIDs = Set(pack.areas.map(\.id))
-        let us = pack.id == "us-states"
+        let prepared = pack.preparedLayout
+        eligibleIDs = prepared.eligibleIDs
+        let smallIDs = includesCallouts ? prepared.callouts.map(\.id) : []
+        let frames = Self.frames(size: size, us: pack.id == "us-states", hasCallouts: !smallIDs.isEmpty)
+        regions = zip(prepared.regions, frames).map { source, frame in
+            MapRegion(projection: source.projection, bounds: source.bounds, frame: frame)
+        }
+        let transforms = zip(prepared.regions, regions).map { source, fitted in
+            let scale = fitted.factor / source.factor
+            return CGAffineTransform(a: scale, b: 0, c: 0, d: scale,
+                                     tx: fitted.frame.midX - source.frame.midX * scale,
+                                     ty: fitted.frame.midY - source.frame.midY * scale)
+        }
+        shapes = prepared.shapes.map { source in
+            let transform = transforms[source.region]
+            return MapShape(id: source.id, path: source.path, previewPath: source.previewPath, anchor: source.anchor.applying(transform),
+                            region: source.region, bounds: source.bounds.applying(transform), transform: transform)
+        }
+        callouts = Self.callouts(ids: smallIDs, size: size)
+    }
+
+    // Prepare projection, paths, and interior anchors while loading the pack
+    // off the main actor. Every preview and play canvas shares these paths.
+    init(manifest: MapManifest, features: [GeoFeature]) {
+        let size = CGSize(width: 1000, height: 1000)
+        self.size = size
+        eligibleIDs = Set(manifest.areas.map(\.id))
+        let us = manifest.id == "us-states"
         let smallIDs = us ? ["US-RI", "US-CT", "US-NJ", "US-DE"] :
-            (pack.id == "germany-states" ? ["DE-HH", "DE-HB", "DE-BE"] : [])
-        let usableWidth = size.width - (smallIDs.isEmpty ? 24 : 70)
+            (manifest.id == "germany-states" ? ["DE-HH", "DE-HB", "DE-BE"] : [])
+        let frames = Self.frames(size: size, us: us, hasCallouts: !smallIDs.isEmpty)
         var groups: [(features: [GeoFeature], projection: MapProjection, frame: CGRect)] = []
         if us {
             groups = [
-                (pack.features.filter { !["US-AK", "US-HI"].contains($0.id) }, .albers,
-                 CGRect(x: 12, y: 12, width: usableWidth, height: size.height * 0.71)),
-                (pack.features.filter { $0.id == "US-AK" }, .equirectangular(longitude: -154, latitude: 64),
-                 CGRect(x: 16, y: size.height * 0.76, width: size.width * 0.40, height: size.height * 0.20)),
-                (pack.features.filter { $0.id == "US-HI" }, .equirectangular(longitude: -157, latitude: 20),
-                 CGRect(x: size.width * 0.47, y: size.height * 0.79, width: size.width * 0.25, height: size.height * 0.14))
+                (features.filter { !["US-AK", "US-HI"].contains($0.id) }, .albers, frames[0]),
+                (features.filter { $0.id == "US-AK" }, .equirectangular(longitude: -154, latitude: 64), frames[1]),
+                (features.filter { $0.id == "US-HI" }, .equirectangular(longitude: -157, latitude: 20), frames[2])
             ]
         } else {
-            let coordinates = pack.features.flatMap { $0.geometry.polygons.flatMap { $0.flatMap { $0 } } }
+            let coordinates = features.flatMap { $0.geometry.polygons.flatMap { $0.flatMap { $0 } } }
             let longitude = coordinates.map(\.longitude).reduce(0, +) / Double(coordinates.count)
             let latitude = coordinates.map(\.latitude).reduce(0, +) / Double(coordinates.count)
-            groups = [(pack.features, .equirectangular(longitude: longitude, latitude: latitude),
-                       CGRect(x: 12, y: 16, width: usableWidth, height: size.height - 32))]
+            groups = [(features, .equirectangular(longitude: longitude, latitude: latitude), frames[0])]
         }
         var regions: [MapRegion] = []
         var shapes: [MapShape] = []
@@ -146,6 +172,7 @@ struct MapLayout {
             regions.append(region)
             for feature in group.features {
                 let path = CGMutablePath()
+                let previewPath = CGMutablePath()
                 var largestRing: [CGPoint] = []
                 var largestArea: CGFloat = 0
                 for polygon in feature.geometry.polygons {
@@ -153,20 +180,74 @@ struct MapLayout {
                         let points = ring.map(region.point)
                         path.addLines(between: points)
                         path.closeSubpath()
+                        // Preview canvases are at most 150 points high. This
+                        // prepared-map tolerance is below one screen pixel there.
+                        previewPath.addLines(between: Self.simplifiedRing(points, tolerance: 0.8))
+                        previewPath.closeSubpath()
                         let area = abs(Self.signedArea(points))
                         if index == 0 && area > largestArea { largestRing = points; largestArea = area }
                     }
                 }
                 let anchor = Self.interiorPoint(path: path, ring: largestRing)
-                shapes.append(MapShape(id: feature.id, path: path, anchor: anchor, region: regionIndex, bounds: path.boundingBoxOfPath))
+                shapes.append(MapShape(id: feature.id, path: path, previewPath: previewPath, anchor: anchor, region: regionIndex,
+                                       bounds: path.boundingBoxOfPath, transform: .identity))
             }
         }
         self.regions = regions
         self.shapes = shapes
-        let spacing: CGFloat = max(48, min(62, (size.height - 48) / CGFloat(max(1, smallIDs.count))))
-        callouts = smallIDs.enumerated().map { index, id in
+        callouts = Self.callouts(ids: smallIDs, size: size)
+    }
+
+    private static func simplifiedRing(_ points: [CGPoint], tolerance: CGFloat) -> [CGPoint] {
+        guard points.count > 3 else { return points }
+        var keep = Set([0, points.count - 1])
+        var ranges = [(0, points.count - 1)]
+        while let (start, end) = ranges.popLast() {
+            guard end > start + 1 else { continue }
+            let a = points[start], b = points[end]
+            let dx = b.x - a.x, dy = b.y - a.y
+            let lengthSquared = dx * dx + dy * dy
+            var farthest = start
+            var maxDistanceSquared = tolerance * tolerance
+            for index in (start + 1)..<end {
+                let point = points[index]
+                let fraction = lengthSquared == 0 ? 0 : max(0, min(1,
+                    ((point.x - a.x) * dx + (point.y - a.y) * dy) / lengthSquared))
+                let x = point.x - a.x - fraction * dx
+                let y = point.y - a.y - fraction * dy
+                let distanceSquared = x * x + y * y
+                if distanceSquared > maxDistanceSquared {
+                    maxDistanceSquared = distanceSquared
+                    farthest = index
+                }
+            }
+            if farthest != start {
+                keep.insert(farthest)
+                ranges.append((start, farthest))
+                ranges.append((farthest, end))
+            }
+        }
+        return keep.sorted().map { points[$0] }
+    }
+
+    private static func frames(size: CGSize, us: Bool, hasCallouts: Bool) -> [CGRect] {
+        let usableWidth = size.width - (hasCallouts ? 70 : 24)
+        if us {
+            return [
+                CGRect(x: 12, y: 12, width: usableWidth, height: size.height * 0.71),
+                CGRect(x: 16, y: size.height * 0.76, width: size.width * 0.40, height: size.height * 0.20),
+                CGRect(x: size.width * 0.47, y: size.height * 0.79, width: size.width * 0.25, height: size.height * 0.14)
+            ]
+        }
+        return [CGRect(x: 12, y: 16, width: usableWidth, height: size.height - 32)]
+    }
+
+    private static func callouts(ids smallIDs: [String], size: CGSize) -> [MapCallout] {
+        let spacing: CGFloat = max(44, min(62, (size.height - 48) / CGFloat(max(1, smallIDs.count))))
+        let firstCenter = min(size.height * 0.20, max(22, size.height - 22 - CGFloat(max(0, smallIDs.count - 1)) * spacing))
+        return smallIDs.enumerated().map { index, id in
             MapCallout(id: id, number: index + 1,
-                       center: CGPoint(x: size.width - 27, y: size.height * 0.20 + CGFloat(index) * spacing))
+                       center: CGPoint(x: size.width - 27, y: firstCenter + CGFloat(index) * spacing))
         }
     }
 

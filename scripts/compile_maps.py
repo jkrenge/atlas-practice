@@ -207,6 +207,8 @@ def main():
     print(json.dumps(catalog, indent=2))
     print(f'US city and town points: {len(cities)}')
     print(f'NYC practice areas: {len(focused)}; source neighborhoods: {len(local)}; repaired geometries: {len(repairs)}')
+    from simplify_maps import simplify_maps
+    simplify_maps()
 
 
 if __name__ == '__main__':

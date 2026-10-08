@@ -8,7 +8,7 @@ struct AtlasApp: App {
         WindowGroup {
             LibraryScreen()
                 .environment(progress)
-                .tint(.atlasTeal)
+                .tint(.atlasBlue)
                 .preferredColorScheme(.light)
         }
     }
@@ -18,19 +18,18 @@ struct LibraryScreen: View {
     @State private var content: LearningContent?
     @State private var packs: [MapPack] = []
     @State private var loadError: String?
+    @Environment(\.dynamicTypeSize) private var typeSize
+
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    HStack {
-                        Image(systemName: "globe.americas.fill").font(.title2)
-                        Text("ATLAS PRACTICE").font(.caption.weight(.bold)).tracking(2)
-                        Spacer()
-                    }.foregroundStyle(Color.atlasTeal)
+                VStack(alignment: .leading, spacing: 24) {
+                    masthead
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("A little practice.\nA bigger world.")
-                            .font(.system(.largeTitle, design: .serif, weight: .semibold))
-                        Text("Learn the places around you, one map at a time.")
+                        Text("The world,\na little closer.")
+                            .font(.custom("Georgia", size: 34, relativeTo: .largeTitle))
+                            .tracking(-1).fixedSize(horizontal: false, vertical: true)
+                        Text("Choose a map. Learn a little more.")
                             .font(.body).foregroundStyle(Color.atlasMuted)
                     }
                     if let loadError {
@@ -38,53 +37,103 @@ struct LibraryScreen: View {
                     } else if packs.isEmpty {
                         ProgressView("Opening your maps…")
                     } else {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("CHOOSE YOUR MAP").font(.caption.weight(.semibold)).tracking(1.4).foregroundStyle(Color.atlasMuted)
-                            ForEach(packs) { pack in
+                        VStack(alignment: .leading, spacing: 16) {
+                            AtlasSectionLabel(title: "Your maps", detail: "\(packs.count) collections")
+                            ForEach(Array(packs.enumerated()), id: \.element.id) { index, pack in
                                 NavigationLink {
                                     if let content { PackScreen(pack: pack, content: content) }
                                 } label: {
-                                    HStack(spacing: 16) {
-                                        Image(systemName: symbol(pack.id))
-                                            .font(.title2).frame(width: 48, height: 60)
-                                            .foregroundStyle(Color.atlasTeal)
-                                        VStack(alignment: .leading, spacing: 5) {
-                                            Text(pack.id == "nyc-boroughs" ? "New York City" : pack.manifest.name)
-                                                .font(.title3.weight(.semibold))
-                                            Text("\(pack.areas.count) \(pack.manifest.areaType)s")
-                                                .font(.subheadline).foregroundStyle(Color.atlasMuted)
-                                        }
-                                        Spacer()
-                                        Image(systemName: "arrow.up.right").font(.body.weight(.medium))
-                                    }
-                                    .padding(18).foregroundStyle(Color.atlasInk)
-                                    .background(.white, in: RoundedRectangle(cornerRadius: 22))
-                                }.buttonStyle(.plain).accessibilityIdentifier("map-\(pack.id)")
+                                    LibraryMapLabel(pack: pack, featured: index == 0)
+                                }
+                                .buttonStyle(AtlasPressStyle())
+                                .accessibilityIdentifier("map-\(pack.id)")
+                                if index > 0 && index < packs.count - 1 { Divider().overlay(Color.atlasLine) }
                             }
                         }
-                        Label("Maps, flags, cities, and sights. Learn at your pace.", systemImage: "leaf")
+                        Label("Made for curiosity. Ready wherever you are.", systemImage: "leaf")
                             .font(.footnote).foregroundStyle(Color.atlasMuted)
                     }
                 }
-                .padding(24).frame(maxWidth: 700, alignment: .leading).frame(maxWidth: .infinity)
+                .padding(.horizontal, 24).padding(.top, 16).padding(.bottom, 32)
+                .frame(maxWidth: 700, alignment: .leading).frame(maxWidth: .infinity)
             }
-            .background(Color.atlasPaper)
+            .background(Color.atlasPaper).foregroundStyle(Color.atlasInk)
             .toolbar(.hidden, for: .navigationBar)
             .task {
                 guard packs.isEmpty, loadError == nil else { return }
                 do {
-                    let loaded = try await Task.detached(priority: .userInitiated) {
-                        let library = try MapLibrary()
-                        return (try LearningContent.load(), try MapLibrary.starterIDs.map(library.load))
-                    }.value
+                    let loaded = try await Self.loadContent()
                     content = loaded.0
                     packs = loaded.1
                 } catch { loadError = error.localizedDescription }
             }
         }
     }
-    private func symbol(_ id: String) -> String {
-        switch id { case "us-states": "globe.americas"; case "germany-states": "globe.europe.africa"; default: "building.2" }
+
+    @concurrent
+    private static func loadContent() async throws -> sending (LearningContent, [MapPack]) {
+        let library = try MapLibrary()
+        return (try LearningContent.load(), try MapLibrary.starterIDs.map(library.load))
+    }
+
+    private var masthead: some View {
+        let layout = typeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+            : AnyLayout(HStackLayout(spacing: 8))
+        return layout {
+            HStack(spacing: 8) {
+                Image(systemName: "globe.americas").font(.title2).accessibilityHidden(true)
+                Text("ATLAS").font(.subheadline.weight(.bold)).tracking(3).fixedSize().accessibilityLabel("Atlas")
+            }
+            if !typeSize.isAccessibilitySize { Spacer() }
+            Label("Offline", systemImage: "checkmark.circle")
+                .font(.caption.weight(.medium)).foregroundStyle(Color.atlasMuted)
+        }.foregroundStyle(Color.atlasBlue)
+    }
+
+}
+
+private struct LibraryMapLabel: View {
+    let pack: MapPack
+    let featured: Bool
+    @Environment(\.dynamicTypeSize) private var typeSize
+
+    var body: some View {
+        Group {
+            if featured {
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(alignment: .firstTextBaseline) {
+                        Text("START EXPLORING").font(.caption2.weight(.bold)).tracking(1.8)
+                        Spacer()
+                        Image(systemName: "arrow.up.right").font(.body.weight(.medium))
+                    }.foregroundStyle(Color.atlasPaper)
+                    MapPreview(pack: pack).frame(height: 112).padding(.vertical, 8)
+                    Text(pack.displayName).font(.custom("Georgia", size: 28, relativeTo: .title))
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text("\(pack.areas.count) \(pack.manifest.areaType)s · Capitals, flags & more")
+                        .font(.subheadline).padding(.top, 6)
+                }
+                .padding(22).foregroundStyle(Color.atlasPaper)
+                .background(Color.atlasBlue, in: RoundedRectangle(cornerRadius: 24))
+            } else {
+                HStack(spacing: 16) {
+                    if !typeSize.isAccessibilitySize {
+                        MapPreview(pack: pack).frame(width: 72, height: 72)
+                            .background(Color.atlasSea, in: RoundedRectangle(cornerRadius: 12))
+                    }
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(pack.displayName).font(.system(.title3, design: .serif, weight: .semibold))
+                        Text("\(pack.areas.count) \(pack.manifest.areaType)s")
+                            .font(.subheadline).foregroundStyle(Color.atlasMuted)
+                    }.fixedSize(horizontal: false, vertical: true)
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.right").font(.caption.weight(.semibold))
+                        .foregroundStyle(Color.atlasBlue)
+                }.padding(.vertical, 4).contentShape(Rectangle())
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(pack.displayName), \(pack.areas.count) \(pack.manifest.areaType)s")
     }
 }
 
@@ -92,66 +141,153 @@ struct PackScreen: View {
     let pack: MapPack
     let content: LearningContent
     @AppStorage("questionTimeLimit") private var secondsAllowed = 30
+    @AppStorage("practiceEntityCount") private var entityCount = 10
     @Environment(ProgressStore.self) private var progress
+    @Environment(\.dynamicTypeSize) private var typeSize
+
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 22) {
-                Text("Get to know\n\(pack.id == "nyc-boroughs" ? "New York City" : pack.manifest.name).")
-                    .font(.system(.largeTitle, design: .serif, weight: .semibold))
-                MapView(pack: pack, canvasHeight: 216, acceptsAnswers: false) { _ in }
-                Text("CHOOSE HOW TO PRACTICE").font(.caption.weight(.semibold)).tracking(1.2).foregroundStyle(Color.atlasMuted)
-                Picker("Time per question", selection: $secondsAllowed) {
-                    Text("Untimed").tag(0)
-                    Text("30 seconds").tag(30)
-                    Text("60 seconds").tag(60)
-                }.pickerStyle(.menu).accessibilityIdentifier("timer-setting")
+            VStack(alignment: .leading, spacing: 28) {
+                VStack(alignment: .leading, spacing: 8) {
+                    AtlasSectionLabel(title: "Your field guide", detail: "\(pack.areas.count) \(pack.manifest.areaType)s")
+                    Text(pack.displayName)
+                        .font(.custom("Georgia", size: 34, relativeTo: .largeTitle)).tracking(-0.8)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                VStack(spacing: 0) {
+                    MapPreview(pack: pack).frame(height: 150).padding(.horizontal, 16)
+                    let layout = typeSize >= .xxLarge
+                        ? AnyLayout(VStackLayout(alignment: .leading, spacing: 0))
+                        : AnyLayout(HStackLayout(spacing: 16))
+                    layout {
+                        NavigationLink { StudyScreen(pack: pack, content: content) } label: {
+                            Label("Explore map", systemImage: "map")
+                                .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading).contentShape(Rectangle())
+                        }.accessibilityIdentifier("study-map")
+                        if !content.states(in: pack).isEmpty {
+                            NavigationLink { ReferenceScreen(pack: pack, content: content) } label: {
+                                Label("Browse facts", systemImage: "book.closed")
+                                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading).contentShape(Rectangle())
+                            }.accessibilityIdentifier("browse-facts")
+                        }
+                    }.font(.subheadline.weight(.semibold)).buttonStyle(AtlasPressStyle())
+                        .padding(.horizontal, 18).padding(.vertical, 8)
+                }.background(Color.atlasSea, in: RoundedRectangle(cornerRadius: 20))
+                VStack(alignment: .leading, spacing: 12) {
+                    ViewThatFits(in: .horizontal) {
+                        HStack { Text("Practice at your pace").font(.headline); Spacer(); timerPicker }
+                        VStack(alignment: .leading, spacing: 8) { Text("Practice at your pace").font(.headline); timerPicker }
+                    }
+                    HStack {
+                        Text("Places per session").font(.subheadline)
+                        Spacer()
+                        Picker("Places per session", selection: $entityCount) {
+                            Text("10").tag(10)
+                            Text("25").tag(25)
+                            Text("All").tag(0)
+                        }.pickerStyle(.menu).frame(minHeight: 44)
+                            .accessibilityIdentifier("session-length")
+                    }
+                    modeLink(.find, prominent: true)
+                    Text("Uses all available places if fewer. Missed places return once for review.")
+                        .font(.footnote).foregroundStyle(Color.atlasMuted)
+                }
+                modeSection("Names & facts", modes: PracticeMode.available(in: pack).filter { $0 != .find && !$0.isLocation })
+                modeSection("Place a pin", modes: PracticeMode.available(in: pack).filter(\.isLocation))
                 if pack.id == "nyc-neighborhoods-focused" {
                     Text("47 areas: 37 in Manhattan and 10 across the other boroughs. The larger groups are practice areas. Neighborhood boundaries are approximate.")
                         .font(.footnote).foregroundStyle(Color.atlasMuted)
                 }
-                if !content.states(in: pack).isEmpty {
-                    NavigationLink { ReferenceScreen(pack: pack, content: content) } label: {
-                        Label("Browse facts, cities & sights", systemImage: "book").frame(minHeight: 44)
-                    }.accessibilityIdentifier("browse-facts")
+                VStack(alignment: .leading, spacing: 0) {
+                    Label("Your progress stays on this device.", systemImage: "iphone")
+                        .font(.footnote).foregroundStyle(Color.atlasMuted)
+                    NavigationLink { SourcesScreen() } label: {
+                        Text("Map sources and credits").font(.footnote).frame(minHeight: 44).contentShape(Rectangle())
+                    }
                 }
-                ForEach(PracticeMode.available(in: pack)) { mode in
-                    NavigationLink {
-                        PracticeScreen(pack: pack, content: content, mode: mode, secondsAllowed: secondsAllowed)
-                    } label: {
-                        HStack(spacing: 14) {
-                            Image(systemName: mode.symbol).font(.title2).frame(width: 32)
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text(mode.title).font(.headline)
-                                Text(mode.instruction).font(.subheadline).foregroundStyle(Color.atlasMuted)
-                                let record = progress.record(for: pack.id, mode: mode, secondsAllowed: secondsAllowed)
-                                if record.sessions > 0 {
-                                    Text("\(record.firstCorrect)/\(record.firstTotal) correct on the first try")
-                                        .font(.caption).foregroundStyle(Color.atlasTeal)
-                                }
-                            }
-                            Spacer(minLength: 0)
-                            Image(systemName: "chevron.right").font(.caption.weight(.bold))
-                        }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
-                            .background(.white, in: RoundedRectangle(cornerRadius: 20))
-                    }.buttonStyle(.plain).accessibilityIdentifier("start-\(mode.rawValue)")
-                }
-                NavigationLink {
-                    StudyScreen(pack: pack, content: content)
-                } label: {
-                    Label("Explore the map first", systemImage: "map")
-                        .font(.headline).frame(maxWidth: .infinity, minHeight: 48)
-                }.accessibilityIdentifier("study-map")
-                Text("Sessions have up to 6 places, plus a second look at anything you miss. Progress stays on this device.")
-                    .font(.footnote).foregroundStyle(Color.atlasMuted)
-                NavigationLink { SourcesScreen() } label: {
-                    Text("Map sources and credits").font(.footnote).frame(minHeight: 44).contentShape(Rectangle())
-                }
-            }.padding(20).frame(maxWidth: 760).frame(maxWidth: .infinity)
+            }.padding(24).frame(maxWidth: 760).frame(maxWidth: .infinity)
         }
         .background(Color.atlasPaper).foregroundStyle(Color.atlasInk)
-        .navigationTitle(pack.id == "nyc-boroughs" ? "New York City" : pack.manifest.name)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("Practice").navigationBarTitleDisplayMode(.inline)
         .toolbar(.visible, for: .navigationBar)
+    }
+
+    @ViewBuilder private func modeSection(_ title: String, modes: [PracticeMode]) -> some View {
+        if !modes.isEmpty {
+            VStack(alignment: .leading, spacing: 4) {
+                AtlasSectionLabel(title: title).padding(.bottom, 8)
+                ForEach(modes) { mode in
+                    modeLink(mode)
+                    Divider().overlay(Color.atlasLine)
+                }
+            }
+        }
+    }
+
+    private var timerPicker: some View {
+        Picker("Time per question", selection: $secondsAllowed) {
+            Text("Untimed").tag(0)
+            Text("30 seconds").tag(30)
+            Text("60 seconds").tag(60)
+        }
+        .pickerStyle(.menu).font(.subheadline.weight(.medium))
+        .frame(minHeight: 44).accessibilityIdentifier("timer-setting")
+    }
+
+    private func modeLink(_ mode: PracticeMode, prominent: Bool = false) -> some View {
+        NavigationLink {
+            PracticeScreen(pack: pack, content: content, mode: mode, secondsAllowed: secondsAllowed, entityCount: entityCount)
+        } label: {
+            HStack(spacing: 16) {
+                if !prominent { Image(systemName: mode.symbol).font(.title3).frame(width: 28).foregroundStyle(Color.atlasBlue) }
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(mode.title).font(.headline)
+                    Text(mode.instruction).font(.subheadline)
+                        .foregroundStyle(prominent ? Color.atlasPaper : Color.atlasMuted)
+                    let record = progress.record(for: pack.id, mode: mode, secondsAllowed: secondsAllowed)
+                    if record.sessions > 0 {
+                        Text("\(record.firstCorrect)/\(record.firstTotal) correct on the first try")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(prominent ? Color.atlasPaper : Color.atlasBlue)
+                    }
+                }.fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+                Image(systemName: prominent ? "arrow.right" : "chevron.right")
+                    .font(prominent ? .body.weight(.semibold) : .caption.weight(.semibold))
+            }
+            .padding(.horizontal, prominent ? 20 : 0).padding(.vertical, 18)
+            .frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
+            .foregroundStyle(prominent ? Color.atlasPaper : Color.atlasInk)
+            .background(prominent ? Color.atlasBlue : .clear, in: RoundedRectangle(cornerRadius: 18))
+        }.buttonStyle(AtlasPressStyle()).accessibilityIdentifier("start-\(mode.rawValue)")
+    }
+}
+
+extension MapPack {
+    var displayName: String { id == "nyc-boroughs" ? "New York City" : manifest.name }
+}
+
+struct AtlasSectionLabel: View {
+    let title: String
+    var detail: String? = nil
+    var body: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(alignment: .firstTextBaseline) { heading; Spacer(); detailText }
+            VStack(alignment: .leading, spacing: 6) { heading; detailText }
+        }.foregroundStyle(Color.atlasMuted)
+    }
+    private var heading: some View { Text(title.uppercased()).font(.caption.weight(.bold)).tracking(1.5) }
+    @ViewBuilder private var detailText: some View { if let detail { Text(detail).font(.caption) } }
+}
+
+struct AtlasPressStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(!isEnabled ? 0.5 : configuration.isPressed ? 0.72 : 1)
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.985 : 1)
+            .animation(configuration.isPressed ? nil : .spring(response: 0.3, dampingFraction: 1), value: configuration.isPressed)
     }
 }
 
@@ -164,11 +300,14 @@ struct PracticeScreen: View {
     @State private var guess: MapPin?
     @State private var showAreaList = false
     @State private var showCoordinateEntry = false
+    @State private var answerContentHeight: CGFloat = 0
+    @State private var autoAdvanceSeconds = 3
     @Environment(ProgressStore.self) private var progress
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dynamicTypeSize) private var typeSize
 
-    init(pack: MapPack, content: LearningContent, mode: PracticeMode, secondsAllowed: Int) {
+    init(pack: MapPack, content: LearningContent, mode: PracticeMode, secondsAllowed: Int, entityCount: Int) {
         self.pack = pack
         self.content = content
         var ordered = false
@@ -177,7 +316,8 @@ struct PracticeScreen: View {
         ordered = ProcessInfo.processInfo.arguments.contains("--ui-testing")
         if ordered { seconds = ProcessInfo.processInfo.arguments.contains("--timer-test") ? 2 : 0 }
         #endif
-        _session = State(initialValue: PracticeSession(areas: content.areas(in: pack, mode: mode), mode: mode,
+        let areas = content.areas(in: pack, mode: mode)
+        _session = State(initialValue: PracticeSession(areas: areas, mode: mode, count: entityCount == 0 ? areas.count : entityCount,
                                                        ordered: ordered, secondsAllowed: seconds))
         _timer = State(initialValue: QuestionTimer(seconds: seconds))
     }
@@ -191,105 +331,54 @@ struct PracticeScreen: View {
 
     var body: some View {
         GeometryReader { geometry in
-            ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
-                    if let question = session.current {
-                        HStack {
-                            Text(question.isReview ? "A SECOND LOOK" : session.mode.title.uppercased())
-                                .font(.caption.weight(.bold)).tracking(1.2)
-                            Spacer()
-                            Text("\(session.index + 1) / \(session.questions.count)").monospacedDigit().font(.subheadline)
-                        }.foregroundStyle(Color.atlasMuted)
-                        if session.secondsAllowed > 0 { timerControls }
-                        Text(content.prompt(question.area, mode: session.mode, areaType: pack.manifest.areaType))
-                            .font(.system(.title, design: .serif, weight: .semibold))
-                            .accessibilityIdentifier("questionPrompt")
-                        if session.mode == .flag, let state = content.state(question.area.id), let image = LearningContent.flag(state) {
-                            Image(uiImage: image).resizable().scaledToFit().frame(maxWidth: .infinity, maxHeight: 190)
-                                .padding(18).background(.white, in: RoundedRectangle(cornerRadius: 18))
-                                .accessibilityLabel("State flag to identify").accessibilityIdentifier("quiz-flag")
-                        }
-                        if session.mode == .nickname, let state = content.state(question.area.id) {
-                            VStack(alignment: .leading, spacing: 10) {
-                                Text("“\(state.nickname)”").font(.title2.weight(.medium))
-                                Text(state.nicknameKind).font(.caption).foregroundStyle(Color.atlasMuted)
-                            }.padding(20).frame(maxWidth: .infinity, alignment: .leading)
-                                .background(.white, in: RoundedRectangle(cornerRadius: 18))
-                        }
-                        if session.mode == .population, let place = content.place(question.area.id) {
-                            Text("Residents within city boundaries · \(place.populationDate ?? "")")
-                                .font(.subheadline).foregroundStyle(Color.atlasMuted)
-                        }
-                        if session.mode.isLocation {
-                            Text("Tap to place a pin. Zoom in to adjust it. Within \(Int(tolerance)) km counts as correct.")
-                                .font(.subheadline).foregroundStyle(Color.atlasMuted)
-                        }
-                        if session.mode.usesMap {
-                            MapView(pack: pack,
-                                    canvasHeight: min(440, max(300, geometry.size.width * (session.mode == .find ? 1.03 : 0.82))) - 44,
-                                    resetID: question.id,
-                                    highlight: !session.mode.isLocation && (session.mode == .name || session.answer != nil) ? question.area.id : nil,
-                                    selected: session.answer?.selected?.id,
-                                    revealLabels: session.answer != nil,
-                                    acceptsAnswers: answering && (session.mode == .find || session.mode.isLocation),
-                                    guess: guess,
-                                    target: session.answer != nil && session.mode.isLocation ? content.location(question.area, mode: session.mode) : nil,
-                                    onLocation: session.mode.isLocation ? { guess = $0 } : nil) { id in
-                                if let area = pack.area(id) { session.submit(area) }
-                            }
-                        }
-                        if let answer = session.answer {
-                            feedback(answer, question: question)
-                            Button("Continue") { session.advance() }
-                                .buttonStyle(PrimaryButtonStyle()).accessibilityIdentifier("continue-session")
-                        } else {
-                            if paused { Text("Paused. Tap Resume when you are ready.").font(.headline) }
-                            if session.mode.isLocation {
-                                if let guess {
-                                    Text("Your pin: \(guess.coordinate.latitude.formatted(.number.precision(.fractionLength(2)))), \(guess.coordinate.longitude.formatted(.number.precision(.fractionLength(2))))")
-                                        .font(.caption).accessibilityIdentifier("guess-coordinate")
-                                }
-                                Button("Check location") {
-                                    if let guess, let target = content.location(question.area, mode: session.mode) {
-                                        session.submitLocation(guess, target: target, toleranceKM: tolerance)
-                                    }
-                                }.buttonStyle(PrimaryButtonStyle()).disabled(guess == nil || !answering)
-                                    .accessibilityIdentifier("check-location")
-                                Button("Enter coordinates") { showCoordinateEntry = true }
-                                    .frame(minHeight: 44).disabled(!answering)
-                                    .accessibilityHint("An alternative to placing a pin on the map")
-                            } else if session.mode != .find {
-                                VStack(spacing: 8) {
-                                    ForEach(question.choices) { area in
-                                        Button { session.submit(area) } label: {
-                                            HStack {
-                                                Text(content.answerLabel(area, mode: session.mode))
-                                                Spacer()
-                                                Image(systemName: "circle").foregroundStyle(Color.atlasMuted)
-                                            }.padding(.horizontal, 18).frame(minHeight: 48)
-                                                .background(.white, in: RoundedRectangle(cornerRadius: 14))
-                                        }.buttonStyle(.plain).disabled(!answering).accessibilityIdentifier("choice-\(area.id)")
-                                    }
-                                }
-                            }
-                            HStack {
-                                Button { session.submit(nil) } label: {
-                                    Text("Show answer").frame(minHeight: 44).contentShape(Rectangle())
-                                }.accessibilityIdentifier("show-answer")
-                                Spacer()
+            VStack(spacing: 0) {
+                if let question = session.current {
+                    questionBar(question)
+                    if session.mode.usesMap {
+                        MapView(pack: pack, canvasHeight: nil, fullscreen: true,
+                                resetID: question.id,
+                                highlight: !session.mode.isLocation && (session.mode == .name || session.answer != nil) ? question.area.id : nil,
+                                selected: session.answer?.selected?.id,
+                                acceptsAnswers: answering && (session.mode == .find || session.mode.isLocation),
+                                guess: guess,
+                                target: session.answer != nil && session.mode.isLocation ? content.location(question.area, mode: session.mode) : nil,
+                                onLocation: session.mode.isLocation ? { guess = $0 } : nil) { id in
+                            if let area = pack.area(id) { session.submit(area) }
+                        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .overlay(alignment: .top) {
                                 if session.mode == .find {
-                                    Button { showAreaList = true } label: {
-                                        Text("Use area list").frame(minHeight: 44).contentShape(Rectangle())
-                                    }.accessibilityHint("An alternative to selecting an area on the map")
+                                    Text(content.prompt(question.area, mode: session.mode, areaType: pack.manifest.areaType))
+                                        .font(.title2.weight(.bold))
+                                        .multilineTextAlignment(.center)
+                                        .foregroundStyle(.white)
+                                        .padding(.horizontal, 20).padding(.vertical, 12)
+                                        .background(Color.atlasBlue, in: RoundedRectangle(cornerRadius: 18))
+                                        .shadow(color: Color.atlasInk.opacity(0.15), radius: 6, y: 3)
+                                        .padding(16)
+                                        .allowsHitTesting(false)
+                                        .accessibilityIdentifier("map-questionPrompt")
                                 }
-                            }.font(.subheadline.weight(.medium)).disabled(!answering)
+                            }
+                            .ignoresSafeArea(.container, edges: .horizontal)
+                    } else {
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 24) {
+                                Text(content.prompt(question.area, mode: session.mode, areaType: pack.manifest.areaType))
+                                    .font(.title2.weight(.semibold)).accessibilityIdentifier("questionPrompt")
+                                questionClue(question)
+                            }.padding(24).frame(maxWidth: 760).frame(maxWidth: .infinity)
                         }
-                    } else { results }
-                }.padding(20).frame(maxWidth: 860).frame(maxWidth: .infinity)
-            }.background(Color.atlasPaper)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                    answerPanel(question, maximumHeight: geometry.size.height * 0.40, compact: geometry.size.width > geometry.size.height)
+                } else {
+                    ScrollView { results.padding(20).frame(maxWidth: 760).frame(maxWidth: .infinity) }
+                }
+            }
         }
+        .background(session.mode.usesMap && !session.isComplete ? Color.atlasSea : Color.atlasPaper)
         .foregroundStyle(Color.atlasInk)
-        .navigationTitle(session.mode.title).navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .navigationBar)
         .onChange(of: session.isComplete) { _, complete in if complete { progress.save(session, map: pack.id) } }
         .onChange(of: session.current?.id) { _, _ in
             guess = nil; paused = false
@@ -299,6 +388,7 @@ struct PracticeScreen: View {
         .onChange(of: session.answer != nil) { _, answered in
             guard answered, let answer = session.answer else { return }
             timer.pause(now: now); showAreaList = false; showCoordinateEntry = false
+            UINotificationFeedbackGenerator().notificationOccurred(answer.correct ? .success : .warning)
             UIAccessibility.post(notification: .announcement,
                                  argument: "\(answer.timedOut ? "Time is up. " : "")\(answer.correct ? "Correct. " : "The answer is ")\(answerName).")
         }
@@ -320,6 +410,17 @@ struct PracticeScreen: View {
                 }
             }
         }
+        .task(id: scenePhase == .active && session.mode == .find && session.answer?.correct == true ? session.current?.id : nil) {
+            guard scenePhase == .active, session.mode == .find, session.answer?.correct == true else { return }
+            let questionID = session.current?.id
+            autoAdvanceSeconds = 3
+            for _ in 0..<3 {
+                do { try await Task.sleep(for: .seconds(1)) } catch { return }
+                guard session.current?.id == questionID, session.answer?.correct == true else { return }
+                autoAdvanceSeconds -= 1
+            }
+            session.advance()
+        }
         .sheet(isPresented: $showAreaList) {
             AreaList(pack: pack, title: "Choose an area") { area in session.submit(area); showAreaList = false }
         }
@@ -328,25 +429,146 @@ struct PracticeScreen: View {
         }
     }
 
-    private var timerControls: some View {
-        HStack {
-            Label(paused ? "Timer paused" : "\(Int(ceil(timer.remaining))) seconds left", systemImage: "timer")
-                .monospacedDigit().font(.subheadline.weight(.semibold)).accessibilityIdentifier("question-timer")
-            Spacer()
-            if session.answer == nil {
-                Button(paused ? "Resume" : "Pause") {
-                    if paused { timer.resume(now: now) } else { timer.pause(now: now) }
-                    paused.toggle()
-                }.frame(minWidth: 60, minHeight: 44).accessibilityIdentifier("pause-timer")
+    private func questionBar(_ question: PracticeSession.Question) -> some View {
+        VStack(spacing: 4) {
+            HStack(spacing: 12) {
+                Button { dismiss() } label: {
+                    Image(systemName: "chevron.left").font(.body.weight(.semibold))
+                        .frame(width: 44, height: 44).contentShape(Rectangle())
+                }.accessibilityLabel("Back to practice").accessibilityIdentifier("leave-practice")
+                Text(session.mode.usesMap ? content.prompt(question.area, mode: session.mode, areaType: pack.manifest.areaType) : session.mode.title)
+                    .font(.headline).fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityIdentifier(session.mode.usesMap ? "questionPrompt" : "practice-title")
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("\(session.index + 1) / \(session.questions.count)")
+                        .font(.caption.weight(.semibold)).monospacedDigit()
+                        .accessibilityLabel("Question \(session.index + 1) of \(session.questions.count)")
+                    if session.secondsAllowed > 0 {
+                        Text(paused ? "Paused" : "\(Int(ceil(timer.remaining)))s")
+                            .font(.caption).monospacedDigit().accessibilityIdentifier("question-timer")
+                            .accessibilityLabel(paused ? "Timer paused" : "\(Int(ceil(timer.remaining))) seconds left")
+                    } else if question.isReview { Text("Review").font(.caption2) }
+                }.foregroundStyle(Color.atlasMuted).fixedSize()
+                if session.secondsAllowed > 0 && session.answer == nil {
+                    Button {
+                        if paused { timer.resume(now: now) } else { timer.pause(now: now) }
+                        paused.toggle()
+                    } label: {
+                        Image(systemName: paused ? "play.fill" : "pause.fill")
+                            .font(.subheadline).frame(width: 44, height: 44).contentShape(Rectangle())
+                    }.accessibilityLabel(paused ? "Resume" : "Pause").accessibilityIdentifier("pause-timer")
+                }
+            }
+            ProgressView(value: Double(session.answeredCount), total: Double(session.questions.count))
+                .tint(Color.atlasBlue).accessibilityHidden(true)
+        }.padding(.horizontal, 8).padding(.bottom, 8)
+            .background(Color.atlasPaper)
+    }
+
+    @ViewBuilder private func questionClue(_ question: PracticeSession.Question) -> some View {
+        if session.mode == .flag, let state = content.state(question.area.id), let image = LearningContent.flag(state) {
+            Image(uiImage: image).resizable().scaledToFit().frame(maxWidth: 420, maxHeight: 250)
+                .accessibilityLabel("State flag to identify").accessibilityIdentifier("quiz-flag")
+        }
+        if session.mode == .nickname, let state = content.state(question.area.id) {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("“\(state.nickname)”").font(.title2.weight(.medium))
+                Text(state.nicknameKind).font(.caption).foregroundStyle(Color.atlasMuted)
+            }.frame(maxWidth: .infinity, alignment: .leading)
+        }
+        if session.mode == .population, let place = content.place(question.area.id) {
+            Text("Residents within city boundaries · \(place.populationDate ?? "")")
+                .font(.subheadline).foregroundStyle(Color.atlasMuted)
+        }
+    }
+
+    private func answerPanel(_ question: PracticeSession.Question, maximumHeight: CGFloat, compact: Bool) -> some View {
+        let hasContent = session.answer != nil || session.mode != .find || paused
+        let horizontal = (compact || session.answer != nil) && !typeSize.isAccessibilitySize
+        let layout = horizontal ? AnyLayout(HStackLayout(alignment: .center, spacing: 16)) : AnyLayout(VStackLayout(spacing: 8))
+        return layout {
+            if hasContent {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 8) {
+                        if let answer = session.answer {
+                            feedback(answer, question: question)
+                        } else {
+                            if paused { Text("Paused. Tap Resume when you are ready.").font(.subheadline) }
+                            if session.mode.isLocation {
+                                Text(guess == nil ? "Tap to place a pin · Within \(Int(tolerance)) km counts" : "Pin placed · Tap the map to adjust")
+                                    .font(.caption).foregroundStyle(Color.atlasMuted)
+                                    .accessibilityIdentifier("guess-coordinate")
+                            } else if session.mode != .find {
+                                answerChoices(question, compact: compact)
+                            }
+                        }
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                        .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { answerContentHeight = $0 }
+                }
+                .scrollBounceBehavior(.basedOnSize)
+                .frame(height: min(answerContentHeight, maximumHeight))
+                .frame(maxWidth: .infinity)
+            }
+            VStack(spacing: 8) {
+                if session.answer != nil || session.mode.isLocation { primaryAction }
+                if session.answer == nil {
+                    HStack {
+                        Button { session.submit(nil) } label: {
+                            Text("Show answer").frame(minHeight: 44).contentShape(Rectangle())
+                        }.accessibilityIdentifier("show-answer")
+                        Spacer()
+                        if session.mode == .find {
+                            Button { showAreaList = true } label: {
+                                Text("Use area list").frame(minHeight: 44).contentShape(Rectangle())
+                            }.accessibilityHint("An alternative to selecting an area on the map")
+                        } else if session.mode.isLocation {
+                            Button { showCoordinateEntry = true } label: {
+                                Text("Enter coordinates").frame(minHeight: 44).contentShape(Rectangle())
+                            }.accessibilityHint("An alternative to placing a pin on the map")
+                        }
+                    }.font(.subheadline.weight(.medium)).buttonStyle(AtlasPressStyle()).disabled(!answering)
+                }
+            }.frame(width: horizontal && hasContent ? (session.mode.isLocation && session.answer == nil ? 260 : 132) : nil)
+        }.padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 8)
+            .frame(maxWidth: 760).frame(maxWidth: .infinity)
+            .background(Color.atlasSurface)
+    }
+
+    private func answerChoices(_ question: PracticeSession.Question, compact: Bool) -> some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: typeSize.isAccessibilitySize ? 1 : compact ? 4 : 2), spacing: 8) {
+            ForEach(question.choices) { area in
+                Button { session.submit(area) } label: {
+                    Text(content.answerLabel(area, mode: session.mode))
+                        .font(.subheadline.weight(.medium)).fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, minHeight: 44).padding(.horizontal, 10).padding(.vertical, 4)
+                        .background(Color.atlasPaper, in: RoundedRectangle(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Color.atlasLine, lineWidth: 1))
+                }.buttonStyle(AtlasPressStyle()).disabled(!answering).accessibilityIdentifier("choice-\(area.id)")
             }
         }
     }
 
+    @ViewBuilder private var primaryAction: some View {
+        if session.answer != nil {
+            Button("Continue") { session.advance() }
+                .buttonStyle(PrimaryButtonStyle()).accessibilityIdentifier("continue-session")
+        } else {
+            Button("Check location") {
+                if let guess, let area = session.current?.area, let target = content.location(area, mode: session.mode) {
+                    session.submitLocation(guess, target: target, toleranceKM: tolerance)
+                }
+            }.buttonStyle(PrimaryButtonStyle()).disabled(guess == nil || !answering)
+                .accessibilityIdentifier("check-location")
+        }
+    }
+
     private func feedback(_ answer: PracticeSession.Answer, question: PracticeSession.Question) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 5) {
             Label(answer.timedOut ? "Time’s up." : answer.correct ? "That's right." : "Take another look.",
                   systemImage: answer.correct ? "checkmark.circle.fill" : "arrow.uturn.backward.circle")
-                .font(.title3.weight(.semibold))
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(answer.correct ? Color.atlasBlue : Color.atlasClay)
             if session.mode.isLocation {
                 if let distance = answer.distanceKM {
                     Text("\(distance.formatted(.number.precision(.fractionLength(1)))) km from \(answerName).")
@@ -358,8 +580,11 @@ struct PracticeScreen: View {
                         .font(.caption)
                 }
             } else if session.mode.usesMap {
+                Text("Answer: \(question.area.name)").font(.headline)
+                if session.mode == .find && answer.correct {
+                    Text("Next area in \(autoAdvanceSeconds)s").font(.caption).monospacedDigit()
+                }
                 if !answer.correct, let selected = answer.selected { Text("You chose \(selected.name). It is shown in brown.") }
-                Text("\(question.area.name) is outlined in dark green.")
             } else {
                 Text("Answer: \(answerName)").font(.headline)
                 if !answer.correct, let selected = answer.selected {
@@ -369,31 +594,43 @@ struct PracticeScreen: View {
                     Text("\(place.populationDate ?? "") · \(place.populationDefinition ?? "City population")").font(.caption)
                 }
             }
-            if !answer.correct && !question.isReview {
-                Text("You will see this place again in this session.").font(.footnote).foregroundStyle(Color.atlasMuted)
-            }
         }.font(.subheadline).frame(maxWidth: .infinity, alignment: .leading)
-            .padding(18).background(.white, in: RoundedRectangle(cornerRadius: 18))
             .accessibilityElement(children: .combine).accessibilityIdentifier("answerFeedback")
     }
 
     private var results: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            Image(systemName: "checkmark.seal").font(.system(size: 48, weight: .light)).foregroundStyle(Color.atlasTeal)
+        VStack(alignment: .leading, spacing: 28) {
+            Label("SESSION COMPLETE", systemImage: "checkmark.circle.fill")
+                .font(.caption.weight(.bold)).tracking(1.2).foregroundStyle(Color.atlasBlue)
             Text("A little more\nof the world, learned.")
-                .font(.system(.largeTitle, design: .serif, weight: .semibold))
-            Text("\(session.firstAttemptCorrect) of \(session.primaryCount)")
-                .font(.system(size: 48, weight: .semibold, design: .rounded)).accessibilityIdentifier("firstAttemptScore")
-            Text("Correct on the first try").foregroundStyle(Color.atlasMuted)
-            Text(session.secondsAllowed == 0 ? "Untimed practice" : "\(session.secondsAllowed) seconds per question")
-                .font(.subheadline)
+                .font(.custom("Georgia", size: 34, relativeTo: .largeTitle))
+                .fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 16) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text("First try").font(.headline)
+                    Spacer()
+                    Text("\(session.firstAttemptCorrect) of \(session.primaryCount)")
+                        .font(.title2.weight(.semibold)).monospacedDigit().accessibilityIdentifier("firstAttemptScore")
+                }
+                if !session.missed.isEmpty {
+                    Divider()
+                    HStack(alignment: .firstTextBaseline) {
+                        Text("On review").font(.headline)
+                        Spacer()
+                        Text("\(session.reviewedCorrect) of \(session.missed.count)").font(.title2.weight(.semibold)).monospacedDigit()
+                    }
+                }
+                Text(session.secondsAllowed == 0 ? "Untimed practice" : "\(session.secondsAllowed) seconds per question")
+                    .font(.subheadline).foregroundStyle(Color.atlasMuted)
+            }.padding(22).background(Color.atlasSea, in: RoundedRectangle(cornerRadius: 20))
             if !session.missed.isEmpty {
-                Text("On review, you got \(session.reviewedCorrect) of \(session.missed.count) correct.")
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("KEEP EXPLORING").font(.caption.weight(.bold)).tracking(1)
-                    ForEach(session.missed) { area in Text(area.name) }
-                }.padding(20).frame(maxWidth: .infinity, alignment: .leading)
-                    .background(.white, in: RoundedRectangle(cornerRadius: 20))
+                VStack(alignment: .leading, spacing: 14) {
+                    AtlasSectionLabel(title: "Keep exploring")
+                    ForEach(session.missed) { area in
+                        Text(area.name)
+                        Divider()
+                    }
+                }
             }
             Button("Back to map") { dismiss() }.buttonStyle(PrimaryButtonStyle())
         }.padding(.vertical, 24)
@@ -489,9 +726,16 @@ struct AreaList: View {
 }
 
 struct PrimaryButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label.font(.headline).frame(maxWidth: .infinity, minHeight: 52)
-            .foregroundStyle(.white).background(Color.atlasTeal.opacity(configuration.isPressed ? 0.8 : 1), in: Capsule())
+        configuration.label.font(.headline).padding(.horizontal, 20).padding(.vertical, 16)
+            .frame(maxWidth: .infinity, minHeight: 54)
+            .foregroundStyle(isEnabled ? Color.atlasPaper : Color.atlasMuted)
+            .background(isEnabled ? Color.atlasBlue : Color.atlasLine, in: RoundedRectangle(cornerRadius: 16))
+            .opacity(configuration.isPressed ? 0.8 : 1)
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.985 : 1)
+            .animation(configuration.isPressed ? nil : .spring(response: 0.3, dampingFraction: 1), value: configuration.isPressed)
     }
 }
 

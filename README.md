@@ -57,7 +57,8 @@ The older `data/us-cities.geojson` remains a cartographic reference with 769 Nat
 
 - `maps/catalog.json`: Index of the twelve prepared map packs.
 - `maps/*/map.json`: Question IDs, names, and relative geometry references.
-- `maps/*/areas.geojson`: Polygon and MultiPolygon geometry, including background areas.
+- `maps/*/areas.geojson`: Full source-derived geometry retained for validation.
+- `maps/*/areas-lowres.geojson`: Simplified geometry used by the app for rendering and selection.
 - `data/us-cities.geojson`: Retained Natural Earth city Point features.
 - `data/sources/`: Original source snapshots, committed for reproducible builds.
 - `data/source-checksums.json`: SHA-256 lock for the nine geographic snapshots.
@@ -79,6 +80,7 @@ Use Python 3.10 or later. The initial build was verified with Python 3.14.
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-data.txt
+npm ci --prefix scripts/geometry
 .venv/bin/python scripts/compile_maps.py
 .venv/bin/python scripts/validate_data.py
 .venv/bin/python scripts/compile_learning.py
@@ -87,6 +89,8 @@ git diff --exit-code -- maps content data/us-cities.geojson data/candidates/nyc-
 ```
 
 Compilation reads the committed snapshots and checks their hashes before writing output. It does not download data or replace the checksum lock. The validation checks references, expected area sets, geometry structure and topology, coordinate bounds, and representative city points. The final command checks that compilation reproduced the committed output exactly.
+
+Map compilation also runs `scripts/simplify_maps.py`. It uses shared-edge Douglas–Peucker simplification, with tighter limits for small rings and known water points. Each feature's changed area is limited to 1%. Original geometry remains available for source checks; iOS bundles only the simplified assets. `data/geometry-simplification.json` records point counts and file sizes. Both rendering and answer selection use the same reduced geometry.
 
 Keeping source snapshots in Git makes the initial data build independent of upstream updates, API row order, and download availability. The virtual environment is excluded.
 

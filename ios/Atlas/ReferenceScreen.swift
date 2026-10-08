@@ -8,14 +8,23 @@ struct StateFactCard: View {
                 Image(uiImage: image).resizable().scaledToFit().frame(maxHeight: 150)
                     .accessibilityLabel("Flag of \(state.name)")
             }
-            Text("Capital: \(state.capital)").font(.headline)
-            Text("\(state.nicknameKind): \(state.nickname)")
-            Link("Capital and state source", destination: state.sourceURL).frame(minHeight: 44)
-            Link("Name or slogan source", destination: state.nicknameSource).frame(minHeight: 44)
-            Link("Flag: \(state.flagLicense)", destination: state.flagSource).frame(minHeight: 44)
-            Text(state.flagCredit).font(.caption).foregroundStyle(Color.atlasMuted)
+            Divider().padding(.vertical, 4)
+            AtlasSectionLabel(title: "Capital")
+            Text(state.capital).font(.custom("Georgia", size: 28, relativeTo: .title))
+            VStack(alignment: .leading, spacing: 6) {
+                Text(state.nicknameKind).font(.caption.weight(.semibold)).foregroundStyle(Color.atlasMuted)
+                Text(state.nickname).font(.title3)
+            }
+            DisclosureGroup("Sources & flag credits") {
+                VStack(alignment: .leading, spacing: 4) {
+                    Link("Capital and state source", destination: state.sourceURL).frame(minHeight: 44)
+                    Link("Name or slogan source", destination: state.nicknameSource).frame(minHeight: 44)
+                    Link("Flag: \(state.flagLicense)", destination: state.flagSource).frame(minHeight: 44)
+                    Text(state.flagCredit).font(.caption).foregroundStyle(Color.atlasMuted)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+            }.font(.subheadline).padding(.top, 8)
         }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
-            .background(.white, in: RoundedRectangle(cornerRadius: 18))
+            .background(Color.atlasSurface, in: RoundedRectangle(cornerRadius: 18))
     }
 }
 
@@ -24,6 +33,12 @@ struct ReferenceScreen: View {
     let content: LearningContent
     @State private var category = "States"
     @State private var search = ""
+    private var matchingStates: [StateFact] {
+        content.states(in: pack).filter { matches($0.name) || matches($0.capital) }
+    }
+    private var matchingPlaces: [PlaceFact] {
+        content.places(in: pack, landmarks: category == "Sights").filter { matches($0.name) }
+    }
     var body: some View {
         List {
             Section {
@@ -33,8 +48,12 @@ struct ReferenceScreen: View {
                     Text("Sights").tag("Sights")
                 }.pickerStyle(.segmented)
             }
-            if category == "States" {
-                ForEach(content.states(in: pack).filter { matches($0.name) || matches($0.capital) }) { state in
+            if !search.isEmpty && (category == "States" ? matchingStates.isEmpty : matchingPlaces.isEmpty) {
+                ContentUnavailableView.search(text: search)
+                    .listRowBackground(Color.clear)
+                    .accessibilityIdentifier("reference-no-results")
+            } else if category == "States" {
+                ForEach(matchingStates) { state in
                     NavigationLink {
                         ScrollView { StateFactCard(state: state).padding(20) }
                             .background(Color.atlasPaper).navigationTitle(state.name)
@@ -52,7 +71,7 @@ struct ReferenceScreen: View {
                 }
             } else {
                 Section {
-                    ForEach(content.places(in: pack, landmarks: category == "Sights").filter { matches($0.name) }) { place in
+                    ForEach(matchingPlaces) { place in
                         NavigationLink { PlaceDetail(pack: pack, place: place) } label: {
                             VStack(alignment: .leading, spacing: 5) {
                                 Text(place.name).font(.headline)
@@ -68,7 +87,8 @@ struct ReferenceScreen: View {
                          "Destatis · December 31, 2024. Population within municipal boundaries, based on the 2022 census.")
                 }
             }
-        }.searchable(text: $search, prompt: "Search \(category.lowercased())")
+        }.scrollContentBackground(.hidden).background(Color.atlasPaper)
+            .searchable(text: $search, prompt: "Search \(category.lowercased())")
             .navigationTitle("Learn the details").navigationBarTitleDisplayMode(.inline)
     }
     private func matches(_ value: String) -> Bool { search.isEmpty || value.localizedCaseInsensitiveContains(search) }

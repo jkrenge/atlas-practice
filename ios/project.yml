@@ -22,13 +22,25 @@ targets:
       - path: ../content
         type: folder
         buildPhase: resources
+    postBuildScripts:
+      - name: Exclude detailed source geometry
+        basedOnDependencyAnalysis: false
+        script: |
+          for folder in "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/maps/"*; do
+            if [ -f "$folder/areas-lowres.geojson" ]; then
+              rm -f "$folder/areas.geojson"
+            fi
+          done
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.jkrenge.geography
         DEVELOPMENT_TEAM: 8433V6NWHP
+        MARKETING_VERSION: '1.0'
+        CURRENT_PROJECT_VERSION: '1'
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: Atlas Practice
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight

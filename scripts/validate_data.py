@@ -4,12 +4,13 @@ import json
 import math
 import xml.etree.ElementTree as ET
 
-from shapely import make_valid
+from shapely import make_valid, coverage_is_valid, get_num_coordinates
 from shapely.geometry import shape, MultiPolygon, Point
 from shapely.ops import unary_union
 from shapely.validation import explain_validity
 
 from compile_maps import ROOT, verify_sources, records
+from simplify_maps import LIMITS, MAX_AREA_CHANGE
 
 US_STATES = set('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN '
                 'MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA '
@@ -193,15 +194,32 @@ def check_land_sources():
             (-73.99278510511897, 40.70465085326032), (-73.95473150505875, 40.73979288426392)],
     }
     for map_id, points in water_probes.items():
-        geometries = [shape(f['geometry']) for f in read(ROOT / 'maps' / map_id / 'areas.geojson')['features']]
-        for point in points:
-            check(not any(g.covers(Point(point)) for g in geometries), f'Water probe selected land: {map_id} {point}')
+        for filename in ('areas.geojson', 'areas-lowres.geojson'):
+            geometries = [shape(f['geometry']) for f in read(ROOT / 'maps' / map_id / filename)['features']]
+            for point in points:
+                check(not any(g.covers(Point(point)) for g in geometries), f'Water probe selected land: {map_id} {filename} {point}')
     print('PASS: all 309 state/country features match source land; lake and NYC river probes remain water.')
 
 
 def main():
     verify_sources()
     check_land_sources()
+    for identifier in LIMITS:
+        folder = ROOT / 'maps' / identifier
+        original = read(folder / 'areas.geojson')['features']
+        reduced = read(folder / 'areas-lowres.geojson')['features']
+        check([f['id'] for f in original] == [f['id'] for f in reduced], 'Simplification changed feature IDs or order')
+        geometries = []
+        for before, after in zip(original, reduced):
+            check(before['properties'] == after['properties'], 'Simplification changed metadata')
+            source, geometry = shape(before['geometry']), shape(after['geometry'])
+            check(geometry.is_valid and not geometry.is_empty, f"Invalid simplified geometry: {after['id']}")
+            check(source.symmetric_difference(geometry).area / source.area <= MAX_AREA_CHANGE,
+                  f"Simplification exceeded its area limit: {after['id']}")
+            geometries.append(geometry)
+        check(coverage_is_valid(geometries), f'Simplified borders do not match: {identifier}')
+        check(get_num_coordinates(geometries).sum() < get_num_coordinates([shape(f['geometry']) for f in original]).sum(),
+              f'Simplification did not reduce geometry: {identifier}')
     catalog = read(ROOT / 'maps/catalog.json')
     check(catalog['schemaVersion'] == 2, 'Unsupported catalog version')
     check(unique(catalog['maps'], 'catalog') == set(EXPECTED_COUNTS), 'Unexpected map inventory')

@@ -2,15 +2,62 @@ import SwiftUI
 import UIKit
 
 extension Color {
-    static let atlasInk = Color(red: 0.12, green: 0.23, blue: 0.24)
-    static let atlasTeal = Color(red: 0.10, green: 0.40, blue: 0.37)
-    static let atlasMuted = Color(red: 0.31, green: 0.40, blue: 0.39)
-    static let atlasPaper = Color(red: 0.97, green: 0.96, blue: 0.93)
+    static let atlasInk = Color(red: 0.10, green: 0.16, blue: 0.28)
+    static let atlasBlue = Color(red: 0.14, green: 0.30, blue: 0.67)
+    static let atlasMuted = Color(red: 0.31, green: 0.38, blue: 0.49)
+    static let atlasPaper = Color(red: 0.955, green: 0.969, blue: 0.99)
+    static let atlasSurface = Color(red: 0.985, green: 0.990, blue: 1.0)
+    static let atlasSea = Color(red: 0.865, green: 0.91, blue: 0.975)
+    static let atlasLine = Color(red: 0.74, green: 0.80, blue: 0.89)
+    static let atlasClay = Color(red: 0.58, green: 0.28, blue: 0.17)
+}
+
+struct MapPreview: UIViewRepresentable {
+    let pack: MapPack
+    func makeUIView(context: Context) -> MapPreviewView {
+        let view = MapPreviewView(pack: pack)
+        view.isUserInteractionEnabled = false
+        view.isAccessibilityElement = false
+        return view
+    }
+    func updateUIView(_ view: MapPreviewView, context: Context) {}
+}
+
+final class MapPreviewView: UIView {
+    private let pack: MapPack
+
+    init(pack: MapPack) {
+        self.pack = pack
+        super.init(frame: .zero)
+        backgroundColor = .clear
+        isOpaque = false
+        contentMode = .redraw
+    }
+
+    required init?(coder: NSCoder) { fatalError("Use init(pack:)") }
+
+    override func draw(_ rect: CGRect) {
+        guard bounds.width > 0, bounds.height > 32,
+              let context = UIGraphicsGetCurrentContext() else { return }
+        let layout = MapLayout(pack: pack, size: bounds.size, includesCallouts: false)
+        for shape in layout.shapes {
+            context.saveGState()
+            context.concatenate(shape.transform)
+            context.addPath(shape.previewPath)
+            context.setFillColor((layout.eligibleIDs.contains(shape.id)
+                ? UIColor(Color.atlasSurface) : .systemGray3).cgColor)
+            context.setStrokeColor(UIColor(Color.atlasInk).withAlphaComponent(0.55).cgColor)
+            context.setLineWidth(0.8 / shape.transform.a)
+            context.drawPath(using: .eoFillStroke)
+            context.restoreGState()
+        }
+    }
 }
 
 struct MapView: View {
     let pack: MapPack
-    var canvasHeight: CGFloat = 320
+    var canvasHeight: CGFloat? = 320
+    var fullscreen = false
     var resetID: UUID? = nil
     var highlight: String? = nil
     var selected: String? = nil
@@ -22,42 +69,79 @@ struct MapView: View {
     var onSelect: (String) -> Void
     @State private var viewport = MapViewport()
     @State private var hint = "Pinch to zoom. Drag to move."
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
-        VStack(spacing: 0) {
-            MapCanvas(pack: pack, highlight: highlight, selected: selected, revealLabels: revealLabels,
-                      acceptsAnswers: acceptsAnswers, guess: guess, target: target, onLocation: onLocation, viewport: $viewport) { hit in
-                switch hit {
-                case .area(let id): hint = "Pinch to zoom. Drag to move."; onSelect(id)
-                case .ambiguous: hint = "Close to a border. Zoom in and tap again."
-                case .water: hint = "Tap inside an area or use a numbered marker."
-                }
+        Group {
+            if fullscreen {
+                canvas
+                    .overlay(alignment: .bottomTrailing) {
+                        HStack(spacing: 8) {
+                            if hint != "Pinch to zoom. Drag to move." { mapHint }
+                            Spacer(minLength: 0)
+                            mapControls
+                        }.padding(12)
+                    }
+                    .background(Color.atlasSea)
+            } else {
+                framedMap
             }
-            .frame(height: canvasHeight)
-            .accessibilityIdentifier("geographicMap")
-            HStack(spacing: 8) {
-                Text(hint).font(.caption).foregroundStyle(Color.atlasMuted).fixedSize(horizontal: false, vertical: true)
-                    .accessibilityIdentifier("mapHint")
-                Spacer(minLength: 0)
-                Button { viewport.scale = max(1, viewport.scale / 1.5); if viewport.scale == 1 { viewport.offset = .zero } }
-                label: { Image(systemName: "minus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44) }
-                    .accessibilityLabel("Zoom out")
-                Button { viewport.scale = min(32, viewport.scale * 1.5) }
-                label: { Image(systemName: "plus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44) }
-                    .accessibilityLabel("Zoom in")
-                Button { viewport = MapViewport() }
-                label: { Image(systemName: "arrow.counterclockwise").font(.system(size: 20)).frame(width: 44, height: 44) }
-                    .accessibilityLabel("Reset map")
-            }
-            .padding(.horizontal, 12)
-            .foregroundStyle(Color.atlasInk)
         }
-        .background(Color(red: 0.90, green: 0.94, blue: 0.92))
-        .clipShape(RoundedRectangle(cornerRadius: 24))
         .onChange(of: resetID) { _, _ in
             viewport = MapViewport()
             hint = "Pinch to zoom. Drag to move."
         }
+    }
+
+    private var canvas: some View {
+        MapCanvas(pack: pack, highlight: highlight, selected: selected, revealLabels: revealLabels,
+                  acceptsAnswers: acceptsAnswers, guess: guess, target: target, onLocation: onLocation, viewport: $viewport) { hit in
+            switch hit {
+            case .area(let id): hint = "Pinch to zoom. Drag to move."; onSelect(id)
+            case .ambiguous: hint = "Close to a border. Zoom in and tap again."
+            case .water: hint = "Tap inside an area or use a numbered marker."
+            }
+        }
+        .frame(height: canvasHeight)
+        .accessibilityIdentifier("geographicMap")
+    }
+
+    private var framedMap: some View {
+        VStack(spacing: 0) {
+            canvas
+            Group {
+                if typeSize.isAccessibilitySize {
+                    VStack(alignment: .leading, spacing: 4) { mapHint; HStack { Spacer(); mapControls } }
+                } else {
+                    HStack(spacing: 8) { mapHint; Spacer(minLength: 0); mapControls }
+                }
+            }
+            .padding(.horizontal, 12).padding(.vertical, 4)
+            .foregroundStyle(Color.atlasInk)
+            .background(Color.atlasSurface)
+        }
+        .background(Color.atlasSea)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(Color.atlasLine, lineWidth: 1))
+    }
+
+    private var mapHint: some View {
+        Text(hint).font(.caption).foregroundStyle(Color.atlasMuted).fixedSize(horizontal: false, vertical: true)
+            .accessibilityIdentifier("mapHint")
+    }
+
+    private var mapControls: some View {
+        HStack(spacing: 8) {
+            Button { viewport.scale = max(1, viewport.scale / 1.5); if viewport.scale == 1 { viewport.offset = .zero } }
+            label: { Image(systemName: "minus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44).background(Color.atlasSurface.opacity(0.9), in: RoundedRectangle(cornerRadius: 12)).contentShape(Rectangle()) }
+                .accessibilityLabel("Zoom out")
+            Button { viewport.scale = min(32, viewport.scale * 1.5) }
+            label: { Image(systemName: "plus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44).background(Color.atlasSurface.opacity(0.9), in: RoundedRectangle(cornerRadius: 12)).contentShape(Rectangle()) }
+                .accessibilityLabel("Zoom in")
+            Button { viewport = MapViewport() }
+            label: { Image(systemName: "arrow.counterclockwise").font(.system(size: 20)).frame(width: 44, height: 44).background(Color.atlasSurface.opacity(0.9), in: RoundedRectangle(cornerRadius: 12)).contentShape(Rectangle()) }
+                .accessibilityLabel("Reset map")
+        }.buttonStyle(AtlasPressStyle())
     }
 }
 
@@ -91,27 +175,75 @@ private struct MapCanvas: UIViewRepresentable {
     }
 }
 
-final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
+private final class MapTileLayer: CATiledLayer {
+    let layout: MapLayout
+    let land: CGColor
+    let excluded: CGColor
+    let border: CGColor
+
+    init(layout: MapLayout, scale: CGFloat) {
+        self.layout = layout
+        land = UIColor(Color.atlasSurface).cgColor
+        excluded = UIColor.systemGray3.cgColor
+        border = UIColor(Color.atlasInk).withAlphaComponent(0.55).cgColor
+        super.init()
+        contentsScale = scale
+        tileSize = CGSize(width: 512, height: 512)
+        levelsOfDetail = 6
+        levelsOfDetailBias = 5
+        bounds = CGRect(origin: .zero, size: layout.size)
+        position = CGPoint(x: layout.size.width / 2, y: layout.size.height / 2)
+    }
+
+    override init(layer: Any) {
+        let source = layer as! MapTileLayer
+        layout = source.layout; land = source.land; excluded = source.excluded; border = source.border
+        super.init(layer: layer)
+    }
+    required init?(coder: NSCoder) { fatalError("Use init(layout:scale:)") }
+    override class func fadeDuration() -> CFTimeInterval { 0 }
+
+    override func draw(in context: CGContext) {
+        // CATiledLayer calls this on background threads. The geometry and colors
+        // are immutable snapshots; drawing does not read UIKit or quiz state.
+        let scale = hypot(context.ctm.a, context.ctm.b)
+        let clip = context.boundingBoxOfClipPath.insetBy(dx: -1 / scale, dy: -1 / scale)
+        for shape in layout.shapes where shape.bounds.intersects(clip) {
+            context.saveGState()
+            context.concatenate(shape.transform)
+            context.addPath(shape.path)
+            context.setFillColor(layout.eligibleIDs.contains(shape.id) ? land : excluded)
+            context.setStrokeColor(border)
+            context.setLineWidth(0.8 * contentsScale / (scale * shape.transform.a))
+            context.drawPath(using: .eoFillStroke)
+            context.restoreGState()
+        }
+    }
+}
+
+final class GeographicMapView: UIView, UIScrollViewDelegate {
     let pack: MapPack
+    var showsAnnotations = true
     var guess: MapPin? { didSet { if guess != oldValue { annotations.setNeedsDisplay() } } }
     var target: MapPin? { didSet { if target != oldValue { annotations.setNeedsDisplay() } } }
     var onLocation: ((MapPin) -> Void)? {
         didSet { if (onLocation == nil) != (oldValue == nil) { annotations.setNeedsDisplay() } }
     }
     private(set) var layout: MapLayout?
-    var viewport = MapViewport() { didSet { if viewport != oldValue { updateViewport() } } }
-    var highlight: String? { didSet { if highlight != oldValue { updateColors() } } }
-    var selected: String? { didSet { if selected != oldValue { updateColors() } } }
+    private(set) var viewport = MapViewport()
+    var highlight: String? { didSet { if highlight != oldValue { updateSelection() } } }
+    var selected: String? { didSet { if selected != oldValue { updateSelection() } } }
     var revealLabels = false { didSet { if revealLabels != oldValue { annotations.setNeedsDisplay() } } }
     var acceptsAnswers = true
     var onSelect: ((MapHit) -> Void)?
     var onViewport: ((MapViewport) -> Void)?
-    private let geography = CALayer()
-    private var areaLayers: [CAShapeLayer] = []
-    private let highlightOutline = CAShapeLayer()
+    private let scrollView = UIScrollView()
+    private let content = UIView()
+    private let geography = UIView()
+    private let highlightLayer = CAShapeLayer()
+    private let selectedLayer = CAShapeLayer()
     private let annotations = MapAnnotationsView()
-    private var gestureStart = MapViewport()
-    private var pinchAnchor = CGPoint.zero
+    private var applyingViewport = false
 
     init(pack: MapPack) {
         self.pack = pack
@@ -121,97 +253,126 @@ final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
         clipsToBounds = true
         isAccessibilityElement = true
         accessibilityTraits = .image
-        layer.addSublayer(geography)
+        scrollView.delegate = self
+        scrollView.minimumZoomScale = 1
+        scrollView.maximumZoomScale = 32
+        scrollView.bounces = false
+        scrollView.bouncesZoom = false
+        scrollView.decelerationRate = .fast
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.contentInsetAdjustmentBehavior = .never
+        scrollView.delaysContentTouches = false
+        scrollView.addSubview(content)
+        content.addSubview(geography)
+        addSubview(scrollView)
+        for layer in [selectedLayer, highlightLayer] {
+            layer.fillRule = .evenOdd
+            layer.strokeColor = UIColor(Color.atlasInk).cgColor
+            geography.layer.addSublayer(layer)
+        }
+        selectedLayer.fillColor = UIColor(Color.atlasClay).cgColor
+        highlightLayer.fillColor = UIColor(Color.atlasBlue).cgColor
         annotations.map = self
         annotations.backgroundColor = .clear
         annotations.isOpaque = false
         annotations.isUserInteractionEnabled = false
         addSubview(annotations)
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(panned))
-        pan.maximumNumberOfTouches = 1
-        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinched))
-        tap.require(toFail: pan)
-        tap.require(toFail: pinch)
-        [tap, pan, pinch].forEach { addGestureRecognizer($0) }
+        tap.require(toFail: scrollView.panGestureRecognizer)
+        if let pinch = scrollView.pinchGestureRecognizer { tap.require(toFail: pinch) }
+        addGestureRecognizer(tap)
     }
     required init?(coder: NSCoder) { fatalError("Use init(pack:)") }
 
     override func layoutSubviews() {
         super.layoutSubviews()
         annotations.frame = bounds
-        if bounds.width > 0, bounds.height > 0, layout?.size != bounds.size {
-            layout = MapLayout(pack: pack, size: bounds.size)
-            rebuildLayers()
-        }
-    }
-
-    private func rebuildLayers() {
-        guard let layout else { return }
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        geography.sublayers?.forEach { $0.removeFromSuperlayer() }
-        areaLayers = layout.shapes.map { shape in
-            let layer = CAShapeLayer()
-            layer.path = shape.path
-            layer.fillRule = .evenOdd
-            layer.strokeColor = UIColor(Color.atlasInk).withAlphaComponent(0.55).cgColor
-            geography.addSublayer(layer)
-            return layer
-        }
-        highlightOutline.fillColor = nil
-        highlightOutline.strokeColor = UIColor(Color.atlasInk).cgColor
-        geography.addSublayer(highlightOutline)
-        updateColors()
-        updateViewport()
-        CATransaction.commit()
-    }
-
-    private func updateColors() {
-        guard let layout else { return }
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        for (shape, layer) in zip(layout.shapes, areaLayers) {
-            let color: UIColor
-            if shape.id == highlight { color = UIColor(Color.atlasTeal) }
-            else if shape.id == selected { color = UIColor(red: 0.62, green: 0.30, blue: 0.16, alpha: 1) }
-            else { color = layout.eligibleIDs.contains(shape.id) ? UIColor(red: 0.98, green: 0.97, blue: 0.91, alpha: 1) : .systemGray3 }
-            layer.fillColor = color.cgColor
-        }
-        highlightOutline.path = layout.shapes.first { $0.id == highlight }?.path
-        CATransaction.commit()
-        annotations.setNeedsDisplay()
+        guard bounds.width > 0, bounds.height > 0, layout?.size != bounds.size else { return }
+        let current = viewport
+        applyingViewport = true
+        scrollView.frame = bounds
+        scrollView.zoomScale = 1
+        // Padding permits moving the atlas at its initial zoom, including insets.
+        content.frame = CGRect(origin: .zero, size: CGSize(width: bounds.width * 3, height: bounds.height * 3))
+        scrollView.contentSize = content.bounds.size
+        geography.frame = CGRect(x: bounds.width, y: bounds.height, width: bounds.width, height: bounds.height)
+        let fitted = MapLayout(pack: pack, size: bounds.size, includesCallouts: showsAnnotations)
+        layout = fitted
+        geography.layer.sublayers?.first(where: { $0 is CATiledLayer })?.removeFromSuperlayer()
+        let tiles = MapTileLayer(layout: fitted, scale: traitCollection.displayScale)
+        geography.layer.insertSublayer(tiles, at: 0)
+        tiles.setNeedsDisplay()
+        applyingViewport = false
+        applyViewport(current)
+        updateSelection()
     }
 
     func applyViewport(_ value: MapViewport) {
-        // SwiftUI can update the timer during a drag. Preserve the live native
-        // gesture until its final viewport is published back to SwiftUI.
-        guard !(gestureRecognizers ?? []).contains(where: {
-            ($0 is UIPanGestureRecognizer || $0 is UIPinchGestureRecognizer) &&
-                ($0.state == .began || $0.state == .changed)
-        }) else { return }
+        // Timer updates must not replace a native gesture or its deceleration.
+        guard !scrollView.isDragging, !scrollView.isDecelerating, !scrollView.isZooming else { return }
+        applyingViewport = true
         viewport = value
+        scrollView.zoomScale = value.scale
+        scrollView.contentOffset = CGPoint(
+            x: bounds.width * (1.5 * value.scale - 0.5) - value.offset.width,
+            y: bounds.height * (1.5 * value.scale - 0.5) - value.offset.height)
+        applyingViewport = false
+        updateAnnotations()
     }
 
-    private func updateViewport() {
-        // Reuse vector paths. Core Animation moves the map without repainting
-        // every coastline on the main thread for every gesture frame.
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? { content }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) { readViewport() }
+    func scrollViewDidZoom(_ scrollView: UIScrollView) { readViewport() }
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate { onViewport?(viewport) }
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) { onViewport?(viewport) }
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        if !applyingViewport { onViewport?(viewport) }
+    }
+
+    private func readViewport() {
+        guard !applyingViewport else { return }
+        let value = MapViewport(scale: scrollView.zoomScale, offset: CGSize(
+            width: bounds.width * (1.5 * scrollView.zoomScale - 0.5) - scrollView.contentOffset.x,
+            height: bounds.height * (1.5 * scrollView.zoomScale - 0.5) - scrollView.contentOffset.y))
+        guard value != viewport else { return }
+        viewport = value
+        updateAnnotations()
+    }
+
+    private func updateSelection() {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
-        geography.setAffineTransform(CGAffineTransform(
-            a: viewport.scale, b: 0, c: 0, d: viewport.scale,
-            tx: bounds.midX * (1 - viewport.scale) + viewport.offset.width,
-            ty: bounds.midY * (1 - viewport.scale) + viewport.offset.height))
-        for layer in areaLayers { layer.lineWidth = 0.8 / viewport.scale }
-        highlightOutline.lineWidth = 3 / viewport.scale
+        for (id, layer) in [(selected, selectedLayer), (highlight, highlightLayer)] {
+            let shape = layout?.shapes.first { $0.id == id }
+            layer.path = shape?.path
+            layer.setAffineTransform(shape?.transform ?? .identity)
+        }
         CATransaction.commit()
-        annotations.setNeedsDisplay()
-        accessibilityValue = "\(Int(viewport.scale * 100)) percent zoom" + (guess.map {
+        updateAnnotations()
+    }
+
+    private func updateAnnotations() {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        for (layer, width) in [(selectedLayer, CGFloat(0.8)), (highlightLayer, CGFloat(3))] {
+            let lineWidth = width / (scrollView.zoomScale * layer.affineTransform().a)
+            if layer.lineWidth != lineWidth { layer.lineWidth = lineWidth }
+        }
+        CATransaction.commit()
+        if revealLabels || guess != nil || target != nil || (onLocation == nil && layout?.callouts.isEmpty == false) {
+            annotations.setNeedsDisplay()
+        }
+        let value = "\(Int(viewport.scale * 100)) percent zoom" + (guess.map {
             ". Guess at latitude \($0.coordinate.latitude.formatted(.number.precision(.fractionLength(2)))), longitude \($0.coordinate.longitude.formatted(.number.precision(.fractionLength(2))))"
         } ?? "")
+        if accessibilityValue != value { accessibilityValue = value }
     }
 
     fileprivate func drawAnnotations() {
+        guard showsAnnotations else { return }
         guard let context = UIGraphicsGetCurrentContext(), let layout else { return }
         if revealLabels {
             var occupied: [CGRect] = []
@@ -241,14 +402,14 @@ final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
             let active = callout.id == highlight
             let wrong = callout.id == selected && !active
             let box = UIBezierPath(roundedRect: callout.frame.insetBy(dx: 2, dy: 2), cornerRadius: 12)
-            (active ? UIColor(Color.atlasTeal) : wrong ? UIColor(red: 0.62, green: 0.30, blue: 0.16, alpha: 1) : .white).setFill()
+            (active ? UIColor(Color.atlasBlue) : wrong ? UIColor(Color.atlasClay) : .white).setFill()
             box.fill()
             let title = revealLabels ? String(callout.id.suffix(2)) : String(callout.number)
             drawLabel(title, center: callout.center, font: .systemFont(ofSize: 14, weight: .bold),
                       color: active || wrong ? .white : UIColor(Color.atlasInk))
         }
-        drawPin(guess, letter: "G", color: UIColor(red: 0.62, green: 0.30, blue: 0.16, alpha: 1), layout: layout)
-        drawPin(target, letter: "A", color: UIColor(Color.atlasTeal), layout: layout)
+        drawPin(guess, letter: "G", color: UIColor(Color.atlasClay), layout: layout)
+        drawPin(target, letter: "A", color: UIColor(Color.atlasBlue), layout: layout)
     }
 
     private func drawPin(_ pin: MapPin?, letter: String, color: UIColor, layout: MapLayout) {
@@ -269,19 +430,6 @@ final class GeographicMapView: UIView, UIGestureRecognizerDelegate {
         if let onLocation {
             if let pin = layout.locationPin(gesture.location(in: self), viewport: viewport) { onLocation(pin) }
         } else { onSelect?(layout.hit(gesture.location(in: self), viewport: viewport)) }
-    }
-    @objc private func panned(_ gesture: UIPanGestureRecognizer) {
-        if gesture.state == .began { gestureStart = viewport }
-        let translation = gesture.translation(in: self)
-        viewport.offset = CGSize(width: gestureStart.offset.width + translation.x, height: gestureStart.offset.height + translation.y)
-        if gesture.state == .ended || gesture.state == .cancelled { onViewport?(viewport) }
-    }
-    @objc private func pinched(_ gesture: UIPinchGestureRecognizer) {
-        if gesture.state == .began { gestureStart = viewport; pinchAnchor = gesture.location(in: self) }
-        var updated = gestureStart
-        updated.zoom(to: gestureStart.scale * gesture.scale, anchor: pinchAnchor, size: bounds.size)
-        viewport = updated
-        if gesture.state == .ended || gesture.state == .cancelled { onViewport?(viewport) }
     }
 }
 

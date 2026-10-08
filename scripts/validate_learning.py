@@ -24,7 +24,7 @@ def main():
     for country, pack, count in [('US', 'us-states', 50), ('DE', 'germany-states', 16)]:
         manifest = json.loads((ROOT / 'maps' / pack / 'map.json').read_text())
         check({s for s in states if s.startswith(country)} == {a['id'] for a in manifest['areas']}, 'State IDs do not match map')
-        maps.update({f['id']: shape(f['geometry']) for f in json.loads((ROOT / 'maps' / pack / 'areas.geojson').read_text())['features']})
+        maps.update({f['id']: shape(f['geometry']) for f in json.loads((ROOT / 'maps' / pack / manifest['geometryAsset']).read_text())['features']})
     for state in states.values():
         for field in ['capital', 'nickname', 'nicknameKind', 'flagCredit', 'flagLicense']:
             check(bool(state[field]), f"Missing {field}: {state['id']}")

@@ -71,9 +71,16 @@ struct GeoFeature: Sendable, Decodable {
 
 struct FeatureCollection: Decodable { let features: [GeoFeature] }
 
-struct MapPack: Sendable, Identifiable {
+struct MapPack: Identifiable {
     let manifest: MapManifest
     let features: [GeoFeature]
+    let preparedLayout: MapLayout
+
+    init(manifest: MapManifest, features: [GeoFeature]) {
+        self.manifest = manifest
+        self.features = features
+        preparedLayout = MapLayout(manifest: manifest, features: features)
+    }
     var id: String { manifest.id }
     var areas: [Area] { manifest.areas }
     func area(_ id: String?) -> Area? { areas.first { $0.id == id } }

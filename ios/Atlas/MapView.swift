@@ -2,14 +2,15 @@ import SwiftUI
 import UIKit
 
 extension Color {
-    static let atlasInk = Color(red: 0.10, green: 0.16, blue: 0.28)
-    static let atlasBlue = Color(red: 0.14, green: 0.30, blue: 0.67)
-    static let atlasMuted = Color(red: 0.31, green: 0.38, blue: 0.49)
-    static let atlasPaper = Color(red: 0.955, green: 0.969, blue: 0.99)
-    static let atlasSurface = Color(red: 0.985, green: 0.990, blue: 1.0)
-    static let atlasSea = Color(red: 0.865, green: 0.91, blue: 0.975)
-    static let atlasLine = Color(red: 0.74, green: 0.80, blue: 0.89)
-    static let atlasClay = Color(red: 0.58, green: 0.28, blue: 0.17)
+    static let atlasBlue = Color(red: 0.14, green: 0.20, blue: 0.77)
+    static let atlasInk = Color(red: 0.12, green: 0.16, blue: 0.31)
+    static let atlasMuted = Color(red: 0.24, green: 0.29, blue: 0.57)
+    static let atlasPaper = Color(red: 0.95, green: 0.96, blue: 0.98)
+    static let atlasSurface = Color.white
+    static let atlasSea = Color(red: 0.89, green: 0.92, blue: 0.98)
+    static let atlasLine = atlasBlue.opacity(0.35)
+    // Wrong answers stay distinct from the blue target and also have text labels.
+    static let atlasClay = Color(red: 0.34, green: 0.35, blue: 0.40)
 }
 
 struct MapPreview: UIViewRepresentable {
@@ -46,7 +47,7 @@ final class MapPreviewView: UIView {
             context.addPath(shape.previewPath)
             context.setFillColor((layout.eligibleIDs.contains(shape.id)
                 ? UIColor(Color.atlasSurface) : .systemGray3).cgColor)
-            context.setStrokeColor(UIColor(Color.atlasInk).withAlphaComponent(0.55).cgColor)
+            context.setStrokeColor(UIColor(Color.atlasBlue).cgColor)
             context.setLineWidth(0.8 / shape.transform.a)
             context.drawPath(using: .eoFillStroke)
             context.restoreGState()
@@ -131,17 +132,19 @@ struct MapView: View {
     }
 
     private var mapControls: some View {
-        HStack(spacing: 8) {
-            Button { viewport.scale = max(1, viewport.scale / 1.5); if viewport.scale == 1 { viewport.offset = .zero } }
-            label: { Image(systemName: "minus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44).background(Color.atlasSurface.opacity(0.9), in: RoundedRectangle(cornerRadius: 12)).contentShape(Rectangle()) }
-                .accessibilityLabel("Zoom out")
-            Button { viewport.scale = min(32, viewport.scale * 1.5) }
-            label: { Image(systemName: "plus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44).background(Color.atlasSurface.opacity(0.9), in: RoundedRectangle(cornerRadius: 12)).contentShape(Rectangle()) }
-                .accessibilityLabel("Zoom in")
-            Button { viewport = MapViewport() }
-            label: { Image(systemName: "arrow.counterclockwise").font(.system(size: 20)).frame(width: 44, height: 44).background(Color.atlasSurface.opacity(0.9), in: RoundedRectangle(cornerRadius: 12)).contentShape(Rectangle()) }
-                .accessibilityLabel("Reset map")
-        }.buttonStyle(AtlasPressStyle())
+        Group {
+            HStack(spacing: 8) {
+                Button { viewport.scale = max(1, viewport.scale / 1.5); if viewport.scale == 1 { viewport.offset = .zero } }
+                label: { Image(systemName: "minus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44).atlasOutline(cornerRadius: 22).contentShape(Rectangle()) }
+                    .accessibilityLabel("Zoom out")
+                Button { viewport.scale = min(32, viewport.scale * 1.5) }
+                label: { Image(systemName: "plus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44).atlasOutline(cornerRadius: 22).contentShape(Rectangle()) }
+                    .accessibilityLabel("Zoom in")
+                Button { viewport = MapViewport() }
+                label: { Image(systemName: "arrow.counterclockwise").font(.system(size: 20)).frame(width: 44, height: 44).atlasOutline(cornerRadius: 22).contentShape(Rectangle()) }
+                    .accessibilityLabel("Reset map")
+            }.buttonStyle(AtlasPressStyle())
+        }
     }
 }
 
@@ -185,7 +188,7 @@ private final class MapTileLayer: CATiledLayer {
         self.layout = layout
         land = UIColor(Color.atlasSurface).cgColor
         excluded = UIColor.systemGray3.cgColor
-        border = UIColor(Color.atlasInk).withAlphaComponent(0.55).cgColor
+        border = UIColor(Color.atlasBlue).cgColor
         super.init()
         contentsScale = scale
         tileSize = CGSize(width: 512, height: 512)

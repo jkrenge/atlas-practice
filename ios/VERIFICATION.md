@@ -1,5 +1,29 @@
 # iOS app verification
 
+## Liquid Glass physical-device check — 2026-10-10
+
+The current app was built, installed, and tested on a physical iPhone Air running iOS 27.0.1 with Xcode 27.0. Five functional UI checks passed: glass card navigation and answer actions, library scrolling, polygon/callout/zoom behavior, landscape controls, and the largest accessibility text size. The navigation and answer test passed again after the setup controls changed.
+
+The first accessibility audit passed the library but failed contrast on the setup screen’s Explore map action. System text color alone and native glass button styling did not resolve that result. The Explore map/Browse facts row now has system text color and a solid surface. Both library and setup audits pass. The practice audit still fails contrast on the native Show answer glass button. Its failure screenshot shows black text on a pale surface, but the cause is unconfirmed. The test was not weakened or filtered, and full device accessibility approval remains incomplete.
+
+Debug functional results and failed audit attempts are retained in `build/glass-device-2026-10-10/`: `Functional.xcresult`, `Accessibility.xcresult`, `NativeControls.xcresult`, and `SolidNavigation.xcresult`. The last bundle contains screenshots of the current library, setup, and answer feedback. These checks did not complete a practice session or delete the installed app.
+
+All three optimized Release performance workloads passed in `Performance.xcresult`. Each workload has two measured iterations with coverage disabled. Library scrolling/navigation, NYC map interaction, and US map interaction each recorded zero frame hitches. Mean app CPU time per complete workload was 5.488 s, 3.988 s, and 6.239 s, respectively. These are workload CPU totals, not response times. No before/after performance improvement is established by this run. Battery use, sustained thermal behavior, and real-device iPad behavior were not measured.
+
+The Release app passed strict code-signature verification. The current signed build was installed in place and launched normally after the tests. Installation and launch receipts are `install.json` and `launch.json` in the same evidence folder. No TestFlight upload was performed.
+
+## Liquid Glass design — 2026-10-10
+
+The library and practice setup use solid information cards with native Liquid Glass navigation controls on iOS 26 and later. Map prompts, zoom controls, and practice actions use glass. Rounded system type and larger previews connect the library, study, facts, and results screens. The deployment target remains iOS 18. Older supported systems use materials and standard bordered buttons. Custom glass surfaces become solid when Reduce Transparency is enabled. The map renderer, geometry, scoring, timers, and stored progress format did not change.
+
+The app built with Xcode 27.0 and ran on iPhone 17 Pro Simulator, iOS 26.5. All 25 unit test functions and 11 of the 12 selected UI checks passed in `build/glass-design/Functional.xcresult`. The initial contrast audit failed on the Offline badge. After correcting that badge, the audit found a contrast failure in the practice action row. Native glass buttons with system text colors above a solid panel resolved it. The expanded audit also checks answer feedback and the white Continue label; it passed in `AccessibilitySurface.xcresult`. The glass navigation, map tap/zoom, and largest-text checks passed again in `AccessibilityNative.xcresult`. The earlier failed contrast runs remain as evidence.
+
+On iPad Pro 13-inch (M5) Simulator, iOS 26.5, navigation, landscape, and largest-text checks passed in `iPad.xcresult`. The contrast audit found additional failures with glass behind card captions and material behind the question count. An unchanged HEAD build passed the same audit in `iPadBaseline.xcresult`. The final design separates solid information surfaces from glass controls and uses stronger captions. The full audit of home, setup, practice, and feedback then passed in `iPadOpaqueHeader.xcresult`.
+
+The final iPhone build passed the glass navigation/action test, the largest-text test, and the full accessibility audit in `iPhoneFinal.xcresult`. That result includes screenshots of the library, setup, and feedback screens. Across the runs, all 25 unit test functions, 12 selected iPhone UI checks, and four iPad UI checks passed.
+
+Screenshots and result bundles are under `build/glass-design/`. Test compilation reported existing actor-isolation warnings in the UI test setup method. No physical-device performance measurements, iOS 27 runtime checks, or iOS 18 runtime checks were made. The Reduce Transparency branch was inspected in code but not exercised through the system setting. This work did not upload a TestFlight build.
+
 ## Physical-device performance comparison — 2026-10-08
 
 The retained-path renderer uses less CPU but produced more frame hitches in physical-device recordings. It and the trial that deferred border-width updates during pinches were rejected. The app source now uses the native `UIScrollView` and cached `CATiledLayer` renderer again. This keeps the prior UI changes, three-second automatic advance, reduced geometry, map projections, and selection behavior. The 50% performance target remains unmet.
@@ -299,3 +323,44 @@ The current Minnesota and Utah flag assets were visually checked. No generated s
 - Native controls have accessibility labels, and answers post announcements. A complete spoken VoiceOver session has not been verified. The custom map has area-list and coordinate-entry alternatives; those do not reproduce visual spatial learning.
 - NYC boundaries are approximate and include parks and islands. Individual topology checks do not prove complete gap/overlap coverage. The datHere catalog declares ODC-By, but the licensed resource download could not be compared with the pinned mirror.
 - City populations are dated city/municipal figures, not live counts or metropolitan populations. Landmarks are a curated set, not a popularity ranking. Large parks use an identified reference point.
+
+## Blue Study UI — November 15, 2026
+
+Applied the selected Blue Study concept to the existing SwiftUI app: ultramarine outlines, grey canvas, light headings, monospaced labels, a two-column library, and flat controls. Accessibility text sizes use a single library column. Existing map geometry, gameplay, progress storage, and the light-only appearance are retained.
+
+Verified on iPhone 17 Pro, iOS 26.5 Simulator:
+
+- Build and launch passed.
+- Six initial UI tests passed: library/practice navigation, all four maps at the largest text size, large-text answer controls, landscape controls, polygon taps/zoom/pan, and coordinate entry.
+- The accessibility audit first found a small Show answer hit region. Added an explicit content shape after the button frame. The accessibility audit and library/practice navigation both passed on rerun.
+- Reviewed library, practice setup, and answer-feedback screenshots. No changes to source geography or quiz scoring.
+- `git diff --check` passed.
+
+Evidence: `build/BlueStudy.xcresult`, `build/BlueStudy-controls.xcresult`, and `build/blue-study/`. These are ignored local build artifacts. No physical-device verification, dark theme, or release frame-rate measurement was performed for this change. Busabase Knowledge was unavailable; no knowledge update was saved.
+
+### Blue Study device installation — November 16, 2026
+
+Built the current working tree in Release for the test iPhone Air with the configured developer team. Strict code-signature verification passed. Installed as an update without uninstalling, verified `com.jkrenge.geography` in the device app list, and successfully launched Atlas Practice. Physical interaction and frame-rate checks remain unverified. Build log: `build/blue-study-device-build.log`. Busabase remained unavailable.
+
+## Blue Study controls and layout review — November 16, 2026
+
+Reviewed the library, setup, all quiz modes, correct/incorrect/timeout feedback, results, study selection, reference lists and details, source disclosure, credits, coordinate entry, area selection, and empty search states. Used Bunpo lesson and reading-card references from the user's Appllama collection. Kept native SwiftUI, existing geometry, scoring, and progress storage.
+
+Changes: white map cards with explicit Explore actions; bordered practice rows, settings, answers, secondary buttons, and source links; stronger type hierarchy; distinct map and feedback surfaces; one question heading; fact questions and answer choices in the same scrolling card; an empty area-search state; grey selection feedback text matching the map. Larger text uses stacked layouts.
+
+Validation on iPhone 17 Pro / iOS 26.5 with Xcode 27.2:
+
+- Simulator and signed Release builds passed; strict code-signature verification passed.
+- All 25 unit tests passed. All 27 functional UI tests passed across the main run and focused reruns, including accessibility audit, largest text, landscape, all quiz modes, map gestures, results, and reference details.
+- The first new search-cancel test used the wrong system selector. Inspected its accessibility hierarchy and corrected the test to close active search before cancelling the sheet. The rerun passed.
+- Inspected 35 distinct screen/state screenshots, then reviewed fresh fact-question screenshots after grouping their answers with the prompt.
+- The plugin response timed out after five minutes during the main suite. The underlying Xcode process continued; its completed log and result bundle were checked directly.
+- `git diff --check` passed. Existing XCTest setup actor-isolation warnings remain; no new app build warnings were reported.
+
+Evidence (ignored local artifacts): `build/BlueStudy-polish.xcresult`, `build/BlueStudy-polish-final.xcresult`, `build/blue-study-polish/`, and `build/blue-study-polish-device.log`. The main bundle retains the initial test-selector failure; the final bundle has five passing affected checks.
+
+Installed the signed Release as an update on the test iPhone Air without uninstalling. Physical touch interaction, iPad, older iOS versions, and release frame-rate benchmarks were not checked in this review. The app remains light-only. Busabase Knowledge remained unavailable; no Knowledge update was saved.
+
+### Blue Study app icon — November 16, 2026
+
+Replaced the app icon with an ultramarine globe and white location marker. Verified the asset is 1024 × 1024 with no alpha channel. The signed Release build and strict code-signature verification passed. Installed the update on the test iPhone Air, confirmed the bundle in the device app list, and launched it successfully. Build log: `build/blue-study-icon-device.log`. Gameplay tests were not rerun for this asset-only change; the physical Home Screen appearance was not inspected. Busabase remained unavailable.

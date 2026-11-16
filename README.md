@@ -12,6 +12,8 @@ Open `ios/Atlas.xcodeproj`, select the **Atlas** scheme and an iOS Simulator, th
 
 The generated project is committed, so XcodeGen is only needed when changing `ios/project.yml` or adding source files. To regenerate it, use XcodeGen 2.46 or compatible and `scripts/ios.sh generate`.
 
+The Blue Study interface uses blue map outlines, a pale canvas, white cards, and clear bordered controls. Map cards include an Explore action; practice options, answer choices, and secondary actions have visible button boundaries. The library switches to one column at larger text sizes. The app retains its light appearance, native navigation, map gestures, and local progress.
+
 ```sh
 scripts/ios.sh build
 xcrun simctl list devices available

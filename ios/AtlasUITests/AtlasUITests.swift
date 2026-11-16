@@ -14,6 +14,7 @@ final class AtlasUITests: XCTestCase {
         tap(app.buttons["map-\(map)"])
         tap(app.buttons["start-\(mode)"])
         XCTAssertTrue(app.staticTexts["questionPrompt"].waitForExistence(timeout: 5))
+        capture("Quiz-\(map)-\(mode)")
     }
     func tap(_ element: XCUIElement) {
         for _ in 0..<9 where !element.isHittable {
@@ -51,18 +52,42 @@ final class AtlasUITests: XCTestCase {
             stopMeasuring()
         }
     }
-    func testHomeScrollMovesContent() throws {
-        guard app.frame.width < 600 else { throw XCTSkip("The complete library fits on an iPad") }
-        let firstMap = app.buttons["map-us-states"]
-        XCTAssertTrue(firstMap.waitForExistence(timeout: 5))
-        let originalY = firstMap.frame.minY
-        app.scrollViews.firstMatch.swipeUp()
-        let scrolledY = firstMap.frame.minY
-        XCTAssertLessThan(scrolledY, originalY - 10, "A home-screen swipe must move the content")
-        app.scrollViews.firstMatch.swipeDown()
-        XCTAssertGreaterThan(firstMap.frame.minY, scrolledY + 10)
-        firstMap.tap()
+    func testLibraryMapsRemainReachableAtLargestText() {
+        app.terminate()
+        app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch()
+        for mapID in ["us-states", "germany-states", "nyc-boroughs", "nyc-neighborhoods-focused"] {
+            tap(app.buttons["map-\(mapID)"])
+            XCTAssertTrue(app.buttons["study-map"].waitForExistence(timeout: 5))
+            app.navigationBars.buttons.firstMatch.tap()
+        }
+    }
+    func testBlueStudyLibraryAndPracticeActions() {
+        let featured = app.buttons["map-us-states"]
+        XCTAssertTrue(featured.waitForExistence(timeout: 5))
+        let home = XCTAttachment(screenshot: app.screenshot())
+        home.name = "Blue Study map library"
+        home.lifetime = .keepAlways
+        add(home)
+        // The map preview must also open the collection.
+        featured.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.4)).tap()
         XCTAssertTrue(app.buttons["study-map"].waitForExistence(timeout: 5))
+        let setup = XCTAttachment(screenshot: app.screenshot())
+        setup.name = "Blue Study practice setup"
+        setup.lifetime = .keepAlways
+        add(setup)
+        tap(app.buttons["start-find"])
+        tap(app.buttons["show-answer"])
+        let next = app.buttons["continue-session"]
+        XCTAssertTrue(next.isHittable)
+        XCTAssertTrue(app.frame.contains(next.frame))
+        let feedback = XCTAttachment(screenshot: app.screenshot())
+        feedback.name = "Blue Study map controls and answer feedback"
+        feedback.lifetime = .keepAlways
+        add(feedback)
+        next.tap()
+        XCTAssertEqual(app.staticTexts["questionPrompt"].label, "Find Idaho")
+        XCTAssertFalse(app.buttons["continue-session"].exists)
     }
     private func measureGameplay(_ mapID: String) throws {
         guard #available(iOS 26.0, *) else { throw XCTSkip("Frame hitch metrics require iOS 26") }
@@ -115,9 +140,10 @@ final class AtlasUITests: XCTestCase {
     }
     func testFindCorrectAnswerAdvancesAfterThreeSeconds() {
         open("us-states", mode: "find")
-        let floatingPrompt = app.staticTexts["map-questionPrompt"]
+        let floatingPrompt = app.staticTexts["questionPrompt"]
         XCTAssertEqual(floatingPrompt.label, "Find Washington")
-        XCTAssertTrue(app.images["geographicMap"].frame.contains(floatingPrompt.frame))
+        XCTAssertTrue(app.frame.contains(floatingPrompt.frame))
+        XCTAssertFalse(app.staticTexts["map-questionPrompt"].exists, "Show the question only once")
         tap(app.buttons["Use area list"])
         let search = app.searchFields.firstMatch
         search.tap()
@@ -227,6 +253,7 @@ final class AtlasUITests: XCTestCase {
             tap(app.buttons["continue-session"])
         }
         XCTAssertEqual(app.staticTexts["firstAttemptScore"].label, "5 of 5")
+        capture("Session results")
         tap(app.buttons["Back to map"])
         XCTAssertTrue(app.buttons["start-name"].exists)
     }
@@ -264,6 +291,7 @@ final class AtlasUITests: XCTestCase {
         tap(app.buttons["Use area list"])
         tap(app.buttons["area-US-AL"])
         XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("You chose Alabama"))
+        try app.performAccessibilityAudit(for: [.hitRegion, .sufficientElementDescription, .contrast])
     }
     func testGermanyStudySelection() {
         app.buttons["map-germany-states"].tap()
@@ -275,6 +303,8 @@ final class AtlasUITests: XCTestCase {
         expectation(for: updated, evaluatedWith: selected)
         waitForExpectations(timeout: 5)
         XCTAssertEqual(selected.label, "Bayern")
+        app.scrollViews.firstMatch.swipeDown()
+        capture("Study selection and state facts")
     }
     func testCapitalsFlagsAndNicknames() {
         for mode in ["capital", "flag", "nickname"] {
@@ -311,6 +341,7 @@ final class AtlasUITests: XCTestCase {
         open("us-states", mode: "capitalLocation")
         XCTAssertEqual(app.staticTexts["questionPrompt"].label, "Locate Olympia")
         tap(app.buttons["Enter coordinates"])
+        capture("Coordinate entry")
         app.textFields["latitude-input"].tap()
         app.textFields["latitude-input"].typeText("47.04")
         app.textFields["longitude-input"].tap()
@@ -339,6 +370,7 @@ final class AtlasUITests: XCTestCase {
         search.tap()
         search.typeText("zzzzzz")
         XCTAssertTrue(app.staticTexts["reference-no-results"].firstMatch.waitForExistence(timeout: 5))
+        capture("Reference empty search")
         search.buttons["Clear text"].tap()
         search.tap()
         search.typeText("Washington")
@@ -381,9 +413,71 @@ final class AtlasUITests: XCTestCase {
         let feedback = app.staticTexts["answerFeedback"].firstMatch
         XCTAssertTrue(feedback.waitForExistence(timeout: 8))
         XCTAssertTrue(feedback.label.contains("Time’s up."))
+        capture("Timeout feedback")
         XCTAssertFalse(app.buttons["choice-US-WA"].exists)
         tap(app.buttons["continue-session"])
         XCTAssertTrue(app.staticTexts["question-timer"].exists)
+    }
+
+    private func capture(_ name: String) {
+        let shot = XCTAttachment(screenshot: app.screenshot())
+        shot.name = name
+        shot.lifetime = .keepAlways
+        add(shot)
+    }
+
+    func testReferenceDetailsAndCredits() {
+        tap(app.buttons["map-us-states"])
+        tap(app.buttons["browse-facts"])
+        capture("Reference states")
+        tap(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "state-fact-")).firstMatch)
+        capture("State detail")
+        tap(app.buttons["Sources & flag credits"])
+        capture("State sources expanded")
+        app.navigationBars.buttons.firstMatch.tap()
+        for category in ["Cities", "Sights"] {
+            tap(app.buttons[category])
+            capture("Reference \(category)")
+            tap(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "place-fact-")).firstMatch)
+            XCTAssertTrue(app.images["geographicMap"].waitForExistence(timeout: 5))
+            capture("Detail \(category)")
+            app.scrollViews.firstMatch.swipeUp()
+            capture("Detail sources \(category)")
+            app.navigationBars.buttons.firstMatch.tap()
+        }
+        app.terminate(); app.launch()
+        tap(app.buttons["map-us-states"])
+        tap(app.buttons["Map sources and credits"])
+        XCTAssertTrue(app.navigationBars["Sources and credits"].waitForExistence(timeout: 5))
+        capture("Sources and credits")
+    }
+
+    func testAreaSearchEmptyStateAndCancel() {
+        open("us-states", mode: "find")
+        tap(app.buttons["Use area list"])
+        capture("Area selection sheet")
+        let search = app.searchFields.firstMatch
+        search.tap(); search.typeText("zzzzzz")
+        XCTAssertTrue(app.staticTexts["area-no-results"].firstMatch.waitForExistence(timeout: 5))
+        capture("Area empty search")
+        search.buttons["Clear text"].tap()
+        search.typeText("Washington")
+        XCTAssertTrue(app.buttons["area-US-WA"].exists)
+        app.buttons["close"].tap()
+        app.buttons["Cancel"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["show-answer"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.staticTexts["answerFeedback"].firstMatch.exists)
+    }
+
+    func testLargestTextFactAnswersRemainReachable() {
+        app.terminate()
+        app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch()
+        open("us-states", mode: "capital")
+        tap(app.buttons["choice-US-WA"])
+        XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("That's right."))
+        tap(app.buttons["continue-session"])
+        XCTAssertTrue(app.staticTexts["questionPrompt"].isHittable)
     }
 
 }

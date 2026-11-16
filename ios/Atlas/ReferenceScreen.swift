@@ -10,7 +10,7 @@ struct StateFactCard: View {
             }
             Divider().padding(.vertical, 4)
             AtlasSectionLabel(title: "Capital")
-            Text(state.capital).font(.custom("Georgia", size: 28, relativeTo: .title))
+            Text(state.capital).font(.system(.title, design: .default, weight: .semibold))
             VStack(alignment: .leading, spacing: 6) {
                 Text(state.nicknameKind).font(.caption.weight(.semibold)).foregroundStyle(Color.atlasMuted)
                 Text(state.nickname).font(.title3)
@@ -22,9 +22,9 @@ struct StateFactCard: View {
                     Link("Flag: \(state.flagLicense)", destination: state.flagSource).frame(minHeight: 44)
                     Text(state.flagCredit).font(.caption).foregroundStyle(Color.atlasMuted)
                 }.frame(maxWidth: .infinity, alignment: .leading)
-            }.font(.subheadline).padding(.top, 8)
-        }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.atlasSurface, in: RoundedRectangle(cornerRadius: 18))
+            }.font(.subheadline).padding(12).atlasOutline(cornerRadius: 14)
+        }.buttonStyle(SecondaryButtonStyle()).padding(24).frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.atlasSurface, in: RoundedRectangle(cornerRadius: 28))
     }
 }
 
@@ -67,7 +67,7 @@ struct ReferenceScreen: View {
                                 Text(state.capital).font(.subheadline).foregroundStyle(Color.atlasMuted)
                             }
                         }.frame(minHeight: 52)
-                    }
+                    }.accessibilityIdentifier("state-fact-\(state.id)")
                 }
             } else {
                 Section {
@@ -79,7 +79,7 @@ struct ReferenceScreen: View {
                                     Text("#\(rank) · \(place.populationLabel) residents").font(.subheadline).foregroundStyle(Color.atlasMuted)
                                 }
                             }.frame(minHeight: 48)
-                        }
+                        }.accessibilityIdentifier("place-fact-\(place.id)")
                     }
                 } footer: {
                     Text(category == "Sights" ? "A curated learning collection, not a popularity ranking." :
@@ -87,7 +87,7 @@ struct ReferenceScreen: View {
                          "Destatis · December 31, 2024. Population within municipal boundaries, based on the 2022 census.")
                 }
             }
-        }.scrollContentBackground(.hidden).background(Color.atlasPaper)
+        }.scrollContentBackground(.hidden).background(Color.atlasPaper).foregroundStyle(Color.atlasInk)
             .searchable(text: $search, prompt: "Search \(category.lowercased())")
             .navigationTitle("Learn the details").navigationBarTitleDisplayMode(.inline)
     }
@@ -100,7 +100,7 @@ struct PlaceDetail: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                Text(place.name).font(.system(.largeTitle, design: .serif, weight: .semibold))
+                Text(place.name).font(.system(.largeTitle, design: .default, weight: .semibold))
                 MapView(pack: pack, acceptsAnswers: false,
                         target: MapPin(coordinate: place.coordinate, regionID: place.stateID)) { _ in }
                 Text("A marks the reference location.").font(.subheadline)
@@ -117,6 +117,7 @@ struct PlaceDetail: View {
                     .font(.subheadline).textSelection(.enabled)
                 Link("Coordinate source", destination: place.sourceURL).frame(minHeight: 44)
             }.padding(20).frame(maxWidth: 760).frame(maxWidth: .infinity)
-        }.background(Color.atlasPaper).foregroundStyle(Color.atlasInk).navigationBarTitleDisplayMode(.inline)
+        }.background(Color.atlasPaper).foregroundStyle(Color.atlasInk)
+            .buttonStyle(SecondaryButtonStyle()).navigationBarTitleDisplayMode(.inline)
     }
 }

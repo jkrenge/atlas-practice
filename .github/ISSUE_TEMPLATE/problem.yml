@@ -1,0 +1,25 @@
+name: Problem in the app
+description: Something doesn't work, crashes, or looks wrong.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Issues are public. Please leave out personal details.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what you saw instead. A screenshot helps.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: In the app, Settings → About → Version.
+      placeholder: 1.0 (2)
+  - type: input
+    id: device
+    attributes:
+      label: Device and iOS version
+      placeholder: iPhone 16, iOS 26.1

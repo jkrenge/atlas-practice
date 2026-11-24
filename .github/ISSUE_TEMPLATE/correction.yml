@@ -1,0 +1,29 @@
+name: Map or fact correction
+description: A border, capital, flag, population, sight, or neighborhood that looks wrong.
+body:
+  - type: markdown
+    attributes:
+      value: Issues are public. Please leave out personal details.
+  - type: dropdown
+    id: map
+    attributes:
+      label: Which map?
+      options:
+        - United States
+        - Germany
+        - New York City boroughs
+        - New York City neighborhoods
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What's wrong, and what should it be?
+      description: For example the state, city, or neighborhood, and the mode you were playing.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: A link that backs the correction, if you have one.

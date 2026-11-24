@@ -17,7 +17,7 @@ Atlas Practice is a geography practice app for iPhone and iPad: the US states, t
 
 Coming soon to the App Store as Atlas Practice.
 
-[Website](https://jkrenge.github.io/atlas-practice/) (live once this repository is public) · [Privacy](https://jkrenge.github.io/atlas-practice/privacy/) · [Support](https://jkrenge.github.io/atlas-practice/support/) · Licence: [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md)
+[Website](https://jkrenge.github.io/atlas-practice/) (live once this repository is public) · [Privacy](https://jkrenge.github.io/atlas-practice/privacy/) · [Support](https://jkrenge.github.io/atlas-practice/support/) · [Report a problem](https://github.com/jkrenge/atlas-practice/issues/new/choose) · Licence: [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md)
 
 ## Build and run
 

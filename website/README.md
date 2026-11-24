@@ -59,8 +59,8 @@ grep -rn 'TODO(owner)\|class="todo"' website
 ```
 
 - [ ] **Site address.** For now the site goes live at `jkrenge.github.io/atlas-practice/`, once the repository is public (GitHub Free only serves Pages from public repositories). A custom domain is planned. When it is set, change the address in all six places together: `og:url` and `og:image` in `index.html`, the `<base>` in `404.html` (with a custom domain at the root it becomes `/`), the links at the top of the repository's `README.md`, this README, and `AtlasLinks.site` in `ios/Atlas/AtlasApp.swift`. Do it before an app build with the old address ships, because links inside a shipped build only change with an update.
-- [ ] **Support email address.** `support/index.html` (Get in touch), `privacy/index.html` (Who we are, Contact, Impressum). Replace each placeholder with a `mailto:` link; the comment on the support page has the markup. If a mail provider hosts the mailbox, name it as a recipient under If you write to us on the privacy page.
-- [ ] **Developer or legal name**, the person or company responsible. `privacy/index.html` (Who we are, Impressum).
+- [x] **Support contact.** Support runs through GitHub issues (`support/index.html`, Get in touch; `privacy/index.html`, Who we are, If you contact us, Contact). The issue forms are in `.github/ISSUE_TEMPLATE/`. They work once the repository is public.
+- [x] **Developer or legal name.** Julian Krenge, on the privacy page (Who we are, Impressum).
 - [ ] **German Impressum.** Decide whether the site needs one (legal notice under § 5 DDG). If yes, fill in name, **postal address** and email in the Impressum section of `privacy/index.html`, and keep the Legal notice link in every footer. If no, remove both the links (marked `TODO(owner)` in each footer) and the section.
 - [ ] **App Store link.** `index.html`, hero notice. Replace the "Coming soon" stamp and paragraph with a link to the App Store page. Use Apple's official badge artwork only as provided, from Apple's marketing resources.
 - [ ] **Safari App Store banner** (optional, once live). Uncomment the `apple-itunes-app` meta tag in `index.html` and fill in the app ID.

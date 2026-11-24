@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atlas: geography practice for iPhone and iPad</title>
+  <meta name="description" content="Offline geography practice for iPhone and iPad. Find the states of the US and Germany, learn capitals and flags, and get to know New York City's neighborhoods. No account, no tracking.">
+  <meta name="theme-color" content="#bdded9">
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/site.css">
+  <!-- Link previews need absolute URLs. This is the address the app links to (AtlasLinks.site in
+       ios/Atlas/AtlasApp.swift); if the site moves, change both. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Atlas: geography practice for iPhone and iPad">
+  <meta property="og:description" content="States, capitals, flags and New York City's neighborhoods, on a map that works without a signal.">
+  <meta property="og:url" content="https://jkrenge.github.io/atlas-practice/">
+  <meta property="og:image" content="https://jkrenge.github.io/atlas-practice/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The yellow Atlas title tape on a school-atlas map of the North Atlantic.">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- TODO(owner): once the app is live, add Safari's App Store banner:
+       <meta name="apple-itunes-app" content="app-id=YOUR_APP_ID"> -->
+</head>
+<body data-camera="atlantic">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./" aria-current="page"><img src="assets/favicon.png" width="64" height="64" alt="">Atlas</a>
+      <nav class="site-nav" aria-label="Site">
+        <ul>
+          <li><a href="support/">Support</a></li>
+          <li><a href="privacy/">Privacy</a></li>
+          <li><a href="credits/">Credits</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <section class="hero" aria-labelledby="title">
+        <div class="hero-text">
+          <h1 id="title" class="title-tape wordmark">Atlas</h1>
+          <p class="on-map mono"><span class="tape">Borders, capitals, flags. Pick a map.</span></p>
+          <div class="card torn">
+            <p class="lead">Geography practice for iPhone and iPad: the United States, Germany and New York City, on a map that works without a signal.</p>
+            <p class="stamp"><strong>Coming soon</strong></p>
+            <!-- TODO(owner): App Store link. When the app is live, replace this paragraph with a plain text
+                 link, for example <a class="button primary" href="https://apps.apple.com/app/idYOUR_APP_ID">Get Atlas on the App Store</a>.
+                 Only use Apple's official badge artwork, unmodified, from Apple's marketing resources. -->
+            <p>Not in the App Store just yet. Look for <strong>Atlas Practice</strong>; the link will appear right here.</p>
+          </div>
+        </div>
+        <figure class="print">
+          <img src="assets/screens/01-home.jpg" width="644" height="1400" fetchpriority="high"
+               alt="The Atlas home screen: the yellow Atlas title over the atlas map, a card to start Find the area on the United States, and map cards for the United States and Germany.">
+          <figcaption>Home</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" aria-labelledby="maps">
+        <div class="section-head">
+          <h2 id="maps"><span class="tape">Maps</span></h2>
+          <p class="on-map mono muted"><span class="tape">No signal needed</span></p>
+        </div>
+        <ul class="maps" role="list">
+          <li class="card"><h3>United States</h3><p>50 states, with Alaska and Hawaii in their own insets.</p></li>
+          <li class="card"><h3>Germany</h3><p>16 states, from the North Sea to the Alps.</p></li>
+          <li class="card"><h3>New York City</h3><p>5 boroughs and 53 neighborhood areas, on two maps.</p></li>
+        </ul>
+      </section>
+
+      <section class="section" aria-labelledby="play">
+        <div class="feature">
+          <div>
+            <div class="section-head">
+              <h2 id="play"><span class="tape">Nine ways to play</span></h2>
+              <p class="on-map mono muted"><span class="tape">United States and Germany</span></p>
+            </div>
+            <div class="card modes">
+              <div>
+                <h3>On the map</h3>
+                <dl>
+                  <dt>Find the area</dt><dd>We name it, you find it.</dd>
+                  <dt>Name the area</dt><dd>We point, you name it.</dd>
+                </dl>
+              </div>
+              <div>
+                <h3>Names &amp; facts</h3>
+                <dl>
+                  <dt>State capitals</dt><dd>Not always the biggest city.</dd>
+                  <dt>State flags</dt><dd>Seals, stripes, and the odd bear.</dd>
+                  <dt>Nicknames &amp; slogans</dt><dd>Every state has a catchphrase.</dd>
+                  <dt>City populations</dt><dd>Guess the headcount. Official figures.</dd>
+                </dl>
+              </div>
+              <div>
+                <h3>Place a pin</h3>
+                <dl>
+                  <dt>Locate capitals</dt><dd>Pin the capital. Close counts.</dd>
+                  <dt>Locate cities</dt><dd>Big cities, tiny dots.</dd>
+                  <dt>Locate landmarks</dt><dd>Famous sights. Where exactly?</dd>
+                </dl>
+              </div>
+              <p class="meta">A pin counts within 50 km in the US and 20 km in Germany. The cities are the 50 largest in the US and the 10 largest in Germany; the sights are 50 American and 20 German landmarks.</p>
+            </div>
+          </div>
+          <div class="prints">
+            <figure class="print">
+              <img src="assets/screens/02-find-the-area.jpg" width="644" height="1400" loading="lazy" decoding="async"
+                   alt="A Find the area question: the app names a state and the map of the United States waits for a tap.">
+              <figcaption>Find the area</figcaption>
+            </figure>
+            <figure class="print">
+              <img src="assets/screens/04-flags.jpg" width="644" height="1400" loading="lazy" decoding="async"
+                   alt="A State flags question: a US state flag with four state names to choose from.">
+              <figcaption>State flags</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="nyc">
+        <div class="feature flip">
+          <div>
+            <div class="section-head">
+              <h2 id="nyc"><span class="tape">New York City</span></h2>
+              <p class="on-map mono muted"><span class="tape">5 boroughs · 53 areas</span></p>
+            </div>
+            <div class="card">
+              <p>Two maps of the city. Start with the five boroughs, then zoom in on the neighborhoods: 38 areas in Manhattan and 15 across the other boroughs.</p>
+              <p>Both maps play Find the area and Name the area. Some neighborhoods travel in groups, like West Brooklyn and Queens (other areas), and Seaport is drawn by hand. Boundaries are approximate, as any New Yorker will happily tell you.</p>
+              <p class="meta">Neighborhood outlines contain information from NYC Neighborhoods by Pediacities / Ontodia, made available under the <a href="https://opendatacommons.org/licenses/by/1-0/">Open Data Commons Attribution License</a>. <a href="credits/">Sources and credits</a></p>
+            </div>
+          </div>
+          <figure class="print" style="--tilt: -1.5deg">
+            <img src="assets/screens/05-new-york-city.jpg" width="644" height="1400" loading="lazy" decoding="async"
+                 alt="The New York City page over the atlas map, with two map cards: Boroughs, 5 boroughs, and Neighborhoods, 53 areas.">
+            <figcaption>New York City</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="round">
+        <div class="feature">
+          <div>
+            <div class="section-head">
+              <h2 id="round"><span class="tape">How a round works</span></h2>
+            </div>
+            <div class="card">
+              <ol class="steps" role="list">
+                <li><p><strong>Pick a map and a way to play.</strong> A round is 10 or 25 questions, or all of them. You choose in Settings.</p></li>
+                <li><p><strong>Beat the clock, or skip it.</strong> Take 30 or 60 seconds per question, or turn the timer off. Pause whenever you like; the clock waits.</p></li>
+                <li><p><strong>Miss one, meet it again.</strong> A missed question comes back once for a rematch, a couple of questions later.</p></li>
+                <li><p><strong>See how you did.</strong> Your first-try score earns a rank: Cartographer, Navigator, Explorer or Wanderer. Anything you missed is listed under Worth another look.</p></li>
+              </ol>
+              <ul class="quotes" role="list" aria-label="A few things Atlas says along the way">
+                <li>“Nailed it.”</li>
+                <li>“Scenic detour.”</li>
+                <li>“Ten in a row. Are you a satellite?”</li>
+              </ul>
+            </div>
+          </div>
+          <div class="prints">
+            <figure class="print">
+              <img src="assets/screens/03-correct.jpg" width="644" height="1400" loading="lazy" decoding="async"
+                   alt="A correct answer: Washington is highlighted on the US map and the feedback reads Washington with a green check mark.">
+              <figcaption>Correct</figcaption>
+            </figure>
+            <figure class="print">
+              <img src="assets/screens/06-results.jpg" width="644" height="1400" loading="lazy" decoding="async"
+                   alt="The results screen: 100% on the first try in a green ring, a red Cartographer rank stamp, the headline Clean sweep, 5 of 5 first try, and buttons for Another round and Done.">
+              <figcaption>Results</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="facts">
+        <div class="feature flip">
+          <div>
+            <div class="section-head">
+              <h2 id="facts"><span class="tape">Read up first</span></h2>
+              <p class="on-map mono muted"><span class="tape">Browse facts · Explore map</span></p>
+            </div>
+            <div class="card">
+              <p>Every capital, flag, nickname, city and sight is there to read before you play, each with a link to its source. Flags come with their file credits.</p>
+              <p>Explore map lets you tap an area for its name and pinch to get closer. No quiz, promise.</p>
+            </div>
+          </div>
+          <figure class="print" style="--tilt: 1deg">
+            <img src="assets/screens/07-facts.jpg" width="644" height="1400" loading="lazy" decoding="async"
+                 alt="Browse facts for the United States: tabs for States, Cities and Sights above a list of states, each with its flag and capital.">
+            <figcaption>Browse facts</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="private">
+        <div class="feature">
+          <div>
+            <div class="section-head">
+              <h2 id="private"><span class="tape">Offline and private</span></h2>
+              <p class="on-map mono muted"><span class="tape">No account needed</span></p>
+            </div>
+            <div class="card">
+              <p>Maps, facts and flags all live inside the app, so Atlas works anywhere: on a plane, underground, at the edge of the map.</p>
+              <p>There is no account and no tracking. Your scores and settings stay on your device, and Reset progress in Settings wipes the slate clean.</p>
+              <p><a href="privacy/">Read the privacy policy</a></p>
+            </div>
+          </div>
+          <figure class="print" style="--tilt: -1deg">
+            <img src="assets/screens/08-settings.jpg" width="644" height="1400" loading="lazy" decoding="async"
+                 alt="The Settings screen: questions per round and the timer, a note that progress stays on this device, Reset progress, help links, and map sources.">
+            <figcaption>Settings</figcaption>
+          </figure>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="name">Atlas</p>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="support/">Support</a></li>
+          <li><a href="privacy/">Privacy</a></li>
+          <li><a href="credits/">Credits</a></li>
+          <li><a href="privacy/#impressum">Legal notice</a></li> <!-- TODO(owner): remove with the Impressum section if none is needed -->
+        </ul>
+      </nav>
+      <p>Made with Natural Earth. Neighborhood outlines contain information from NYC Neighborhoods by Pediacities / Ontodia, made available under the <a href="https://opendatacommons.org/licenses/by/1-0/">Open Data Commons Attribution License</a>. iPhone and iPad are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc.</p>
+    </div>
+  </footer>
+</body>
+</html>

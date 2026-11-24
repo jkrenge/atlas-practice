@@ -5,3 +5,18 @@ DerivedData/
 xcuserdata/
 build/
 node_modules/
+
+# Signing, release and secrets: never commit these.
+.env*
+*.p8
+*.p12
+*.cer
+*.pem
+*.mobileprovision
+*.provisionprofile
+*.ipa
+*.xcarchive
+ExportOptions*.plist
+UploadOptions*.plist
+*.log
+.claude/settings.local.json

@@ -1,3 +1,4 @@
+import SwiftUI
 import Testing
 import Foundation
 import CoreGraphics
@@ -43,7 +44,14 @@ import UIKit
         ("nyc-boroughs", "NYC-BORO-5", Coordinate(-74.15, 40.58)),
         ("nyc-neighborhoods-focused", "NYC-BORO-5", Coordinate(-74.15, 40.58)),
         ("nyc-neighborhoods-focused", "NYC-BORO-2", Coordinate(-73.88, 40.85)),
-        ("nyc-neighborhoods-focused", "NYC-PRACTICE-WEST-BROOKLYN", Coordinate(-73.98, 40.67)),
+        ("nyc-neighborhoods-focused", "NYC-PRACTICE-WEST-BROOKLYN", Coordinate(-74.03, 40.63)),
+        ("nyc-neighborhoods-focused", "http://nyc.pediacities.com/Resource/Neighborhood/Park_Slope", Coordinate(-73.98, 40.67)),
+        ("nyc-neighborhoods-focused", "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Heights", Coordinate(-73.967, 40.677)),
+        ("nyc-neighborhoods-focused", "http://nyc.pediacities.com/Resource/Neighborhood/Downtown_Brooklyn", Coordinate(-73.987, 40.693)),
+        ("nyc-neighborhoods-focused", "http://nyc.pediacities.com/Resource/Neighborhood/Crown_Heights", Coordinate(-73.94, 40.67)),
+        ("nyc-neighborhoods-focused", "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Park", Coordinate(-73.97, 40.66)),
+        ("nyc-neighborhoods-focused", "NYC-PRACTICE-SEAPORT", Coordinate(-74.0036, 40.7064)),
+        ("nyc-neighborhoods-focused", "http://nyc.pediacities.com/Resource/Neighborhood/Financial_District", Coordinate(-74.009, 40.706)),
         ("nyc-neighborhoods-focused", "NYC-PRACTICE-SOUTH-EAST-BROOKLYN", Coordinate(-73.97, 40.59)),
         ("nyc-neighborhoods-focused", "NYC-PRACTICE-OTHER-QUEENS", Coordinate(-73.82, 40.73)),
         ("nyc-neighborhoods-focused", "http://nyc.pediacities.com/Resource/Neighborhood/DUMBO", Coordinate(-73.989, 40.703)),
@@ -172,6 +180,88 @@ import UIKit
     #expect(restored.record(for: "us-states", mode: .find).firstCorrect == 1)
     #expect(restored.record(for: "us-states", mode: .name).sessions == 0)
     #expect(restored.record(for: "germany-states", mode: .find).sessions == 0)
+}
+
+@MainActor
+@Test func summaryTotalsTimersAndModesPerMap() throws {
+    let suite = "AtlasSummaryTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    let store = ProgressStore(defaults: defaults)
+    let area = Area(id: "US-AL", name: "Alabama")
+    for (mode, seconds, map) in [(PracticeMode.find, 0, "us-states"), (.find, 30, "us-states"),
+                                 (.flag, 0, "us-states"), (.find, 0, "germany-states")] {
+        var session = PracticeSession(areas: [area], mode: mode, secondsAllowed: seconds)
+        // A flag miss adds a review question; answer it too so the session completes.
+        while !session.isComplete { session.submit(mode == .flag ? nil : area); session.advance() }
+        store.save(session, map: map)
+    }
+    #expect(store.summary(for: "us-states", mode: .find).sessions == 2)
+    #expect(store.summary(for: "us-states", mode: .find).accuracy == 1)
+    #expect(store.summary(for: "us-states").firstTotal == 3)
+    #expect(store.summary(for: "us-states").accuracy == 2.0 / 3)
+    #expect(store.summary(for: "nyc-boroughs").accuracy == nil)
+}
+
+@Test func tornPaperIsStableAndStaysInside() {
+    let rect = CGRect(x: 0, y: 0, width: 335, height: 120)
+    let torn = TornPaper(edges: [.top, .bottom], seed: 7)
+    #expect(torn.path(in: rect) == torn.path(in: rect))                                     // never jitters
+    #expect(rect.insetBy(dx: -0.01, dy: -0.01).contains(torn.path(in: rect).boundingRect)) // bites go inward only
+    #expect(TornPaper().path(in: rect).boundingRect == rect)                                // untorn = rectangle
+}
+
+@MainActor
+@Test func resettingProgressForgetsEveryScoreOnThisDevice() throws {
+    let suite = "reset-\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    defaults.set(try JSONEncoder().encode(["us-states.find": PracticeRecord(sessions: 1, firstCorrect: 3, firstTotal: 4)]),
+                 forKey: "practiceProgress.v1")
+    let store = ProgressStore(defaults: defaults)
+    #expect(store.summary(for: "us-states").sessions == 1)
+    store.reset()
+    #expect(store.summary(for: "us-states").sessions == 0)
+    #expect(ProgressStore(defaults: defaults).records.isEmpty)
+}
+
+@Test func atlasCamerasStayOnTheMap() {
+    for camera in [AtlasCamera.home, .sources, .settings] + ["us-states", "germany-states", "nyc-boroughs"].map(AtlasCamera.pack) {
+        let point = AtlasWorld.point(longitude: camera.longitude, latitude: camera.latitude)
+        #expect(CGRect(origin: .zero, size: AtlasWorld.size).contains(point))
+        #expect(camera.span > 0 && camera.span < 360)
+    }
+}
+
+@Test func feedbackVoiceIsDeterministicAndTiered() {
+    let pin = MapPin(coordinate: Coordinate(0, 0), regionID: "x")
+    func line(_ answer: PracticeSession.Answer, review: Bool = false, streak: Int = 1) -> String {
+        Voice.headline(for: answer, isReview: review, streak: streak, toleranceKM: 50, seed: 0)
+    }
+    #expect(line(.init(selected: nil, correct: true, guess: pin, distanceKM: 40)) == Voice.correct[0])
+    #expect(line(.init(selected: nil, correct: false, guess: pin, distanceKM: 90)) == Voice.nearMiss[0])
+    #expect(line(.init(selected: nil, correct: false, guess: pin, distanceKM: 900)) == Voice.farMiss[0])
+    #expect(line(.init(selected: Area(id: "a", name: "A"), correct: false)) == Voice.wrong[0])
+    #expect(line(.init(selected: nil, correct: false)) == Voice.shown[0])
+    #expect(line(.init(selected: nil, correct: false, timedOut: true)) == Voice.timeout[0])
+    #expect(line(.init(selected: nil, correct: true), review: true) == Voice.comeback[0])
+    #expect(line(.init(selected: nil, correct: true), streak: 3) == Voice.streaks[3])
+    #expect(line(.init(selected: nil, correct: true), review: true, streak: 3) == Voice.comeback[0])
+    #expect(Voice.seed("US-WA") == 365)
+    #expect(Voice.pick(Voice.correct, 7) == Voice.correct[1])
+    #expect(Voice.pick(Voice.correct, -7) == Voice.correct[1])
+    #expect(ResultRank(firstTry: 1) == .cartographer)
+    #expect(ResultRank(firstTry: 0.8) == .navigator)
+    #expect(ResultRank(firstTry: 0.5) == .explorer)
+    #expect(ResultRank(firstTry: 0.49) == .wanderer)
+}
+
+@Test func sessionStreakCountsConsecutiveCorrectAnswers() {
+    let areas = (1...4).map { Area(id: "\($0)", name: "Area \($0)") }
+    var session = PracticeSession(areas: areas, mode: .find, ordered: true)
+    session.submit(areas[0]); #expect(session.streak == 1); session.advance()
+    session.submit(areas[1]); #expect(session.streak == 2); session.advance()
+    session.submit(nil); #expect(session.streak == 0)
 }
 
 @Test func learningContentIsCompleteAndFlagsDecode() throws {
@@ -314,8 +404,8 @@ import UIKit
 
 @Test func requestedNYCNeighborhoodsArePlayable() throws {
     let pack = try MapLibrary().load("nyc-neighborhoods-focused")
-    #expect(pack.areas.count == 47)
-    for name in ["Chinatown", "Nolita", "Tribeca", "Financial District", "Bed-Stuy", "DUMBO", "Williamsburg", "Greenpoint", "Long Island City", "West Brooklyn", "South & East Brooklyn", "Queens (other areas)", "The Bronx", "Staten Island"] {
+    #expect(pack.areas.count == 53)
+    for name in ["Chinatown", "Nolita", "Tribeca", "Financial District", "Bed-Stuy", "DUMBO", "Williamsburg", "Greenpoint", "Park Slope", "Prospect Heights", "Downtown Brooklyn", "Crown Heights", "Prospect Park", "Seaport", "Long Island City", "West Brooklyn", "South & East Brooklyn", "Queens (other areas)", "The Bronx", "Staten Island"] {
         #expect(pack.areas.contains { $0.name == name })
     }
     #expect(!pack.areas.contains { ["Country Club", "Marine Park", "Allerton"].contains($0.name) })

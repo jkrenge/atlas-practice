@@ -1,5 +1,124 @@
 # iOS app verification
 
+A dated log of verification runs, newest first. Evidence paths under `build/` are local and not in the repository.
+
+## Settings, support links, and release preparation — 2026-11-23
+
+The home screen ends with a Settings button (shown once the maps load). Settings holds the round settings that used to sit on each map page (questions 10/25/All, timer Off/30 s/60 s), a note that progress stays on the device, Reset progress (with a confirmation; it also clears the last map played), Help and support and Privacy policy links to the website (`AtlasLinks`), Map sources and credits, and the version and build. Each map page's Start here card now says what a round is ("10 questions · 30 s each"). New York City is a half-width card with the boroughs map, reading "2 maps". The credits gained the Natural Earth world-map line, the ODC-By notice for NYC neighborhoods, and the Destatis source note. `ios/Atlas/PrivacyInfo.xcprivacy` declares no tracking and no collected data, plus UserDefaults (CA92.1) and system boot time (35F9.1); it is in the built app.
+
+Tests: a new unit test covers resetting progress; the session-length UI test now sets the length in Settings; the credits test reaches Sources through Settings and audits the Settings screen. Three UI-test waits used `XCTWaiter.wait(for: [], timeout:)`, which returns at once; a `pause` helper now really waits, so the accessibility audit settles for 1.2 s, the auto-advance-cancel test really waits 3.5 s, and screenshots catch the rank stamp. The three-second auto-advance test now starts its clock before the tap (XCUITest returns from a tap only once the app is idle) and expects at least 2.9 s. The contrast re-measure locates a label's own text pixels when a wide List header puts the map behind a short taped label; `testRenderedContrastMeasure` checks it still fails pale text.
+
+`scripts/screenshots.sh` captures eight frames on iPhone 17 Pro (1206 x 2622), iPhone 17 Pro Max (1320 x 2868) and iPad Pro 13" (2064 x 2752) with a 9:41 status bar, into `build/screenshots/`, and web copies into `website/assets/screens/`. The website (`website/`, Pages workflow `.github/workflows/pages.yml`) was built, reviewed for accuracy and accessibility, and checked in a browser at 390 and 1280 px under a project sub-path; owner placeholders are listed in `website/README.md`.
+
+On the final code the full suite passed: 62 of 63 tests, with the screenshot test skipped (it runs only from `scripts/screenshots.sh`). All 24 screenshots are the exact App Store sizes without alpha, and the results frame shows the rank stamp.
+
+## New York City page — 2026-11-23
+
+The home screen now lists United States and Germany as squares, then one full-width New York City card that shows both NYC maps side by side and their combined first-try accuracy. It opens a new `CityScreen` (large title "New York City", a short taped intro, and Boroughs and Neighborhoods squares), which pushes the existing map setup. The city page's backdrop camera is wider than each NYC map's, so opening one zooms in. The boroughs map is now titled "NYC boroughs" (it was "New York City"). `MapGrid` replaces the home grid so both screens share one column rule; `PracticeRecord` gained `+`, which `ProgressStore.summary` now also uses. Card titles stay on one line and shrink slightly when needed, because "Neighborhoods" otherwise broke mid-word at xLarge text in a half-width card.
+
+UI tests reach NYC maps through `map-nyc` (helpers `openMap` and `backHome`). The NYC practice test now checks and audits the city page, including its intro, and captures the home card and the city page. The full suite passed on the first build (60 of 60: 30 unit tests and 30 UI tests). After the review fixes, the six affected UI tests passed again (NYC practice, largest text, Blue Study library, home navigation performance, NYC gameplay performance, borough session). NYC gameplay and home navigation benchmarks now include the city page push, so their numbers are not comparable with earlier runs. A three-angle review found one older issue that this change did not fix: going back to a scrolled screen resets the backdrop parallax until the next scroll, so the map can jump slightly then.
+
+## NYC neighborhoods: Downtown Brooklyn, Crown Heights, Prospect Park, and Seaport — 2026-11-23
+
+Downtown Brooklyn (from West Brooklyn), Crown Heights and Prospect Park (from South & East Brooklyn) are now separate practice areas, using their Pediacities geometry clipped to the Brooklyn shoreline. Seaport is new: no bundled source has it, so `data/nyc-carve-outs.json` holds a hand-drawn outline (Pearl Street west, John Street south), and `scripts/compile_maps.py` cuts it out of the Financial District, whose own edges supply the Brooklyn Bridge and the shore and piers. The street lines are placed from the Wikipedia coordinates of the Titanic Memorial (Fulton and Pearl) and the Schermerhorn Row block, so they are approximate, within roughly a block. The focused pack has 53 areas: 38 in Manhattan and 15 across the other boroughs.
+
+Only `maps/nyc-neighborhoods-focused/*`, the catalog count, and the simplification report changed; the other packs recompiled byte for byte. `scripts/validate_data.py` now checks the carve-out (Seaport equals the source inside the outline, the Financial District the rest, and together they cover the source exactly) and the three new single-source Brooklyn areas, and passes. The validator's feature total is now computed (629); the old hard-coded 623 had not counted the earlier Park Slope split. Renders of the full and low-res geometry show all four areas in place; Seaport is about the size of Little Italy. New geometry probes cover all four areas and the Financial District.
+
+A signed Release build with these four areas passed strict code-signature verification and was installed in place on the test iPhone on 2026-11-23, confirmed in the device app list, and launched. The new areas were not checked by hand on the device.
+
+## NYC neighborhoods: Park Slope and Prospect Heights — 2026-11-22
+
+Park Slope and Prospect Heights are now separate practice areas, carved out of West Brooklyn in `data/nyc-learning-groups.json`. The focused NYC pack has 49 areas: 37 in Manhattan and 12 across the other boroughs. West Brooklyn keeps its 16 other members. Both new areas use their Pediacities source geometry unchanged, clipped to the official Brooklyn shoreline like every other area.
+
+`scripts/compile_maps.py` regenerated only `maps/nyc-neighborhoods-focused/*`, the catalog area count, and the simplification report; every other pack recompiled byte for byte. `scripts/validate_data.py` (expecting 49 areas and the two names as separate single-source areas) passed. A render of the new geometry showed both areas in place; the small gap at Grand Army Plaza comes from the source and was already inside West Brooklyn. Scores already saved for the NYC neighborhood pack stay; they now count against a pack with two more areas.
+
+## School-atlas concept and app icon — 2026-11-22
+
+A new visual concept: one world map in school-atlas style (`AtlasBackdrop.swift`) lies under every screen and glides to a new region per screen; information sits on paper cards and label tape, with a yellow exhibit frame, title tape and a rank stamp as accents (`AtlasCollage.swift`); controls stay one pill and circle shape in paper-veiled Liquid Glass. The backdrop is drawn on device from the bundled Natural Earth countries with water-lining, vector forest and highland tints, invented contour lines, a 10° graticule, ocean lettering and red voyage routes. The palette and components were defined with contrast computed against real map pixels.
+
+The app icon is generated by `scripts/app_icon.swift` (black New York "Atlas" on yellow tape over the eastern Atlantic); the previous icon is kept locally as `build/redesign/AppIcon-previous.png`.
+
+The accessibility audit now waits for the backdrop to settle and re-measures any flagged text from its own rendered pixels (failing below 4.5:1), because the auditor read the map behind opaque paper: "ways to play" measured 7.2:1 rendered but was flagged.
+
+A signed Release build passed strict code-signature verification and was installed in place on the test iPhone on 2026-11-22, confirmed in the device app list, and launched. Physical interaction, on-device contrast of the glass controls, performance, and iPad were not checked.
+
+## Playful voice, Liquid Glass, and one button shape — 2026-11-22
+
+This pass answered feedback on the redesign: it felt boring, Liquid Glass had been removed, and "Practice again" (a pill) and "Done" (a rounded rectangle) did not match.
+
+- One button shape: every text button and answer choice is a 54 pt pill with 27 pt corners (`AtlasStyle.buttonShape`); icon buttons and map callouts are 44 pt circles; cards use one 24 pt radius. Primary, secondary, and quiet variants share the shape and font. Explore map and Browse facts stack when they would otherwise wrap.
+- Liquid Glass returns through one helper, `atlasGlass`, on controls only: the floating question pill over the map (iPhone portrait), close and pause circles, map zoom circles, primary buttons (tinted by result), and home badges. It falls back to solid surfaces on iOS 18 and with Reduce Transparency. Information text stays on solid surfaces, which is what passed earlier contrast audits.
+- Voice: deterministic headline pools for correct, wrong, near and far pin misses, reveals, timeouts, comebacks, and streaks of 3, 5, and 10; results ranks from Wanderer to Cartographer; travel-themed small copy. VoiceOver reads the plain outcome first, and UI tests assert on it.
+- Motion: one symbol bounce or wiggle per answer and one shake on a wrong choice, all off with Reduce Motion.
+
+A design panel produced the spec; a review then confirmed 12 issues, all fixed (wrapping pills, map jokes in non-map modes, truncated "Show answer" at large text, quiet pill states, VoiceOver order for the floating prompt, miter spikes on highlighted coasts).
+
+Verified on an iPhone 17e Simulator, iOS 26.5: all 28 unit tests and 27 UI tests passed in `build/redesign/Glass2.xcresult`, including new equal-height checks for Another round/Done and Lock it in/Show answer, and contrast audits on the results and timeout screens. Not verified: physical device (earlier glass contrast failures appeared only on device), iPad, iOS 18 fallback at runtime, Reduce Transparency and Reduce Motion at runtime, and performance benchmarks for this pass.
+
+## UX and visual redesign — 2026-11-22
+
+Redesigned every screen: native large-title navigation; a home card that starts or resumes the last mode and states its question count and timer; first-try accuracy on map cards; a map screen with a featured Find the area card, segmented question/timer controls, and grouped mode rows tinted by kind; practice in a full-screen cover with a progress bar, timer pill, and a result-tinted bottom panel; fact choices that stay visible with correct/chosen states; a paused overlay; leave confirmation after an answer; and results with an animated first-try ring and Practice again. Map controls are a floating group; wrong picks and guesses use coral, with a dashed guess-to-answer line. Scores shown in the app now combine timer settings; storage is unchanged.
+
+A review confirmed about 30 issues, which were fixed. They included layouts that broke at accessibility text sizes, white-on-coral contrast at 4.33:1 (now at least 4.5:1), VoiceOver focus not moving to a new question, the zoom column covering numbered markers in landscape, the hint chip blocking inset taps, and fact questions keeping the previous scroll position.
+
+Verified on an iPhone 17e Simulator, iOS 26.5, Xcode 27.2:
+
+- All 26 unit tests and 27 functional UI tests passed in `build/redesign/Final.xcresult`. A new unit test covers combined scores. UI tests were updated for segmented controls, the map-name navigation title, locked (not hidden) answers after a timeout, the leave confirmation popover, the Done button, the combined capital fact, and Practice again.
+- The accessibility audit now checks the setup screen at four scroll positions. It skips contrast results only for elements partly under the navigation bar or past the screen edge, where the audit samples blurred or black pixels; each such element is audited fully visible at another position.
+- Screens reviewed by hand: home, setup, find, name, flag, pin drop with distance, timeout, results, explore, facts, and landscape.
+
+Performance, same Simulator, two iterations each, app CPU time per scripted workload:
+
+| Workload | Previous commit | Redesign |
+| --- | ---: | ---: |
+| Home scrolling/navigation | 4.47 s | 5.90 s |
+| NYC gameplay | 3.84 s | 5.01 s |
+| US gameplay | 5.60 s | 6.14 s |
+
+The redesign uses more CPU in these workloads. Removing blurred card and marker shadows reduced it slightly; blocking map-frame animation had no effect; moving VoiceOver focus costs about 4% under XCUITest. No single hotspot was found. The NYC workload now scrolls the setup screen once more before starting, so the workloads are not identical. Hitch metrics are not reported in the Simulator, so frame smoothness was not measured. The NYC benchmark now scrolls the map card into view before measuring, because lower cards are created lazily below the resume card.
+
+Not verified: physical device, iPad, Reduce Motion and Reduce Transparency at runtime, VoiceOver by ear, and Dynamic Type beyond the automated largest-size tests. Nothing was installed on a device or uploaded.
+
+## Blue Study app icon — 2026-11-16
+
+Replaced the app icon with an ultramarine globe and white location marker. Verified the asset is 1024 × 1024 with no alpha channel. The signed Release build and strict code-signature verification passed. Installed the update on the test iPhone, confirmed the bundle in the device app list, and launched it successfully. Build log: `build/blue-study-icon-device.log`. Gameplay tests were not rerun for this asset-only change; the physical Home Screen appearance was not inspected.
+
+## Blue Study controls and layout review — 2026-11-16
+
+Reviewed the library, setup, all quiz modes, correct/incorrect/timeout feedback, results, study selection, reference lists and details, source disclosure, credits, coordinate entry, area selection, and empty search states. Kept native SwiftUI, existing geometry, scoring, and progress storage.
+
+Changes: white map cards with explicit Explore actions; bordered practice rows, settings, answers, secondary buttons, and source links; stronger type hierarchy; distinct map and feedback surfaces; one question heading; fact questions and answer choices in the same scrolling card; an empty area-search state; grey selection feedback text matching the map. Larger text uses stacked layouts.
+
+Validation on iPhone 17 Pro / iOS 26.5 with Xcode 27.2:
+
+- Simulator and signed Release builds passed; strict code-signature verification passed.
+- All 25 unit tests passed. All 27 functional UI tests passed across the main run and focused reruns, including accessibility audit, largest text, landscape, all quiz modes, map gestures, results, and reference details.
+- The first new search-cancel test used the wrong system selector. Inspected its accessibility hierarchy and corrected the test to close active search before cancelling the sheet. The rerun passed.
+- Inspected 35 distinct screen/state screenshots, then reviewed fresh fact-question screenshots after grouping their answers with the prompt.
+- `git diff --check` passed. Existing XCTest setup actor-isolation warnings remain; no new app build warnings were reported.
+
+Evidence (ignored local artifacts): `build/BlueStudy-polish.xcresult`, `build/BlueStudy-polish-final.xcresult`, `build/blue-study-polish/`, and `build/blue-study-polish-device.log`. The main bundle retains the initial test-selector failure; the final bundle has five passing affected checks.
+
+Installed the signed Release as an update on the test iPhone without uninstalling. Physical touch interaction, iPad, older iOS versions, and release frame-rate benchmarks were not checked in this review. The app remains light-only.
+
+## Blue Study device installation — 2026-11-16
+
+Built the current working tree in Release for the test iPhone with the configured developer team. Strict code-signature verification passed. Installed as an update without uninstalling, verified the app in the device app list, and successfully launched Atlas Practice. Physical interaction and frame-rate checks remain unverified. Build log: `build/blue-study-device-build.log`.
+
+## Blue Study UI — 2026-11-15
+
+Applied the selected Blue Study concept to the existing SwiftUI app: ultramarine outlines, grey canvas, light headings, monospaced labels, a two-column library, and flat controls. Accessibility text sizes use a single library column. Existing map geometry, gameplay, progress storage, and the light-only appearance are retained.
+
+Verified on iPhone 17 Pro, iOS 26.5 Simulator:
+
+- Build and launch passed.
+- Six initial UI tests passed: library/practice navigation, all four maps at the largest text size, large-text answer controls, landscape controls, polygon taps/zoom/pan, and coordinate entry.
+- The accessibility audit first found a small Show answer hit region. Added an explicit content shape after the button frame. The accessibility audit and library/practice navigation both passed on rerun.
+- Reviewed library, practice setup, and answer-feedback screenshots. No changes to source geography or quiz scoring.
+- `git diff --check` passed.
+
+Evidence: `build/BlueStudy.xcresult`, `build/BlueStudy-controls.xcresult`, and `build/blue-study/`. These are ignored local build artifacts. No physical-device verification, dark theme, or release frame-rate measurement was performed for this change.
+
 ## Liquid Glass physical-device check — 2026-10-10
 
 The current app was built, installed, and tested on a physical iPhone Air running iOS 27.0.1 with Xcode 27.0. Five functional UI checks passed: glass card navigation and answer actions, library scrolling, polygon/callout/zoom behavior, landscape controls, and the largest accessibility text size. The navigation and answer test passed again after the setup controls changed.
@@ -28,7 +147,7 @@ Screenshots and result bundles are under `build/glass-design/`. Test compilation
 
 The retained-path renderer uses less CPU but produced more frame hitches in physical-device recordings. It and the trial that deferred border-width updates during pinches were rejected. The app source now uses the native `UIScrollView` and cached `CATiledLayer` renderer again. This keeps the prior UI changes, three-second automatic advance, reduced geometry, map projections, and selection behavior. The 50% performance target remains unmet.
 
-Unprofiled Release workloads ran on the test iPhone Air, iOS 27.0.1, with coverage disabled. Each CPU mean contains two measured iterations. Release questions remain random; these are scripted workloads, not complete measurements of user interaction.
+Unprofiled Release workloads ran on an iPhone Air, iOS 27.0.1, with coverage disabled. Each CPU mean contains two measured iterations. Release questions remain random; these are scripted workloads, not complete measurements of user interaction.
 
 | Workload | Tiled CPU | Retained-path CPU | CPU reduction |
 | --- | ---: | ---: | ---: |
@@ -73,9 +192,9 @@ The final candidate passed all 25 unit test functions and four focused UI checks
 
 ## TestFlight upload — 2026-10-05
 
-Version 1.0, build 1 was archived in Release with Xcode 27.0 for iOS devices, using the configured publishing team `8433V6NWHP`. Both the archive and App Store distribution package passed strict signature verification. The distribution profile has no development debug entitlement or device list. All 87 bundled map/content files match the workspace. Version/build settings are now present in the project and its XcodeGen source. The app uses system-provided HTTPS and no custom encryption; the generated encryption key is Boolean false, consistent with [Apple's guidance](https://developer.apple.com/documentation/security/complying-with-encryption-export-regulations).
+Version 1.0 (1) was archived, signed for App Store distribution and uploaded to App Store Connect on 2026-10-05. Both the archive and App Store distribution package passed strict signature verification. The distribution profile has no development debug entitlement or device list. All 87 bundled map/content files match the workspace. Version/build settings are now present in the project and its XcodeGen source. The app uses system-provided HTTPS and no custom encryption; the generated encryption key is Boolean false, consistent with [Apple's guidance](https://developer.apple.com/documentation/security/complying-with-encryption-export-regulations).
 
-After the user created App Store Connect record `6819500785` for `com.jkrenge.geography`, the upload succeeded. Xcode confirmed that Apple accepted the package and started processing it. TestFlight readiness and tester availability remain unverified because the available browser sessions require sign-in. The upload receipt is `build/testflight-2026-10-05/upload-created-record.log`. The signed package is `build/testflight-2026-10-05/FinalExport/Atlas.ipa`; the archive is `Atlas-TestFlight.xcarchive` in the same evidence directory. Archive/export logs and `final-package-verification.json` record the verified package. Existing code and UI checks are documented below; no app logic changed for this release preparation.
+Xcode confirmed that Apple accepted the package and started processing it. TestFlight readiness and tester availability were not checked. The upload receipt is `build/testflight-2026-10-05/upload-created-record.log`. The signed package is `build/testflight-2026-10-05/FinalExport/Atlas.ipa`; the archive is `Atlas-TestFlight.xcarchive` in the same evidence directory. Archive/export logs and `final-package-verification.json` record the verified package. Existing code and UI checks are documented below; no app logic changed for this release preparation.
 
 ## Native tiled map interaction — 2026-10-05
 
@@ -110,7 +229,7 @@ All 12 map manifests now use six shared simplified GeoJSON assets. The compiler 
 
 The six unique assets decrease from 450,408 to 143,647 points (68.1%) and from 17,457,955 to 4,468,096 bytes (74.4%). The four playable maps decrease from 218,631 to 45,258 points (79.3%). Regeneration produced identical asset hashes. Data and learning validation passed, including source checksums and 196 learning coordinates.
 
-All 25 unit test functions and seven focused Simulator UI tests passed, including water boundaries, selection, pan, zoom, coordinate entry, and home scrolling. Three Release tests passed on the test iPhone Air: home scroll movement and US/NYC gameplay workloads. Recorded hitch metrics were zero; CPU averages were NYC 3.276 seconds and US 3.753 seconds. These checks do not establish that the previously reported freeze is resolved.
+All 25 unit test functions and seven focused Simulator UI tests passed, including water boundaries, selection, pan, zoom, coordinate entry, and home scrolling. Three Release tests passed on an iPhone Air: home scroll movement and US/NYC gameplay workloads. Recorded hitch metrics were zero; CPU averages were NYC 3.276 seconds and US 3.753 seconds. These checks do not establish that the previously reported freeze is resolved.
 
 Evidence is in `build/geometry-review/`: `SimulatorVerified.xcresult`, `Device.xcresult`, validation logs, and `reproducibility.json`. A clean normal Release build passed strict signature verification. Bundle verification confirmed that all 12 manifests reference reduced assets, all bundled map/content files match the verified source, and detailed geometry is excluded (`release-verification.json`). The verified normal Release app was installed in place and launched successfully. Installed-app readback confirmed Atlas Practice. Receipts are `install.json`, `app.json`, and `launch.json`; `phone-final.png` records the home screen.
 
@@ -118,13 +237,13 @@ Evidence is in `build/geometry-review/`: `SimulatorVerified.xcresult`, `Device.x
 
 The prior resize change did not resolve the reported home-screen problem. The library and pack previews used interactive map renderers with about 219,000 geometry points across four maps. Previews now use a static UIKit backing image and separate simplified paths prepared during background map loading. The full paths, playable map renderer, hit tests, water checks, and pin coordinates are unchanged. Preview geometry contains 16,804 path elements, compared with 219,519 detailed elements. A 360 × 150 preview rendered in 6–18 ms in the Release Simulator unit check.
 
-An intermediate static preview that still drew full paths was too slow. A two-second Simulator sample stayed in Core Graphics path filling on the main thread. Its home navigation workload used 63.619 seconds of Simulator CPU and 30.598 seconds of phone CPU. Reduced previews brought the Simulator workload to 5.986 seconds. The intermediate phone gameplay workloads changed from NYC 27.018 to 3.257 seconds and US 26.017 to 3.680 seconds. These figures compare the intermediate static renderer with the reduced static renderer, not the version previously installed for the user.
+An intermediate static preview that still drew full paths was too slow. A two-second Simulator sample stayed in Core Graphics path filling on the main thread. Its home navigation workload used 63.619 seconds of Simulator CPU and 30.598 seconds of phone CPU. Reduced previews brought the Simulator workload to 5.986 seconds. The intermediate phone gameplay workloads changed from NYC 27.018 to 3.257 seconds and US 26.017 to 3.680 seconds. These figures compare the intermediate static renderer with the reduced static renderer, not the previously installed version.
 
-The separate comparison against the previously installed live-preview implementation did not demonstrate a home CPU improvement: 4.534 seconds previously and 4.971 seconds with reduced static previews. Both physical-device runs returned zero recorded hitch measurements. Those values do not prove that the user's reported freeze is resolved. The home performance workload scrolls up and down and opens all four collections; a separate physical-device test explicitly verified that a swipe moves the first map by more than 10 points in both directions, then opens that map. Both checks passed on the test iPhone Air, iOS 27.0.1. The US and NYC gameplay workloads also passed. The first updated home run was interrupted by a notification banner; its focused repeat passed. An initial baseline launch failed; its repeat passed.
+The separate comparison against the previously installed live-preview implementation did not demonstrate a home CPU improvement: 4.534 seconds previously and 4.971 seconds with reduced static previews. Both physical-device runs returned zero recorded hitch measurements. Those values do not prove that the reported freeze is resolved. The home performance workload scrolls up and down and opens all four collections; a separate physical-device test explicitly verified that a swipe moves the first map by more than 10 points in both directions, then opens that map. Both checks passed on the test iPhone, iOS 27.0.1. The US and NYC gameplay workloads also passed. The first updated home run was interrupted by a notification banner; its focused repeat passed. An initial baseline launch failed; its repeat passed.
 
 All 25 unit test functions passed, including four preview-rendering cases and existing geography checks. Simulator home navigation, accessibility, study selection, and full-screen feedback checks passed. The Simulator screenshot was reviewed. Evidence is in `build/performance-review/`: `ReducedPreviewsSimulator.xcresult`, `ReducedPreviewAccessibility.xcresult`, `HomeBaselineDeviceRetry.xcresult`, `ReducedPreviewsDevice.xcresult` (gameplay passes; interrupted home check), `ReducedHomeDeviceRetry.xcresult`, and `HomeScrollMovementDevice.xcresult`. Corresponding metrics JSON and the readable Simulator sample are in the same directory. The broad Animation Hitches trace did not finish saving and was stopped; it is not usable evidence.
 
-The normal signed Release build passed strict signature verification and installed in place. App readback confirmed Atlas Practice, and launch succeeded. Installation, app readback, launch, and a physical-device screenshot are recorded as `home-final-*` under the evidence directory. Saved progress was retained. The user's complete-freeze report remains unconfirmed by these automated checks.
+The normal signed Release build passed strict signature verification and installed in place. App readback confirmed Atlas Practice, and launch succeeded. Installation, app readback, launch, and a physical-device screenshot are recorded as `home-final-*` under the evidence directory. Saved progress was retained. The reported complete freeze remains unconfirmed by these automated checks.
 
 ## Gameplay performance — 2026-10-04
 
@@ -151,7 +270,7 @@ All 24 unit tests and the full 20 existing UI tests passed. The retained-layer r
 
 Evidence is in `build/performance-review/`: `Optimized.xcresult`, `FramePerformance.xcresult`, `ReleaseOptimized.xcresult`, `ReleaseBaseline.xcresult`, `iPad.xcresult`, benchmark logs, metrics JSON, and the sampled baseline stack. The isolated baseline source under that directory uses the previous map renderer with the same test workloads. Instruments traces have a missing-input-source warning and unresolved application symbols; the native `sample` output provides the readable stack evidence.
 
-The signed Release build passed strict code-signature verification and was installed in place on the test iPhone Air. The installed-app query confirmed Atlas Practice. The physical UI test runner timed out while enabling automation mode, so no gameplay frame measurements were collected. The normal Release build was installed again after the failed test run. Automatic launch was then blocked because the phone had locked. Installation receipts, app readback, and test diagnostics are in `build/performance-review/` (`install-final-now.json`, `app-readback-now.json`, and `DeviceFramesNow.xcresult`). Physical-device frame measurements remain required before claiming that the reported lag is fully resolved.
+The signed Release build passed strict code-signature verification and was installed in place on the test iPhone. The installed-app query confirmed Atlas Practice. The physical UI test runner timed out while enabling automation mode, so no gameplay frame measurements were collected. The normal Release build was installed again after the failed test run. Automatic launch was then blocked because the phone had locked. Installation receipts, app readback, and test diagnostics are in `build/performance-review/` (`install-final-now.json`, `app-readback-now.json`, and `DeviceFramesNow.xcresult`). Physical-device frame measurements remain required before claiming that the reported lag is fully resolved.
 
 ## Session length — 2026-10-04
 
@@ -159,7 +278,7 @@ The practice setup now has a **Places per session** picker with 10, 25, and All.
 
 The Debug build and all 24 unit tests passed. Four focused iPhone UI tests passed: all length choices with persistence after relaunch, accessibility, largest text, and completion of the five-borough session with a limit of 10. The length-choice and accessibility checks also passed on iPad mini. An iPad screenshot confirmed the native menu. Logs and result bundles are in `build/session-length/`.
 
-The signed Release build passed strict signature verification and installed successfully in place on the test iPhone Air. The phone then became unavailable, so the installed-app readback and automatic launch could not complete. Open Atlas Practice on the phone to use this update. The installation receipt and connection diagnostics are in the same evidence directory.
+The signed Release build passed strict signature verification and installed successfully in place on the test iPhone. The phone then became unavailable, so the installed-app readback and automatic launch could not complete. The installation receipt and connection diagnostics are in the same evidence directory.
 
 ## Full-screen gameplay — 2026-10-04
 
@@ -169,13 +288,13 @@ All **24 unit tests and 19 UI tests** have passing results across the full iPhon
 
 The full run found a small footer touch target. Moving the 44-point frame inside each button label fixed it. Final accessibility, full-screen layout, and pin-placement checks passed on both **iPhone 17 Pro and iPad mini (A17 Pro)** with iOS 26.5. Screenshots were reviewed for play, feedback, pin entry, landscape, and large text. Temporary screenshot capture code was removed; assertions remain. Evidence is under `build/fullscreen-review/`: `iPhone.xcresult` contains the full run, and `iPhoneVerified.xcresult` and `iPadVerified.xcresult` contain the final checks.
 
-The updated Release build was signed with the existing team and installed in place on the test iPhone Air. Strict signature verification passed, and all 87 bundled map and content files matched the workspace. The installed-app query and launch succeeded. A physical-device screenshot confirmed the library screen. Game interaction was verified in Simulator; it was not repeated on the physical phone. Build, installation, launch, screenshot, and checksum evidence is in `build/fullscreen-review/device/`.
+The updated Release build was signed with the existing team and installed in place on the test iPhone. Strict signature verification passed, and all 87 bundled map and content files matched the workspace. The installed-app query and launch succeeded. A physical-device screenshot confirmed the library screen. Game interaction was verified in Simulator; it was not repeated on the physical phone. Build, installation, launch, screenshot, and checksum evidence is in `build/fullscreen-review/device/`.
 
 ## Device update — 2026-10-04
 
-The current working tree, including the blue UI, app icon, and practice-flow improvements, was built in Release with Xcode 27.0 and installed on the test iPhone Air running iOS 26.7.1. The build used the existing signing team with coverage instrumentation disabled. Strict code-signature verification passed, and 87 bundled map and content files matched the workspace.
+The current working tree, including the blue UI, app icon, and practice-flow improvements, was built in Release with Xcode 27.0 and installed on an iPhone Air running iOS 26.7.1. The build used the existing signing team with coverage instrumentation disabled. Strict code-signature verification passed, and 87 bundled map and content files matched the workspace.
 
-Installation succeeded for `com.jkrenge.geography`; the installed-app query then confirmed Atlas Practice. This was an in-place update without uninstalling the app. Launch was blocked because the phone was locked, so this installation does not establish physical-device UI verification. Unlock the phone and open Atlas Practice.
+Installation succeeded; the installed-app query then confirmed Atlas Practice. This was an in-place update without uninstalling the app. Launch was blocked because the phone was locked, so this installation does not establish physical-device UI verification.
 
 Build, installation, app readback, launch diagnostics, and source/binary checksums are under `build/device-install-2026-10-04/`. The signed app is `build/DeviceRelease/Build/Products/Release-iphoneos/Atlas.app`.
 
@@ -189,11 +308,7 @@ The final accessibility, Continue, and search-recovery checks each passed on **i
 
 Evidence: `build/iteration-review/iPhone.xcresult` contains the full run; `iPhoneVerified.xcresult` and `iPadVerified.xcresult` contain the final three checks on each device. `FeedbackVerified.xcresult` confirms the last feedback copy change and contains its screenshot. That check passed after reinstalling the test runner because Simulator had reused an older test binary. Logs and screenshots are in the same directory. Temporary screenshot attachment calls were removed after capture; assertions remain in the UI suite. This is local Simulator verification; this iteration does not establish physical-device behavior.
 
-The app icon was edited with the built-in image generation tool and saved at `ios/Atlas/Assets.xcassets/AppIcon.appiconset/AppIcon.png`. The generated image was resized to the required opaque 1024 × 1024 PNG. The prior icon is retained locally at `build/iteration-review/AppIcon.before.png`.
-
-Icon edit prompt:
-
-> Use case: precise-object-edit. Asset type: iOS app icon, 1024 by 1024 PNG. Input image is the existing Atlas globe icon. Change only the colors: replace the green background everywhere with solid cobalt blue #244CAB, replace the cream globe lines with near-white #F4F7FC, and replace the orange circle with pale blue #BCD4FA. Preserve the exact globe geometry, line weights, circle positions, spacing, and composition. Flat solid colors, crisp smooth edges. Full square opaque canvas, no rounded corners, no shadows, no gradients, no texture, no added objects or text.
+The app icon was recolored with an image generation tool and saved at `ios/Atlas/Assets.xcassets/AppIcon.appiconset/AppIcon.png`. The generated image was resized to the required opaque 1024 × 1024 PNG. The prior icon is retained locally at `build/iteration-review/AppIcon.before.png`.
 
 ## Blue palette revision — 2026-10-03
 
@@ -216,13 +331,13 @@ Local logs, result bundles, and screenshots are under `build/design-review/`. Th
 
 This update was verified in Simulator. Physical-device haptics and interaction were not tested. Existing XCTest actor-isolation warnings and the App Intents metadata warning remain; no new app compiler warning was introduced.
 
-## Latest device installation — 2026-09-14
+## Device installation — 2026-09-14
 
 A signed Release build from commit `47de3a3` was installed successfully on the connected iPhone Air after the map review. The build used Xcode 26.6, the configured paid developer team, whole-module optimization, and disabled coverage instrumentation. Before installation, all 20 bundled map files and the learning JSON matched the repository byte for byte; strict code-signature verification passed.
 
-`devicectl device install app` reported success for `com.jkrenge.geography`, and a subsequent installed-app query returned Atlas Practice. Launch was denied because the phone was locked. Installation is confirmed; this is not evidence of a completed physical-phone interaction test. The installed build includes the lake and NYC shoreline corrections. No TestFlight or App Store release was performed.
+`devicectl device install app` reported success, and a subsequent installed-app query returned Atlas Practice. Launch was denied because the phone was locked. Installation is confirmed; this is not evidence of a completed physical-phone interaction test. The installed build includes the lake and NYC shoreline corrections. No TestFlight or App Store release was performed.
 
-This record was consolidated on 2026-09-17 from the build and device-tool results in the task. Temporary logs from that installation are no longer available. Repeatable commands are in [DEVICE_INSTALL.md](DEVICE_INSTALL.md). The existing signing-team setting is now retained in both the generated Xcode project and its XcodeGen source.
+This record was consolidated on 2026-09-17 from the build and device-tool results. Temporary logs from that installation are not retained. Repeatable commands are in [DEVICE_INSTALL.md](DEVICE_INSTALL.md). The existing signing-team setting is now retained in both the generated Xcode project and its XcodeGen source.
 
 The dated sections below retain the validation scope at each earlier stage.
 
@@ -238,7 +353,7 @@ State geometry now excludes mapped lakes from Natural Earth's 10m physical layer
 - **Six selected UI tests passed**: polygon taps/callouts/gestures, native pan alignment, Germany study selection, NYC neighborhood selection, NYC groups/name mode, and landmark pin/distance. Unchanged timer and full-session UI tests were not rerun in this review; their earlier evidence remains below.
 - A separate iPhone 17 Simulator run confirmed the US overview and insets, Germany state selection, and the reduced NYC map with DUMBO selection and zoom.
 
-Result bundle: the task's `work/map-audit/build/MapAudit/Logs/Test/Test-Atlas-2026.09.14_20-54-42--0400.xcresult`. Raw logs: `/private/tmp/atlas-map-audit-tests.log`, `/private/tmp/atlas-map-audit-validate.log`, `/private/tmp/atlas-map-audit-learning.log`, and `/private/tmp/atlas-map-audit-review.log`.
+Result bundles were local and are not retained.
 
 This update was verified in Simulator and subsequently installed on the physical iPhone, as recorded above. The locked-phone launch limit means physical interaction with the new geometry is not verified. The world and continent layouts remain unexposed pending camera, antimeridian, and curriculum work.
 
@@ -267,7 +382,7 @@ Both data validators pass: 12 packs, 623 valid area features, 66 state facts and
 
 All **37 distinct automated tests passed**: 21 unit checks and 16 Simulator UI checks. The complete 21-unit/15-UI suite passed first. An additional real pan-and-tap regression then passed after moving its test tap away from the border tolerance. Coverage includes all five Great Lakes as water, near-shore Illinois land, both Michigan peninsulas, retained native paths, transform alignment, resize, question viewport reset, gesture input, labels, pins, all modes, timer expiry, and accessibility controls.
 
-The full result bundle is in the task's `work/performance/build/PerformanceUpdated/Logs/Test/Test-Atlas-2026.09.14_18-58-45--0400.xcresult`. The extra pan test is `Test-Atlas-2026.09.14_19-08-14--0400.xcresult` in the same directory. The before-change benchmark is under `build/PerformanceBaseline/Logs/Test/Test-Atlas-2026.09.14_18-54-05--0400.xcresult` in that task directory.
+Result bundles were local and are not retained.
 
 A separate iPhone 17 Simulator inspection confirmed visible lake shorelines, Illinois selection, state labels, flag details, and enlarged native map shapes. Automated pan input also confirmed that the moved Washington polygon and answer hit testing stay aligned.
 
@@ -275,7 +390,7 @@ A separate iPhone 17 Simulator inspection confirmed visible lake shorelines, Ill
 
 A signed **Release** build was installed successfully on the connected iPhone Air using the existing paid developer team. The compiler used `-O` and whole-module optimization. `ENABLE_CODE_COVERAGE=NO CLANG_COVERAGE_MAPPING=NO` removed test instrumentation; these settings must be included when repeating this development build because the scheme enables test coverage. Build output: `build/DeviceRelease/Build/Products/Release-iphoneos/Atlas.app`.
 
-Automatic launch was blocked by the iPhone lock screen. Unlock the phone and open Atlas Practice. Installation is verified; physical-phone interaction performance is not yet measured. No remote push, TestFlight upload, or App Store release was performed.
+Automatic launch was blocked by the iPhone lock screen. Installation is verified; physical-phone interaction performance is not yet measured. No remote push, TestFlight upload, or App Store release was performed.
 
 ## NYC map reduction — 2026-09-14
 
@@ -285,9 +400,9 @@ The active NYC neighborhood map now has **47 areas: all 37 original Manhattan ar
 - Both Python validators passed: twelve packs and 623 valid area features, plus the unchanged state, flag, city, and sight database. Checks confirm exact Manhattan boundaries, separate named neighborhoods, unique group membership, complete Brooklyn/Queens source-member coverage, and exact official Bronx/Staten Island polygons. All 22 generated map/source/repair files reproduce byte-for-byte offline. The original candidate, repair report, and source locks are unchanged.
 - **18 unit tests and three selected UI tests passed** on iPhone 17 Pro, iOS 26.5. Map-hit and coordinate round-trip checks now include both borough-sized answers, all three merged practice groups, DUMBO, and Long Island City at two viewport sizes and with zoom/pan.
 - UI checks passed for Chinatown search; Bed-Stuy, Long Island City, and Staten Island selection; the 47-area description; a correct answer in Name the area; and a complete five-borough quiz. Other UI tests were not repeated for this data change; their earlier results are below.
-- A separate iPhone 17 Simulator launch showed the 47-area home entry, reduced boundaries, study labels, and West Brooklyn selection. A direct tap inside Staten Island selected the whole island and displayed the expected answer feedback. The app was left on the NYC neighborhood mode selector.
+- A separate iPhone 17 Simulator launch showed the 47-area home entry, reduced boundaries, study labels, and West Brooklyn selection. A direct tap inside Staten Island selected the whole island and displayed the expected answer feedback.
 
-Result bundle: `build/DerivedData/Logs/Test/Test-Atlas-2026.09.14_16-35-25--0400.xcresult`. Build and test logs are in the task's `work/nyc-focused/` directory. The update is saved locally; no remote publication is part of this check.
+Result bundles were local and are not retained.
 
 ## Earlier app expansion — 2026-09-14
 
@@ -308,7 +423,7 @@ Unit checks cover all map packs, projections and antimeridian wrapping, geometry
 
 UI checks cover all nine game modes; real polygon and pin taps; pinch, pan, zoom, and reset; correct/wrong/revealed answers; a full borough session; coordinate entry; city population dates; flag images; nickname and capital answers; German reference data; NYC neighborhood search; countdown expiry and answer locking; landscape; the largest accessibility text category; and the area-list alternative. The accessibility audit checks touch-target size, descriptions, and contrast on the Find screen.
 
-The full 14-test UI bundle is in the task's `work/expansion/DerivedData/Logs/Test/Test-Atlas-2026.09.14_00-53-11--0400.xcresult`. The final repository unit/location bundle is `build/DerivedData/Logs/Test/Test-Atlas-2026.09.14_01-01-45--0400.xcresult`. Raw logs and result bundles remain under ignored build/task directories. Run `scripts/ios.sh test SIMULATOR_UDID` to repeat the complete scheme.
+Result bundles were local and are not retained. Run `scripts/ios.sh test SIMULATOR_UDID` to repeat the complete scheme.
 
 ### Runtime inspection
 
@@ -323,44 +438,3 @@ The current Minnesota and Utah flag assets were visually checked. No generated s
 - Native controls have accessibility labels, and answers post announcements. A complete spoken VoiceOver session has not been verified. The custom map has area-list and coordinate-entry alternatives; those do not reproduce visual spatial learning.
 - NYC boundaries are approximate and include parks and islands. Individual topology checks do not prove complete gap/overlap coverage. The datHere catalog declares ODC-By, but the licensed resource download could not be compared with the pinned mirror.
 - City populations are dated city/municipal figures, not live counts or metropolitan populations. Landmarks are a curated set, not a popularity ranking. Large parks use an identified reference point.
-
-## Blue Study UI — November 15, 2026
-
-Applied the selected Blue Study concept to the existing SwiftUI app: ultramarine outlines, grey canvas, light headings, monospaced labels, a two-column library, and flat controls. Accessibility text sizes use a single library column. Existing map geometry, gameplay, progress storage, and the light-only appearance are retained.
-
-Verified on iPhone 17 Pro, iOS 26.5 Simulator:
-
-- Build and launch passed.
-- Six initial UI tests passed: library/practice navigation, all four maps at the largest text size, large-text answer controls, landscape controls, polygon taps/zoom/pan, and coordinate entry.
-- The accessibility audit first found a small Show answer hit region. Added an explicit content shape after the button frame. The accessibility audit and library/practice navigation both passed on rerun.
-- Reviewed library, practice setup, and answer-feedback screenshots. No changes to source geography or quiz scoring.
-- `git diff --check` passed.
-
-Evidence: `build/BlueStudy.xcresult`, `build/BlueStudy-controls.xcresult`, and `build/blue-study/`. These are ignored local build artifacts. No physical-device verification, dark theme, or release frame-rate measurement was performed for this change. Busabase Knowledge was unavailable; no knowledge update was saved.
-
-### Blue Study device installation — November 16, 2026
-
-Built the current working tree in Release for the test iPhone Air with the configured developer team. Strict code-signature verification passed. Installed as an update without uninstalling, verified `com.jkrenge.geography` in the device app list, and successfully launched Atlas Practice. Physical interaction and frame-rate checks remain unverified. Build log: `build/blue-study-device-build.log`. Busabase remained unavailable.
-
-## Blue Study controls and layout review — November 16, 2026
-
-Reviewed the library, setup, all quiz modes, correct/incorrect/timeout feedback, results, study selection, reference lists and details, source disclosure, credits, coordinate entry, area selection, and empty search states. Used Bunpo lesson and reading-card references from the user's Appllama collection. Kept native SwiftUI, existing geometry, scoring, and progress storage.
-
-Changes: white map cards with explicit Explore actions; bordered practice rows, settings, answers, secondary buttons, and source links; stronger type hierarchy; distinct map and feedback surfaces; one question heading; fact questions and answer choices in the same scrolling card; an empty area-search state; grey selection feedback text matching the map. Larger text uses stacked layouts.
-
-Validation on iPhone 17 Pro / iOS 26.5 with Xcode 27.2:
-
-- Simulator and signed Release builds passed; strict code-signature verification passed.
-- All 25 unit tests passed. All 27 functional UI tests passed across the main run and focused reruns, including accessibility audit, largest text, landscape, all quiz modes, map gestures, results, and reference details.
-- The first new search-cancel test used the wrong system selector. Inspected its accessibility hierarchy and corrected the test to close active search before cancelling the sheet. The rerun passed.
-- Inspected 35 distinct screen/state screenshots, then reviewed fresh fact-question screenshots after grouping their answers with the prompt.
-- The plugin response timed out after five minutes during the main suite. The underlying Xcode process continued; its completed log and result bundle were checked directly.
-- `git diff --check` passed. Existing XCTest setup actor-isolation warnings remain; no new app build warnings were reported.
-
-Evidence (ignored local artifacts): `build/BlueStudy-polish.xcresult`, `build/BlueStudy-polish-final.xcresult`, `build/blue-study-polish/`, and `build/blue-study-polish-device.log`. The main bundle retains the initial test-selector failure; the final bundle has five passing affected checks.
-
-Installed the signed Release as an update on the test iPhone Air without uninstalling. Physical touch interaction, iPad, older iOS versions, and release frame-rate benchmarks were not checked in this review. The app remains light-only. Busabase Knowledge remained unavailable; no Knowledge update was saved.
-
-### Blue Study app icon — November 16, 2026
-
-Replaced the app icon with an ultramarine globe and white location marker. Verified the asset is 1024 × 1024 with no alpha channel. The signed Release build and strict code-signature verification passed. Installed the update on the test iPhone Air, confirmed the bundle in the device app list, and launched it successfully. Build log: `build/blue-study-icon-device.log`. Gameplay tests were not rerun for this asset-only change; the physical Home Screen appearance was not inspected. Busabase remained unavailable.

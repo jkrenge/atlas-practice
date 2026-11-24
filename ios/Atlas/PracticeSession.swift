@@ -19,15 +19,15 @@ enum PracticeMode: String, Codable, CaseIterable, Identifiable {
     }
     var instruction: String {
         switch self {
-        case .find: "Read a name. Find its place on the map."
-        case .name: "Look at the highlighted area. Choose its name."
-        case .capital: "Match each state to its capital."
-        case .flag: "Recognize the state from its flag."
-        case .nickname: "Connect a name or campaign slogan to a state."
-        case .capitalLocation: "Drop a pin at a state capital."
-        case .cityLocation: "Find the largest cities on the map."
-        case .population: "Choose a city's population from dated official figures."
-        case .landmarkLocation: "Place famous sights on the map."
+        case .find: "We name it, you find it."
+        case .name: "We point, you name it."
+        case .capital: "Not always the biggest city."
+        case .flag: "Seals, stripes, and the odd bear."
+        case .nickname: "Every state has a catchphrase."
+        case .capitalLocation: "Pin the capital. Close counts."
+        case .cityLocation: "Big cities, tiny dots."
+        case .population: "Guess the headcount. Official figures."
+        case .landmarkLocation: "Famous sights. Where exactly?"
         }
     }
     var symbol: String {
@@ -37,7 +37,8 @@ enum PracticeMode: String, Codable, CaseIterable, Identifiable {
         case .capital: "building.columns"
         case .flag: "flag"
         case .nickname: "quote.bubble"
-        case .capitalLocation, .cityLocation: "mappin.and.ellipse"
+        case .capitalLocation: "mappin.and.ellipse"
+        case .cityLocation: "building.2"
         case .population: "person.3"
         case .landmarkLocation: "binoculars"
         }
@@ -83,6 +84,8 @@ struct PracticeSession {
     private(set) var firstAttemptCorrect = 0
     private(set) var reviewedCorrect = 0
     private(set) var missed: [Area] = []
+    /// Consecutive correct answers, review questions included.
+    private(set) var streak = 0
     let mode: PracticeMode
     let primaryCount: Int
     let secondsAllowed: Int
@@ -117,6 +120,7 @@ struct PracticeSession {
     private mutating func record(_ result: Answer) {
         guard let question = current, answer == nil else { return }
         answer = result
+        streak = result.correct ? streak + 1 : 0
         if question.isReview {
             if result.correct { reviewedCorrect += 1 }
         } else if result.correct {
@@ -142,6 +146,11 @@ struct PracticeRecord: Codable, Equatable {
     var firstTotal = 0
     var reviewCorrect = 0
     var reviewTotal = 0
+    var accuracy: Double? { firstTotal > 0 ? Double(firstCorrect) / Double(firstTotal) : nil }
+    static func + (a: Self, b: Self) -> Self {
+        Self(sessions: a.sessions + b.sessions, firstCorrect: a.firstCorrect + b.firstCorrect, firstTotal: a.firstTotal + b.firstTotal,
+             reviewCorrect: a.reviewCorrect + b.reviewCorrect, reviewTotal: a.reviewTotal + b.reviewTotal)
+    }
 }
 
 @MainActor
@@ -157,6 +166,13 @@ final class ProgressStore {
     func record(for map: String, mode: PracticeMode, secondsAllowed: Int = 0) -> PracticeRecord {
         records[key(map, mode, secondsAllowed)] ?? PracticeRecord()
     }
+    /// Totals across timer settings, and across modes when `mode` is nil.
+    func summary(for map: String, mode: PracticeMode? = nil) -> PracticeRecord {
+        let prefix = map + "." + (mode?.rawValue ?? "")
+        return records.filter { key, _ in
+            mode == nil ? key.hasPrefix(prefix) : key == prefix || key.hasPrefix(prefix + ".")
+        }.values.reduce(PracticeRecord(), +)
+    }
     private func key(_ map: String, _ mode: PracticeMode, _ seconds: Int) -> String {
         map + "." + mode.rawValue + (seconds == 0 ? "" : ".\(seconds)s")
     }
@@ -171,5 +187,56 @@ final class ProgressStore {
         record.reviewTotal += session.missed.count
         records[key] = record
         if let data = try? JSONEncoder().encode(records) { defaults.set(data, forKey: "practiceProgress.v1") }
+    }
+    /// Forgets every score on this device.
+    func reset() {
+        records = [:]
+        defaults.removeObject(forKey: "practiceProgress.v1")
+    }
+}
+
+/// Feedback lines. Picked by position, never at random, so screenshots and tests repeat.
+/// The jokes are about maps or the clock, never the learner.
+enum Voice {
+    static let correct = ["Nailed it.", "Spot on.", "Like a local.", "Bullseye.", "Textbook.", "Cartographers approve."]
+    static let comeback = ["Second time’s the charm.", "Now it sticks.", "Redemption arc."]
+    // Mode-neutral: these also follow flag, capital, and population answers.
+    static let wrong = ["Not quite.", "Wrong turn.", "Plot twist.", "Close, but no.", "Not this time."]
+    static let nearMiss = ["So close.", "Almost on the dot.", "Practically neighbors."]
+    static let farMiss = ["Scenic detour.", "Off by a road trip.", "Bold guess."]
+    static let shown = ["Here’s the answer.", "Now you know.", "No shame in peeking.", "Scouted for next time."]
+    static let timeout = ["Time’s up.", "The clock won this one.", "Out of time.", "Tick, tock. Here it is."]
+    static let streaks = [3: "Three in a row. Showing off?", 5: "Five straight. You’ve been here before.",
+                          10: "Ten in a row. Are you a satellite?"]
+
+    /// Stable across launches; String.hashValue is not.
+    static func seed(_ id: String) -> Int { id.unicodeScalars.reduce(0) { $0 &+ Int($1.value) } }
+    static func pick(_ pool: [String], _ seed: Int) -> String { pool[abs(seed % pool.count)] }
+
+    static func headline(for answer: PracticeSession.Answer, isReview: Bool, streak: Int,
+                         toleranceKM: Double, seed: Int) -> String {
+        if answer.timedOut { return pick(timeout, seed) }
+        if answer.correct {
+            if !isReview, let line = streaks[streak] { return line }
+            return pick(isReview ? comeback : correct, seed)
+        }
+        if let distance = answer.distanceKM { return pick(distance <= toleranceKM * 2 ? nearMiss : farMiss, seed) }
+        return pick(answer.selected == nil ? shown : wrong, seed)
+    }
+}
+
+/// A geographic rank for the first-try score on the results screen.
+enum ResultRank: String {
+    case cartographer = "Cartographer", navigator = "Navigator", explorer = "Explorer", wanderer = "Wanderer"
+    init(firstTry ratio: Double) {
+        self = ratio >= 1 ? .cartographer : ratio >= 0.8 ? .navigator : ratio >= 0.5 ? .explorer : .wanderer
+    }
+    var headlines: [String] {
+        switch self {
+        case .cartographer: ["Flawless.", "Not one wrong turn.", "Frame this map.", "Clean sweep."]
+        case .navigator: ["Sharp navigating.", "Barely needed a compass.", "You know your way around.", "Nearly spotless."]
+        case .explorer: ["Getting your bearings.", "Solid ground.", "The map is warming up."]
+        case .wanderer: ["Every expert started here.", "Scenic route. Still counts.", "Good start. Go again?"]
+        }
     }
 }

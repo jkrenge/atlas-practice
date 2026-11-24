@@ -1,4 +1,7 @@
-"""Compile local source snapshots. Run with .venv/bin/python scripts/compile_maps.py."""
+"""Compile local source snapshots. Run with .venv/bin/python scripts/compile_maps.py.
+
+Also runs simplify_maps.py (needs Node 20.11+ and `npm ci --prefix scripts/geometry`).
+"""
 
 import hashlib
 import json
@@ -6,7 +9,7 @@ from pathlib import Path
 
 import shapefile
 from shapely import make_valid
-from shapely.geometry import shape, mapping, MultiPolygon
+from shapely.geometry import shape, mapping, MultiPolygon, Polygon
 from shapely.ops import unary_union
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -75,6 +78,16 @@ def focused_neighborhoods(local, boroughs):
         result.append(feature(group['id'], group['name'], geometry,
                               borough=group['borough'], sourceId=group['sourceId'],
                               sourceAreaIDs=group['sourceAreaIDs'], quizEligible=True))
+    # Hand-drawn areas the sources lack, cut out of the one source area they lie in.
+    by_id = {f['id']: f for f in result}
+    for carve in json.loads((ROOT / 'data/nyc-carve-outs.json').read_text()):
+        parent = by_id[carve['sourceAreaIDs'][0]]
+        source, outline = shape(parent['geometry']), Polygon(carve['outline'])
+        parent['geometry'] = mapping(source.difference(outline))
+        result.append(feature(carve['id'], carve['name'], mapping(source.intersection(outline)),
+                              borough=carve['borough'], sourceId=carve['sourceId'],
+                              sourceAreaIDs=carve['sourceAreaIDs'], outlineSource=carve['outlineSource'],
+                              quizEligible=True))
     # Retain neighborhood membership and inland boundaries. Use official borough
     # land to remove old shoreline extensions into rivers and neighboring boroughs.
     shores = {f['properties']['name']: f for f in boroughs}

@@ -1,4 +1,5 @@
 #!/bin/bash
+# Usage: scripts/ios.sh {generate|build|test|run} [SIMULATOR_UDID]
 set -euo pipefail
 repo_dir="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$repo_dir"

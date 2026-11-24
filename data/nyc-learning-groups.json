@@ -36,13 +36,57 @@
     ]
   },
   {
+    "id": "http://nyc.pediacities.com/Resource/Neighborhood/Park_Slope",
+    "name": "Park Slope",
+    "borough": "Brooklyn",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Park_Slope"
+    ]
+  },
+  {
+    "id": "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Heights",
+    "name": "Prospect Heights",
+    "borough": "Brooklyn",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Heights"
+    ]
+  },
+  {
+    "id": "http://nyc.pediacities.com/Resource/Neighborhood/Downtown_Brooklyn",
+    "name": "Downtown Brooklyn",
+    "borough": "Brooklyn",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Downtown_Brooklyn"
+    ]
+  },
+  {
+    "id": "http://nyc.pediacities.com/Resource/Neighborhood/Crown_Heights",
+    "name": "Crown Heights",
+    "borough": "Brooklyn",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Crown_Heights"
+    ]
+  },
+  {
+    "id": "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Park",
+    "name": "Prospect Park",
+    "borough": "Brooklyn",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Park"
+    ]
+  },
+  {
     "id": "NYC-PRACTICE-WEST-BROOKLYN",
     "name": "West Brooklyn",
     "borough": "Brooklyn",
     "sourceId": "nyc-pediacities",
     "sourceAreaIDs": [
       "http://nyc.pediacities.com/Resource/Neighborhood/Brooklyn_Heights",
-      "http://nyc.pediacities.com/Resource/Neighborhood/Downtown_Brooklyn",
       "http://nyc.pediacities.com/Resource/Neighborhood/Boerum_Hill",
       "http://nyc.pediacities.com/Resource/Neighborhood/Cobble_Hill",
       "http://nyc.pediacities.com/Resource/Neighborhood/Carroll_Gardens",
@@ -52,8 +96,6 @@
       "http://nyc.pediacities.com/Resource/Neighborhood/Fort_Greene",
       "http://nyc.pediacities.com/Resource/Neighborhood/Clinton_Hill",
       "http://nyc.pediacities.com/Resource/Neighborhood/Navy_Yard",
-      "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Heights",
-      "http://nyc.pediacities.com/Resource/Neighborhood/Park_Slope",
       "http://nyc.pediacities.com/Resource/Neighborhood/Gowanus",
       "http://nyc.pediacities.com/Resource/Neighborhood/South_Slope",
       "http://nyc.pediacities.com/Resource/Neighborhood/Sunset_Park",
@@ -76,7 +118,6 @@
       "http://nyc.pediacities.com/Resource/Neighborhood/Bushwick",
       "http://nyc.pediacities.com/Resource/Neighborhood/Canarsie",
       "http://nyc.pediacities.com/Resource/Neighborhood/Coney_Island",
-      "http://nyc.pediacities.com/Resource/Neighborhood/Crown_Heights",
       "http://nyc.pediacities.com/Resource/Neighborhood/Cypress_Hills",
       "http://nyc.pediacities.com/Resource/Neighborhood/Dyker_Heights",
       "http://nyc.pediacities.com/Resource/Neighborhood/East_Flatbush",
@@ -94,7 +135,6 @@
       "http://nyc.pediacities.com/Resource/Neighborhood/Midwood",
       "http://nyc.pediacities.com/Resource/Neighborhood/Mill_Basin",
       "http://nyc.pediacities.com/Resource/Neighborhood/Plum_Beach",
-      "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Park",
       "http://nyc.pediacities.com/Resource/Neighborhood/Prospect_Lefferts_Gardens",
       "http://nyc.pediacities.com/Resource/Neighborhood/Sea_Gate",
       "http://nyc.pediacities.com/Resource/Neighborhood/Sheepshead_Bay",

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "NYC-PRACTICE-SEAPORT",
+    "name": "Seaport",
+    "borough": "Manhattan",
+    "sourceId": "nyc-pediacities",
+    "sourceAreaIDs": [
+      "http://nyc.pediacities.com/Resource/Neighborhood/Financial_District"
+    ],
+    "outlineSource": "hand-drawn",
+    "outlineNote": "Approximate: Pearl Street on the west, John Street on the south. The Financial District's own edges supply the Brooklyn Bridge on the north and the East River shore and piers on the east. Street lines are placed from the Titanic Memorial (Fulton and Pearl) and the Schermerhorn Row block (Fulton, Front, John, South).",
+    "outline": [
+      [-74.0048, 40.70682],
+      [-73.99926, 40.71035],
+      [-73.99557, 40.70701],
+      [-74.00111, 40.70347],
+      [-74.0048, 40.70682]
+    ]
+  }
+]

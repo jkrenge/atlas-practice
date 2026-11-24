@@ -2,15 +2,27 @@ import SwiftUI
 import UIKit
 
 extension Color {
-    static let atlasBlue = Color(red: 0.14, green: 0.20, blue: 0.77)
-    static let atlasInk = Color(red: 0.12, green: 0.16, blue: 0.31)
-    static let atlasMuted = Color(red: 0.24, green: 0.29, blue: 0.57)
-    static let atlasPaper = Color(red: 0.95, green: 0.96, blue: 0.98)
-    static let atlasSurface = Color.white
-    static let atlasSea = Color(red: 0.89, green: 0.92, blue: 0.98)
-    static let atlasLine = atlasBlue.opacity(0.35)
-    // Wrong answers stay distinct from the blue target and also have text labels.
-    static let atlasClay = Color(red: 0.34, green: 0.35, blue: 0.40)
+    // Atlas ink on paper. Prussian blue is for actions and the map's answer; yellow is decoration only.
+    static let atlasBlue = Color(red: 0.118, green: 0.302, blue: 0.400)        // #1E4D66 Prussian
+    static let atlasInk = Color(red: 0.110, green: 0.149, blue: 0.161)         // #1C2629
+    static let atlasMuted = Color(red: 0.290, green: 0.333, blue: 0.341)       // #4A5557, opaque surfaces only
+    static let atlasPaper = Color(red: 0.984, green: 0.969, blue: 0.933)       // #FBF7EE
+    static let atlasSurface = Color.white                                      // label tape, answer choices
+    static let atlasSea = AtlasInk.water                                       // the game's sea matches the backdrop
+    static let atlasLine = Color(red: 0.110, green: 0.149, blue: 0.161).opacity(0.12)
+    static let atlasDisabled = Color(red: 0.894, green: 0.863, blue: 0.796)    // #E4DCCB
+    static let atlasYellow = Color(red: 1.0, green: 0.788, blue: 0.263)        // #FFC943: frames and title tape
+    static let atlasMapBorder = Color(red: 0.431, green: 0.357, blue: 0.263)   // #6E5B43 borders in the game
+    static let atlasMapExcluded = Color(red: 0.804, green: 0.757, blue: 0.651) // #CDC1A6 areas outside the quiz
+    // Feedback colors always appear with an icon and words, never alone.
+    static let atlasGreen = Color(red: 0.01, green: 0.34, blue: 0.25)
+    static let atlasGreenTint = Color(red: 0.90, green: 0.96, blue: 0.93)
+    static let atlasRed = Color(red: 0.71, green: 0.14, blue: 0.09)
+    static let atlasRedTint = Color(red: 0.996, green: 0.94, blue: 0.93)
+    static let atlasAmber = Color(red: 0.48, green: 0.29, blue: 0.0)
+    static let atlasAmberTint = Color(red: 1.0, green: 0.95, blue: 0.82)
+    // Wrong picks and guesses: the voyage red, white text at 5.7:1.
+    static let atlasCoral = AtlasInk.route
 }
 
 struct MapPreview: UIViewRepresentable {
@@ -46,8 +58,8 @@ final class MapPreviewView: UIView {
             context.concatenate(shape.transform)
             context.addPath(shape.previewPath)
             context.setFillColor((layout.eligibleIDs.contains(shape.id)
-                ? UIColor(Color.atlasSurface) : .systemGray3).cgColor)
-            context.setStrokeColor(UIColor(Color.atlasBlue).cgColor)
+                ? UIColor(AtlasInk.land) : UIColor(Color.atlasMapExcluded)).cgColor)
+            context.setStrokeColor(UIColor(Color.atlasMapBorder).cgColor)
             context.setLineWidth(0.8 / shape.transform.a)
             context.drawPath(using: .eoFillStroke)
             context.restoreGState()
@@ -76,16 +88,14 @@ struct MapView: View {
         Group {
             if fullscreen {
                 canvas
-                    .overlay(alignment: .bottomTrailing) {
-                        HStack(spacing: 8) {
-                            if hint != "Pinch to zoom. Drag to move." { mapHint }
-                            Spacer(minLength: 0)
-                            mapControls
-                        }.padding(12)
-                    }
+                    .overlay(alignment: .bottom) { overlayControls }
                     .background(Color.atlasSea)
             } else {
-                framedMap
+                canvas
+                    .overlay(alignment: .bottom) { overlayControls }
+                    .background(Color.atlasSea)
+                    .clipped()
+                    .mapFrame()
             }
         }
         .onChange(of: resetID) { _, _ in
@@ -99,52 +109,64 @@ struct MapView: View {
                   acceptsAnswers: acceptsAnswers, guess: guess, target: target, onLocation: onLocation, viewport: $viewport) { hit in
             switch hit {
             case .area(let id): hint = "Pinch to zoom. Drag to move."; onSelect(id)
-            case .ambiguous: hint = "Close to a border. Zoom in and tap again."
-            case .water: hint = "Tap inside an area or use a numbered marker."
+            case .ambiguous: hint = "Right on a border. Zoom in and tap again."
+            case .water: hint = pack.preparedLayout.callouts.isEmpty ? "Missed the map. Tap inside an area."
+                                                                     : "Missed the map. Tap an area or a numbered marker."
             }
         }
         .frame(height: canvasHeight)
         .accessibilityIdentifier("geographicMap")
     }
 
-    private var framedMap: some View {
-        VStack(spacing: 0) {
-            canvas
-            Group {
-                if typeSize.isAccessibilitySize {
-                    VStack(alignment: .leading, spacing: 4) { mapHint; HStack { Spacer(); mapControls } }
-                } else {
-                    HStack(spacing: 8) { mapHint; Spacer(minLength: 0); mapControls }
-                }
+    private var overlayControls: some View {
+        let layout = typeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .trailing, spacing: 8)) : AnyLayout(HStackLayout(alignment: .bottom, spacing: 8))
+        let showsHint = hint != "Pinch to zoom. Drag to move."
+        return layout {
+            if typeSize.isAccessibilitySize {
+                // Large text: the hint sits just above the controls instead of over the markers.
+                Spacer(minLength: 0)
+                if showsHint { mapHint }
+            } else {
+                if showsHint { mapHint }
+                Spacer(minLength: 0)
             }
-            .padding(.horizontal, 12).padding(.vertical, 4)
-            .foregroundStyle(Color.atlasInk)
-            .background(Color.atlasSurface)
-        }
-        .background(Color.atlasSea)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-        .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(Color.atlasLine, lineWidth: 1))
+            mapControls
+        }.padding(10)
     }
 
     private var mapHint: some View {
-        Text(hint).font(.caption).foregroundStyle(Color.atlasMuted).fixedSize(horizontal: false, vertical: true)
+        Text(hint).font(.caption.monospaced().weight(.medium)).foregroundStyle(Color.atlasInk)
+            .fixedSize(horizontal: false, vertical: true)
+            .labelTape()
+            .allowsHitTesting(false) // Taps on Alaska and Hawaii pass through to the map.
             .accessibilityIdentifier("mapHint")
     }
 
-    private var mapControls: some View {
-        Group {
-            HStack(spacing: 8) {
-                Button { viewport.scale = max(1, viewport.scale / 1.5); if viewport.scale == 1 { viewport.offset = .zero } }
-                label: { Image(systemName: "minus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44).atlasOutline(cornerRadius: 22).contentShape(Rectangle()) }
-                    .accessibilityLabel("Zoom out")
-                Button { viewport.scale = min(32, viewport.scale * 1.5) }
-                label: { Image(systemName: "plus.magnifyingglass").font(.system(size: 20)).frame(width: 44, height: 44).atlasOutline(cornerRadius: 22).contentShape(Rectangle()) }
-                    .accessibilityLabel("Zoom in")
-                Button { viewport = MapViewport() }
-                label: { Image(systemName: "arrow.counterclockwise").font(.system(size: 20)).frame(width: 44, height: 44).atlasOutline(cornerRadius: 22).contentShape(Rectangle()) }
-                    .accessibilityLabel("Reset map")
-            }.buttonStyle(AtlasPressStyle())
+    /// Three glass circles, like Maps: zoom in, zoom out, then reset. A column when the map has
+    /// no numbered markers; otherwise a row, because the markers use the right-hand edge.
+    @ViewBuilder private var mapControls: some View {
+        let vertical = fullscreen && pack.preparedLayout.callouts.isEmpty
+        let layout = vertical ? AnyLayout(VStackLayout(spacing: 10)) : AnyLayout(HStackLayout(spacing: 10))
+        if #available(iOS 26, *) {
+            GlassEffectContainer(spacing: 4) { controls(layout) }
+        } else { controls(layout) }
+    }
+
+    private func controls(_ layout: AnyLayout) -> some View {
+        layout {
+            controlButton("plus", label: "Zoom in") { viewport.scale = min(32, viewport.scale * 1.5) }
+            controlButton("minus", label: "Zoom out") {
+                viewport.scale = max(1, viewport.scale / 1.5); if viewport.scale == 1 { viewport.offset = .zero }
+            }
+            controlButton("scope", label: "Reset map") { viewport = MapViewport() }
         }
+    }
+
+    private func controlButton(_ symbol: String, label: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) { Image(systemName: symbol) }
+            .buttonStyle(IconButtonStyle())
+            .accessibilityLabel(label)
     }
 }
 
@@ -169,7 +191,8 @@ private struct MapCanvas: UIViewRepresentable {
         view.selected = selected
         view.revealLabels = revealLabels
         view.acceptsAnswers = acceptsAnswers
-        view.applyViewport(viewport)
+        // Skip unchanged viewports: the timer re-renders each second, and applying one redraws the annotations.
+        if view.viewport != viewport { view.applyViewport(viewport) }
         view.onViewport = { viewport = $0 }
         view.onSelect = onSelect
         view.accessibilityLabel = highlight != nil && !revealLabels ? "Map with one highlighted area" : "Map of \(pack.manifest.name)"
@@ -186,9 +209,9 @@ private final class MapTileLayer: CATiledLayer {
 
     init(layout: MapLayout, scale: CGFloat) {
         self.layout = layout
-        land = UIColor(Color.atlasSurface).cgColor
-        excluded = UIColor.systemGray3.cgColor
-        border = UIColor(Color.atlasBlue).cgColor
+        land = UIColor(AtlasInk.land).cgColor
+        excluded = UIColor(Color.atlasMapExcluded).cgColor
+        border = UIColor(Color.atlasMapBorder).cgColor
         super.init()
         contentsScale = scale
         tileSize = CGSize(width: 512, height: 512)
@@ -271,10 +294,11 @@ final class GeographicMapView: UIView, UIScrollViewDelegate {
         addSubview(scrollView)
         for layer in [selectedLayer, highlightLayer] {
             layer.fillRule = .evenOdd
+            layer.lineJoin = .round // Jagged coasts would otherwise draw miter spikes.
             layer.strokeColor = UIColor(Color.atlasInk).cgColor
             geography.layer.addSublayer(layer)
         }
-        selectedLayer.fillColor = UIColor(Color.atlasClay).cgColor
+        selectedLayer.fillColor = UIColor(Color.atlasCoral).cgColor
         highlightLayer.fillColor = UIColor(Color.atlasBlue).cgColor
         annotations.map = self
         annotations.backgroundColor = .clear
@@ -404,22 +428,38 @@ final class GeographicMapView: UIView, UIScrollViewDelegate {
             context.fillEllipse(in: CGRect(x: anchor.x - 2, y: anchor.y - 2, width: 4, height: 4))
             let active = callout.id == highlight
             let wrong = callout.id == selected && !active
-            let box = UIBezierPath(roundedRect: callout.frame.insetBy(dx: 2, dy: 2), cornerRadius: 12)
-            (active ? UIColor(Color.atlasBlue) : wrong ? UIColor(Color.atlasClay) : .white).setFill()
+            // No blurred shadows here: this runs on every pan and zoom frame.
+            // Circles, like every other icon-sized control.
+            let box = UIBezierPath(ovalIn: callout.frame.insetBy(dx: 3, dy: 3))
+            (active ? UIColor(Color.atlasBlue) : wrong ? UIColor(Color.atlasCoral) : .white).setFill()
             box.fill()
+            UIColor(Color.atlasInk).withAlphaComponent(0.15).setStroke()
+            box.lineWidth = 1; box.stroke()
             let title = revealLabels ? String(callout.id.suffix(2)) : String(callout.number)
             drawLabel(title, center: callout.center, font: .systemFont(ofSize: 14, weight: .bold),
                       color: active || wrong ? .white : UIColor(Color.atlasInk))
         }
-        drawPin(guess, letter: "G", color: UIColor(Color.atlasClay), layout: layout)
+        // A dashed line shows how far the guess landed from the answer.
+        if let guess, let target,
+           let from = layout.screen(guess.coordinate, areaID: guess.regionID, viewport: viewport),
+           let to = layout.screen(target.coordinate, areaID: target.regionID, viewport: viewport) {
+            context.saveGState()
+            context.setStrokeColor(UIColor(Color.atlasCoral).cgColor)
+            context.setLineWidth(2)
+            context.setLineCap(.round)
+            context.setLineDash(phase: 0, lengths: [6, 4])
+            context.move(to: from); context.addLine(to: to); context.strokePath()
+            context.restoreGState()
+        }
+        drawPin(guess, letter: "G", color: UIColor(Color.atlasCoral), layout: layout)
         drawPin(target, letter: "A", color: UIColor(Color.atlasBlue), layout: layout)
     }
 
     private func drawPin(_ pin: MapPin?, letter: String, color: UIColor, layout: MapLayout) {
         guard let pin, let point = layout.screen(pin.coordinate, areaID: pin.regionID, viewport: viewport) else { return }
-        let marker = UIBezierPath(ovalIn: CGRect(x: point.x - 12, y: point.y - 12, width: 24, height: 24))
+        let marker = UIBezierPath(ovalIn: CGRect(x: point.x - 14, y: point.y - 14, width: 28, height: 28))
         color.setFill(); marker.fill()
-        UIColor.white.setStroke(); marker.lineWidth = 2; marker.stroke()
+        UIColor.white.setStroke(); marker.lineWidth = 2.5; marker.stroke()
         drawLabel(letter, center: point, font: .systemFont(ofSize: 13, weight: .bold), color: .white)
     }
 

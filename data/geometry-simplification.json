@@ -24,10 +24,10 @@
     "maxIntervalMeters": 60
   },
   "nyc-neighborhoods-focused": {
-    "originalPoints": 59258,
-    "reducedPoints": 4514,
-    "originalBytes": 2331675,
-    "reducedBytes": 157302,
+    "originalPoints": 59363,
+    "reducedPoints": 6761,
+    "originalBytes": 2337383,
+    "reducedBytes": 228079,
     "maxAreaChange": 0.01,
     "maxIntervalMeters": 60
   },

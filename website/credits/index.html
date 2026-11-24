@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sources and credits · Atlas</title>
+  <meta name="description" content="Where Atlas gets its maps, facts, flags and population figures, and the licenses they come with.">
+  <meta name="theme-color" content="#bdded9">
+  <link rel="icon" href="../assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-camera="greenwich">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../"><img src="../assets/favicon.png" width="64" height="64" alt="">Atlas</a>
+      <nav class="site-nav" aria-label="Site">
+        <ul>
+          <li><a href="../support/">Support</a></li>
+          <li><a href="../privacy/">Privacy</a></li>
+          <li><a href="./" aria-current="page">Credits</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <div class="page-head">
+        <h1 class="title-tape">Sources and credits</h1>
+        <p class="on-map mono"><span class="tape">Every map starts with somebody else's survey. Here are ours.</span></p>
+      </div>
+
+      <section class="list-section" aria-labelledby="us-de">
+        <h2 id="us-de"><span class="tape">United States and Germany</span></h2>
+        <div class="card prose">
+          <p>Boundaries: <a href="https://www.naturalearthdata.com">Natural Earth</a>, Admin 1 states and provinces, version 5.1.1, at 1:10 million. State maps exclude mapped lakes using Natural Earth Lakes, version 5.0.0. Boundaries are simplified for learning.</p>
+          <p>The world map behind the app, and behind these pages, is drawn from Natural Earth Admin 0 countries, version 5.1.1, at 1:50 million.</p>
+          <p class="meta">License: <a href="https://www.naturalearthdata.com/about/terms-of-use/">public domain</a>. Made with Natural Earth.</p>
+        </div>
+      </section>
+
+      <section class="list-section" aria-labelledby="boroughs">
+        <h2 id="boroughs"><span class="tape">New York City boroughs</span></h2>
+        <div class="card prose">
+          <p>Borough boundaries: NYC Department of City Planning (DCP), <a href="https://data.cityofnewyork.us/d/gthc-hcne">Borough Boundaries</a> on NYC Open Data, shore-clipped, version 26B. These are the five official boroughs.</p>
+          <p class="meta">Terms: <a href="https://opendata.cityofnewyork.us/overview/#termsofuse">NYC Open Data terms of use</a>. The City provides the data without warranties of accuracy or fitness.</p>
+        </div>
+      </section>
+
+      <section class="list-section" aria-labelledby="neighborhoods">
+        <h2 id="neighborhoods"><span class="tape">New York City neighborhoods</span></h2>
+        <div class="card prose">
+          <p>Contains information from NYC Neighborhoods by Pediacities / Ontodia, made available under the <a href="https://opendatacommons.org/licenses/by/1-0/">Open Data Commons Attribution License (ODC-By)</a>. The geometry is normalized from a <a href="https://gist.github.com/ix4/ff7603f48283cf06fc4fb3dfb6a0635c">pinned public GeoJSON mirror</a>.</p>
+          <p>What we changed: two self-intersecting outlines were repaired; the neighborhoods outside Manhattan were combined into practice areas (West Brooklyn, South &amp; East Brooklyn, and Queens (other areas)), with ten areas kept separate; every area was clipped to the official DCP borough shorelines, version 26B; and Seaport was drawn by hand out of the Financial District, along Pearl Street, John Street, the Brooklyn Bridge and the East River, approximately. The Bronx and Staten Island use the official borough boundaries.</p>
+          <p class="meta">A known limit: the <a href="https://data.dathere.com/dataset/nyc-neighborhoods">datHere catalog</a> credits Ontodia and declares the ODC-By license, but its download could not be compared with the mirror, so exact source equivalence remains unconfirmed. Neighborhood names and inland divisions are approximate and include parks and islands.</p>
+        </div>
+      </section>
+
+      <section class="list-section" aria-labelledby="facts">
+        <h2 id="facts"><span class="tape">Facts, cities and sights</span></h2>
+        <div class="card prose">
+          <p>State capitals, US state nicknames, and the coordinates of capitals, cities and sights: <a href="https://www.wikidata.org/wiki/Wikidata:Licensing">Wikidata, CC0</a>.</p>
+          <p>German state names and slogans: one sourced phrase per state, labeled by kind (nickname, state brand, tourism slogan or campaign). Each one links to its own source in the app.</p>
+          <p>Sights are a curated collection of 50 US and 20 German landmarks, picked for learning and geographic variety, not a popularity ranking. Large parks use the source's reference point.</p>
+        </div>
+      </section>
+
+      <section class="list-section" aria-labelledby="populations">
+        <h2 id="populations"><span class="tape">City populations</span></h2>
+        <div class="card prose">
+          <p>United States: U.S. Census Bureau, <a href="https://www.census.gov/data/tables/time-series/demo/popest/2020s-total-cities-and-towns.html">Vintage 2025 population estimates</a>, July 1, 2025. The 50 largest cities.</p>
+          <p>Germany: Statistisches Bundesamt (Destatis), <a href="https://service.destatis.de/DE/barchart_race/BarChartRace500k_Berlin_1955-2024.html">city populations</a>, December 31, 2024. The 10 largest cities.</p>
+          <p class="meta">The figures use city or municipal boundaries, not metro areas. Estimates may be revised in later releases.</p>
+        </div>
+      </section>
+
+      <section class="list-section" aria-labelledby="flags">
+        <h2 id="flags"><span class="tape">Flags</span></h2>
+        <div class="card prose">
+          <p>All 66 state flags, 50 American and 16 German, are images from Wikimedia Commons. 65 are in the public domain. The flag of Mississippi is marked “copyrighted free use” and is credited to Rocky Vaughn, Sue Anna Joe, Dominique Pugh, Clay Moss, Kara Giles, Micah Whitson and the Mississippi Department of Archives and History (<a href="https://commons.wikimedia.org/wiki/File:Flag_of_Mississippi.svg">file page</a>).</p>
+          <p class="meta">The app shows each flag's author, license and Commons file page in Browse facts.</p>
+        </div>
+      </section>
+
+      <section class="list-section" aria-labelledby="layout">
+        <h2 id="layout"><span class="tape">Map layout</span></h2>
+        <div class="card prose">
+          <p>Alaska and Hawaii appear in separate insets at different scales. The maps use geographic coordinates. They are meant for learning, not navigation.</p>
+        </div>
+      </section>
+
+      <section class="list-section" aria-labelledby="trademarks">
+        <h2 id="trademarks"><span class="tape">Trademarks</span></h2>
+        <div class="card prose">
+          <p>iPhone, iPad and iPadOS are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc. GitHub is a trademark of GitHub, Inc. Atlas is not affiliated with or endorsed by any of the data providers above.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="name">Atlas</p>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="../support/">Support</a></li>
+          <li><a href="../privacy/">Privacy</a></li>
+          <li><a href="./" aria-current="page">Credits</a></li>
+          <li><a href="../privacy/#impressum">Legal notice</a></li> <!-- TODO(owner): remove with the Impressum section if none is needed -->
+        </ul>
+      </nav>
+      <p>Made with Natural Earth. iPhone and iPad are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc.</p>
+    </div>
+  </footer>
+</body>
+</html>

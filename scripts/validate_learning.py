@@ -1,4 +1,7 @@
-"""Validate the offline fact database and its source links and map positions."""
+"""Validate the offline fact database and its source links and map positions.
+
+Run with .venv/bin/python scripts/validate_learning.py.
+"""
 import json
 import math
 import struct

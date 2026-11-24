@@ -243,8 +243,10 @@ struct MapLayout {
     }
 
     private static func callouts(ids smallIDs: [String], size: CGSize) -> [MapCallout] {
-        let spacing: CGFloat = max(44, min(62, (size.height - 48) / CGFloat(max(1, smallIDs.count))))
-        let firstCenter = min(size.height * 0.20, max(22, size.height - 22 - CGFloat(max(0, smallIDs.count - 1)) * spacing))
+        // Markers stay above the 44-point zoom row (plus its 10-point margin) at the bottom edge.
+        let lane = size.height - 54
+        let spacing: CGFloat = max(44, min(62, (lane - 48) / CGFloat(max(1, smallIDs.count))))
+        let firstCenter = min(size.height * 0.20, max(22, lane - 22 - CGFloat(max(0, smallIDs.count - 1)) * spacing))
         return smallIDs.enumerated().map { index, id in
             MapCallout(id: id, number: index + 1,
                        center: CGPoint(x: size.width - 27, y: firstCenter + CGFloat(index) * spacing))

@@ -1,4 +1,7 @@
-"""Rebuild offline learning facts from pinned public source snapshots."""
+"""Rebuild offline learning facts from pinned public source snapshots.
+
+Run with .venv/bin/python scripts/compile_learning.py.
+"""
 import csv
 import gzip
 import hashlib

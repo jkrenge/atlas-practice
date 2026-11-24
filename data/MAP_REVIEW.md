@@ -1,6 +1,6 @@
-# Map review — 2026-09-14
+# Map review — 2026-09-14, updated 2026-11-23
 
-Reviewed all 12 catalog entries, their six unique geometry collections, source versions, question lists, and the four native map layouts exposed in the app. The playable packs contain 118 question areas. All 623 catalog area features pass geometry validation.
+Reviewed all 12 catalog entries, their six unique geometry collections, source versions, question lists, and the four native map layouts exposed in the app. The playable packs contain 124 question areas. All 629 catalog area features pass geometry validation.
 
 ## Map decisions
 
@@ -9,7 +9,7 @@ Reviewed all 12 catalog entries, their six unique geometry collections, source v
 | US states | 51 / 50 | Natural Earth Admin 1 Lakes 5.1.1, plus the 10m physical lake mask 5.0.0. The existing Great Lakes correction is retained; smaller mapped lakes now also remain water. DC stays background. | Playable; source and native checks pass. |
 | German states | 16 / 16 | Natural Earth Admin 1 5.1.1, minus the 10m physical lake mask 5.0.0. Corrects filled lakes such as Constance, Müritz, and Schweriner See. | Playable; source and native checks pass. |
 | NYC boroughs | 5 / 5 | Official NYC DCP shoreline boundaries, version 26b. All geometry matches the original snapshot exactly. No correction needed. | Playable; source and native checks pass. |
-| NYC practice areas | 47 / 47 | Historical Pediacities/Ontodia neighborhood divisions, grouped as requested, then clipped to their own official DCP borough shoreline. Corrects extensions at DUMBO and along Newtown Creek. | Playable; approximate neighborhood divisions. |
+| NYC practice areas | 53 / 53 | Historical Pediacities/Ontodia neighborhood divisions plus a hand-drawn Seaport, grouped as defined in `nyc-learning-groups.json`, then clipped to their own official DCP borough shoreline. Corrects extensions at DUMBO and along Newtown Creek. | Playable; approximate neighborhood divisions. |
 | NYC 2020 NTAs | 262 / 197 | Official DCP statistical areas, version 26b. All geometry matches the original snapshot exactly. These are not definitive neighborhood boundaries. | Stored reference. |
 | World countries | 242 / 204 | Natural Earth Admin 0 5.1.1, minus the matching 50m physical lake mask 5.0.0. Removes mapped lakes, including Baikal and Victoria, from country fill. | Stored reference; camera and curriculum review required. |
 | Africa countries | Shared world / 53 | Same corrected country geometry; source continent filter verified. | Stored reference. |
@@ -25,7 +25,7 @@ The state and country variants that exclude large lakes are not sufficient by th
 
 ## NYC grouping and coverage
 
-All 37 Manhattan areas keep their IDs, names, and inland divisions. Bed-Stuy, DUMBO, Williamsburg, Greenpoint, and Long Island City remain separate. The three broader Brooklyn/Queens groups keep their existing membership. The Bronx and Staten Island each remain one official borough area.
+All 37 Manhattan areas keep their IDs, names, and inland divisions; Seaport is a hand-drawn cut out of the Financial District (approximate: Pearl Street, John Street, the Brooklyn Bridge, and the East River). Bed-Stuy, DUMBO, Williamsburg, Greenpoint, Park Slope, Prospect Heights, Downtown Brooklyn, Crown Heights, Prospect Park, and Long Island City remain separate. IDs and names of earlier areas are unchanged; the focused NYC pack gained Park Slope, Prospect Heights, Downtown Brooklyn, Crown Heights, Prospect Park and Seaport, which left their former groups. The Bronx and Staten Island each remain one official borough area.
 
 The shoreline intersection removes excess coverage; it does not fill missing land in the historical source or make its neighborhood divisions official. Before clipping, the source missed approximately 0.56% of Manhattan borough land, 1.06% of Brooklyn, and 0.23% of Queens. These are diagnostic ratios in longitude/latitude space, not surveyed area measurements. Source gaps remain visible. Within each borough, no positive-area overlaps were found between the practice areas.
 
@@ -35,18 +35,18 @@ Live DCP metadata was checked again on 2026-09-14. Both borough and NTA datasets
 
 - All 309 state and country features equal their original pinned administrative geometry minus the matching lake mask.
 - All 267 official borough and NTA features match their saved source geometry exactly.
-- All 47 practice areas match their source members after repair, grouping, and intersection with the correct borough land. Every area records its shoreline source and borough ID.
-- All 12 map IDs, question IDs, names, and order are unchanged. The original neighborhood candidate, repair report, and game facts are unchanged.
-- Nine geographic source hashes pass. A repeat offline compilation reproduced all 22 generated map/source/repair files byte for byte.
+- All 53 practice areas match their source members (Seaport and the Financial District: their source cut by the hand-drawn outline) after repair, grouping, and intersection with the correct borough land. Every area records its shoreline source and borough ID.
+- All 12 map IDs are unchanged. The original neighborhood candidate, repair report, and game facts are unchanged.
+- Nine geographic source hashes pass. Compilation writes 29 files: 22 from `scripts/compile_maps.py` (12 manifests, 6 full geometry files, the catalog, the city points, the neighborhood candidate, and the repair report) and 7 from `scripts/simplify_maps.py` (6 simplified geometry files and the simplification report). On 2026-11-23 every file outside the focused NYC pack, the catalog, and the simplification report recompiled byte for byte.
 - All 196 capital, city, and landmark points still pass the learning validator and native projection/inverse checks. Point questions can accept water; area questions cannot select it.
 
 The native app renders GeoJSON. Its decorative US SVG is not used for rendering, map taps, or geographic distance.
 
 ## Native verification
 
-The Atlas scheme built and passed **23 unit tests and six selected UI tests** on iPhone 17 Pro Simulator, iOS 26.5, with Xcode 26.6. Checks cover every playable area's interior at portrait and landscape viewport sizes, zoom/pan transforms, Great Lakes and Illinois, new lake/river regressions, US insets, native gestures, neighborhood selection, and landmark pin placement. See [iOS verification](../ios/VERIFICATION.md) for the result bundle and exact scope.
+Unit tests check every playable area's interior at two viewport sizes, zoom/pan transforms, Great Lakes and Illinois, lake and river water, and US insets. UI tests cover native gestures, neighborhood selection, and landmark pin placement. See [iOS verification](../ios/VERIFICATION.md) for dated runs and their scope.
 
-A separate iPhone 17 Simulator inspection confirmed the US overview and insets, Germany's map and state selection, and the reduced NYC map with DUMBO selection and zoom. After this review, a signed Release build of `47de3a3` was installed on iPhone Air on 2026-09-14. Automatic launch was blocked by the phone lock screen. See [installation evidence](../ios/VERIFICATION.md).
+A separate iPhone 17 Simulator inspection confirmed the US overview and insets, Germany's map and state selection, and the reduced NYC map with DUMBO selection and zoom.
 
 ## Limits before enabling stored country maps
 

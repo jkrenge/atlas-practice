@@ -5,7 +5,7 @@ import math
 import xml.etree.ElementTree as ET
 
 from shapely import make_valid, coverage_is_valid, get_num_coordinates
-from shapely.geometry import shape, MultiPolygon, Point
+from shapely.geometry import shape, MultiPolygon, Point, Polygon
 from shapely.ops import unary_union
 from shapely.validation import explain_validity
 
@@ -17,12 +17,12 @@ US_STATES = set('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA 
                 'WA WV WI WY'.split())
 GERMAN_STATES = set('BB BE BW BY HB HE HH MV NI NW RP SH SL SN ST TH'.split())
 EXPECTED_COUNTS = {
-    'nyc-neighborhoods-focused': 47, 'us-states': 50, 'germany-states': 16, 'nyc-boroughs': 5, 'nyc-neighborhoods': 197,
+    'nyc-neighborhoods-focused': 53, 'us-states': 50, 'germany-states': 16, 'nyc-boroughs': 5, 'nyc-neighborhoods': 197,
     'world-countries': 204, 'africa-countries': 53, 'asia-countries': 48,
     'europe-countries': 48, 'north-america-countries': 26,
     'south-america-countries': 12, 'oceania-countries': 14,
 }
-GEOMETRY_COUNTS = {'nyc-neighborhoods-focused': 47, 'us-states': 51, 'germany-states': 16, 'nyc-boroughs': 5,
+GEOMETRY_COUNTS = {'nyc-neighborhoods-focused': 53, 'us-states': 51, 'germany-states': 16, 'nyc-boroughs': 5,
                    'nyc-neighborhoods': 262, 'world-countries': 242}
 SOURCE_IDS = {'natural-earth-admin1-land', 'nyc-learning-areas', 'natural-earth-countries-land', 'nyc-boroughs', 'nyc-nta2020'}
 
@@ -98,8 +98,10 @@ def check_focused_neighborhoods(candidates):
     by_id = {f['id']: f for f in focused}
     manhattan = [f for f in candidates if f['properties']['borough'] == 'Manhattan']
     check(len(manhattan) == 37, 'Manhattan source count changed')
+    carves = read(ROOT / 'data/nyc-carve-outs.json')
+    carved = {c['id'] for c in carves}
     check({f['id'] for f in focused if f['properties']['borough'] == 'Manhattan'} ==
-          {f['id'] for f in manhattan}, 'Manhattan neighborhood set changed')
+          {f['id'] for f in manhattan} | carved, 'Manhattan neighborhood set changed')
     boroughs = read(ROOT / 'maps/nyc-boroughs/areas.geojson')['features']
     shores = {f['properties']['name']: f for f in boroughs}
     for f in focused:
@@ -108,20 +110,40 @@ def check_focused_neighborhoods(candidates):
               f['properties']['shorelineAreaID'] == shore['id'], 'Missing official shoreline provenance')
         check(shape(f['geometry']).difference(shape(shore['geometry'])).area < 1e-12,
               f"Practice area extends outside official borough land: {f['id']}")
+    # Hand-drawn areas: each cuts its outline out of one source area, and the two still cover it.
+    outlines = {}
+    for c in carves:
+        f = by_id[c['id']]
+        check(all(f['properties'][key] == c[key] for key in
+                  ('name', 'borough', 'sourceId', 'sourceAreaIDs', 'outlineSource')) and
+              c['outlineSource'] == 'hand-drawn' and len(c['sourceAreaIDs']) == 1, 'Carve-out metadata mismatch')
+        source = next(m for m in manhattan if m['id'] == c['sourceAreaIDs'][0])
+        land = shape(source['geometry']).intersection(shape(shores[c['borough']]['geometry']))
+        outline = Polygon(c['outline'])
+        outlines[source['id']] = outline
+        check(shape(f['geometry']).symmetric_difference(land.intersection(outline)).area < 1e-12 and
+              0.05 < shape(f['geometry']).area / land.area < 0.5, f"Carve-out geometry changed: {c['name']}")
+        check(shape(f['geometry']).union(shape(by_id[source['id']]['geometry'])).symmetric_difference(land).area < 1e-12,
+              f"Carve-out and its source no longer cover the source area: {c['name']}")
     for f in manhattan:
         expected_geometry = shape(f['geometry']).intersection(shape(shores['Manhattan']['geometry']))
+        if f['id'] in outlines:
+            expected_geometry = expected_geometry.difference(outlines[f['id']])
         check(shape(by_id[f['id']]['geometry']).symmetric_difference(expected_geometry).area < 1e-12 and
               by_id[f['id']]['properties']['name'] == f['properties']['neighborhood'],
               f"Manhattan inland boundary or name changed: {f['id']}")
 
     groups = read(ROOT / 'data/nyc-learning-groups.json')
-    check(unique(groups, 'NYC practice groups') == set(by_id) - {f['id'] for f in manhattan},
+    check(unique(groups, 'NYC practice groups') == set(by_id) - {f['id'] for f in manhattan} - carved,
           'Practice group IDs do not match the focused map')
     check({g['name'] for g in groups} == {'Bed-Stuy', 'DUMBO', 'Williamsburg', 'Greenpoint',
-          'West Brooklyn', 'South & East Brooklyn', 'Long Island City',
+          'Park Slope', 'Prospect Heights', 'Downtown Brooklyn', 'Crown Heights', 'Prospect Park', 'West Brooklyn', 'South & East Brooklyn', 'Long Island City',
           'Queens (other areas)', 'The Bronx', 'Staten Island'}, 'Unexpected practice areas')
     for name, source_name in [('Bed-Stuy', 'Bedford_Stuyvesant'), ('DUMBO', 'DUMBO'),
                               ('Williamsburg', 'Williamsburg'), ('Greenpoint', 'Greenpoint'),
+                              ('Park Slope', 'Park_Slope'), ('Prospect Heights', 'Prospect_Heights'),
+                              ('Downtown Brooklyn', 'Downtown_Brooklyn'), ('Crown Heights', 'Crown_Heights'),
+                              ('Prospect Park', 'Prospect_Park'),
                               ('Long Island City', 'Long_Island_City')]:
         group = next(g for g in groups if g['name'] == name)
         identifier = 'http://nyc.pediacities.com/Resource/Neighborhood/' + source_name
@@ -158,7 +180,7 @@ def check_focused_neighborhoods(candidates):
     expected = {f['id'] for f in candidates if f['properties']['borough'] in ('Brooklyn', 'Queens')}
     check(len(used) == len(set(used)) and set(used) == expected,
           'Brooklyn/Queens source areas must each belong to one group')
-    print('NYC: 37 Manhattan areas and 10 other areas; original membership and inland boundaries; official shorelines.')
+    print('NYC: 38 Manhattan areas (Seaport hand-drawn from the Financial District) and 15 other areas; original membership and inland boundaries; official shorelines.')
 
 
 def check_land_sources():
@@ -300,7 +322,7 @@ def main():
               f'Missing requested neighborhood: {name}')
         check(shape(matches[0]['geometry']).is_valid, f'Invalid requested neighborhood: {name}')
     check_focused_neighborhoods(candidates)
-    print('PASS: 12 catalog map packs, 623 valid area features, 769 legacy city points, and source hashes.')
+    print(f'PASS: 12 catalog map packs, {sum(GEOMETRY_COUNTS.values())} valid area features, 769 legacy city points, and source hashes.')
     print('Original NYC snapshot retained; repairs applied before practice groups are merged.')
 
 

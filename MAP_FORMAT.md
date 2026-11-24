@@ -39,11 +39,11 @@ Each feature has a unique string `id`, a nonempty `properties.name`, and `proper
 | --- | --- | --- |
 | US and Germany | Source ISO 3166-2, such as `US-CO` or `DE-BY` | `nameEnglish` |
 | NYC boroughs | `NYC-BORO-` plus `borocode` | `boroughCode` |
-| NYC focused practice areas | Original source URI for retained neighborhoods; `NYC-PRACTICE-` plus group name for merged areas; official borough ID for the Bronx and Staten Island | `borough`; `shorelineSourceId`, `shorelineAreaID`; outside Manhattan: `sourceId`, `sourceAreaIDs` |
+| NYC focused practice areas | Original source URI for retained neighborhoods; `NYC-PRACTICE-` plus group name for merged areas; `NYC-PRACTICE-SEAPORT` for the hand-drawn Seaport; official borough ID for the Bronx and Staten Island | `borough`, `shorelineSourceId`, `shorelineAreaID`; outside Manhattan and for Seaport: `sourceId`, `sourceAreaIDs`; Seaport: `outlineSource` |
 | NYC NTAs | `NYC-` plus `nta2020` | `borough`, `ntaType` |
 | World countries | `NE-` plus Natural Earth `NE_ID` | `continent`, `sourceType`, `adminCode` |
 
-State manifests use `natural-earth-admin1-land`; world and continent manifests use `natural-earth-countries-land`. These IDs identify the original administrative boundaries minus the matching-scale physical lake mask. NYC focused areas use historical neighborhood divisions clipped to official borough land. See [source recipes](data/SOURCES.md).
+State manifests use `natural-earth-admin1-land`; world and continent manifests use `natural-earth-countries-land`. These IDs identify the original administrative boundaries minus the matching-scale physical lake mask. NYC focused areas use historical neighborhood divisions, plus a hand-drawn Seaport outline (`data/nyc-carve-outs.json`), clipped to official borough land. See [source recipes](data/SOURCES.md).
 
 IDs are stable within the pinned source snapshots. Check source ID changes when data is updated. Never identify an area by its display name or array position.
 

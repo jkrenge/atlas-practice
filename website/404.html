@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- GitHub Pages serves this file for any missing path, at whatever depth was requested
+       (say /<repo>/a/b/c), so plain relative links would point into nowhere. A project site
+       lives under /<repo>/, which rules out root-relative links like /assets/site.css too. One absolute
+       <base> fixes every link and asset below at once. It is the address the app links to
+       (AtlasLinks.site in ios/Atlas/AtlasApp.swift); if the site moves, change both. A custom domain keeps
+       working, because GitHub redirects the github.io address to it. -->
+  <base href="https://jkrenge.github.io/atlas-practice/">
+  <title>Off the map · Atlas</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#bdded9">
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-camera="open-sea">
+  <!-- No skip link here: with <base>, "#main" would resolve to the home page. The <main> landmark does the job. -->
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./"><img src="assets/favicon.png" width="64" height="64" alt="">Atlas</a>
+      <nav class="site-nav" aria-label="Site">
+        <ul>
+          <li><a href="support/">Support</a></li>
+          <li><a href="privacy/">Privacy</a></li>
+          <li><a href="credits/">Credits</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <div class="page-head">
+        <h1 class="title-tape">Off the map</h1>
+        <p class="on-map mono"><span class="tape">Scenic detour. This page isn't on any chart we have.</span></p>
+      </div>
+      <div class="list-section">
+        <div class="card torn prose">
+          <p>The page you were looking for isn't here. It may have moved, or the link has a typo in it.</p>
+          <div class="actions">
+            <a class="button primary" href="./">Back to the start</a>
+            <a class="button" href="support/">Help and support</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="name">Atlas</p>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="support/">Support</a></li>
+          <li><a href="privacy/">Privacy</a></li>
+          <li><a href="credits/">Credits</a></li>
+          <li><a href="privacy/#impressum">Legal notice</a></li> <!-- TODO(owner): remove with the Impressum section if none is needed -->
+        </ul>
+      </nav>
+      <p>Made with Natural Earth. iPhone and iPad are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc.</p>
+    </div>
+  </footer>
+</body>
+</html>

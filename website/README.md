@@ -18,15 +18,26 @@ Styles live in `assets/site.css`. The palette, paper cards, label tape, yellow t
 python3 -m http.server -d website
 ```
 
-Then open <http://localhost:8000/>. Every internal link is relative, because GitHub Pages serves a project site under a sub-path (`https://<user>.github.io/<repo>/`). The exception is `404.html`: GitHub serves it at whatever path was requested, so it uses one absolute `<base>` instead. Its links and styles therefore point at the live site, and `http.server` doesn't serve it for missing pages anyway.
-
-To test under the Pages sub-path: `mkdir -p build/site-preview && ln -sfn ../../website build/site-preview/atlas-practice && python3 -m http.server 8765 -d build/site-preview`, then open <http://localhost:8765/atlas-practice/>.
+Then open <http://localhost:8000/>. Internal links are relative, so the pages also work under a sub-path. The exception is `404.html`: GitHub serves it at whatever path was requested, so it uses `<base href="/">`, which assumes the site sits at the root of its domain. `http.server` doesn't serve it for missing pages; open <http://localhost:8000/404.html> to see it.
 
 ## Deploy
 
 `.github/workflows/pages.yml` publishes this folder on every push to `main` that touches `website/**` or the workflow, and on demand from the Actions tab (Run workflow). Once, in the repository settings, set **Pages › Build and deployment › Source** to **GitHub Actions**.
 
-The app links to `https://jkrenge.github.io/atlas-practice/support/` and `.../privacy/` (`AtlasLinks` in `ios/Atlas/AtlasApp.swift`). The same address appears in `index.html` (Open Graph tags), `404.html` (`<base>`), the Website, Privacy and Support links at the top of the repository's `README.md`, and this file. If the repository is renamed or gets a custom domain, change them all together (see Before publishing), and ship an app update before the old address stops working. This README is not deployed: the workflow deletes it before uploading the site.
+The app links to `https://atlas-practice.app/support/` and `.../privacy/` (`AtlasLinks` in `ios/Atlas/AtlasApp.swift`). The same address appears in `index.html` (Open Graph tags), the Website, Privacy and Support links at the top of the repository's `README.md`, the help link in `.github/ISSUE_TEMPLATE/config.yml`, and this file; `404.html` relies on it being the root of the domain. Outside the files, it is also set in **Settings › Pages › Custom domain**, the repository's About › Website field, and App Store Connect (Privacy Policy and Support URLs). If the domain changes, change them all together, and ship an app update before the old address stops working, because links inside a shipped build only change with an update. This README is not deployed: the workflow deletes it before uploading the site.
+
+### Custom domain
+
+The site is served at `https://atlas-practice.app/`. Because it deploys from a GitHub Actions workflow, the domain is set in **Settings › Pages › Custom domain**; a `CNAME` file in this folder would be ignored. The setup, in the order GitHub recommends ([GitHub docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)):
+
+1. Verify the domain for the account that owns the repository (account **Settings › Pages › Add a domain**). GitHub shows a TXT record for `_github-pages-challenge-<user>.<domain>`. Keep it in DNS for as long as the domain is in use.
+2. Enter the domain under **Settings › Pages › Custom domain** in this repository.
+3. At the DNS provider, replace the provider's default records for the apex and `www`:
+   - apex: `A` 185.199.108.153, 185.199.109.153, 185.199.110.153 and 185.199.111.153; `AAAA` 2606:50c0:8000::153, 2606:50c0:8001::153, 2606:50c0:8002::153 and 2606:50c0:8003::153;
+   - `www`: `CNAME` to `<user>.github.io`, without the repository name. GitHub then redirects `www` to the apex.
+
+   Don't point a wildcard record at GitHub Pages. Don't put a proxy or CDN in front either: the privacy policy says GitHub Pages serves every file.
+4. Once GitHub has issued the certificate, tick **Enforce HTTPS**. `.app` is on the HSTS preload list, so browsers only load the site over HTTPS, and it is unreachable until the certificate exists.
 
 ## Regenerate the pictures
 
@@ -58,13 +69,13 @@ Every undecided value is a visible placeholder: an element with `class="todo"` (
 grep -rn 'TODO(owner)\|class="todo"' website
 ```
 
-- [ ] **Site address.** For now the site goes live at `jkrenge.github.io/atlas-practice/`, once the repository is public (GitHub Free only serves Pages from public repositories). A custom domain is planned. When it is set, change the address in all six places together: `og:url` and `og:image` in `index.html`, the `<base>` in `404.html` (with a custom domain at the root it becomes `/`), the links at the top of the repository's `README.md`, this README, and `AtlasLinks.site` in `ios/Atlas/AtlasApp.swift`. Do it before an app build with the old address ships, because links inside a shipped build only change with an update.
+- [x] **Site address.** `https://atlas-practice.app/` (see Custom domain under Deploy).
 - [x] **Support contact.** Support runs through GitHub issues (`support/index.html`, Get in touch; `privacy/index.html`, Who we are, If you contact us, Contact). The issue forms are in `.github/ISSUE_TEMPLATE/`. They work once the repository is public.
 - [x] **Developer or legal name.** Julian Krenge, on the privacy page (Who we are).
 - [x] **German Impressum.** Not included (decided 2026-11-23). If one is needed later, add a Legal notice section to `privacy/index.html` with name, postal address and email, and link it from every footer.
 - [ ] **App Store link.** `index.html`, hero notice. Replace the "Coming soon" stamp and paragraph with a link to the App Store page. Use Apple's official badge artwork only as provided, from Apple's marketing resources.
 - [ ] **Safari App Store banner** (optional, once live). Uncomment the `apple-itunes-app` meta tag in `index.html` and fill in the app ID.
 - [ ] **Screenshots.** Run `scripts/screenshots.sh` on the release build so the pictures match what ships, then check the alt text.
-- [ ] **App Store Connect.** Use `…/privacy/` as the Privacy Policy URL and `…/support/` as the Support URL. The App Privacy answers should be "Data Not Collected", matching `ios/Atlas/PrivacyInfo.xcprivacy` and the privacy page.
+- [ ] **App Store Connect.** Use `https://atlas-practice.app/privacy/` as the Privacy Policy URL and `https://atlas-practice.app/support/` as the Support URL. The App Privacy answers should be "Data Not Collected", matching `ios/Atlas/PrivacyInfo.xcprivacy` and the privacy page.
 
 When the privacy policy changes, update its effective date (currently 2026-11-23).

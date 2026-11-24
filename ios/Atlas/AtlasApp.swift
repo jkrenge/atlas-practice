@@ -1460,10 +1460,9 @@ struct AreaList: View {
     }
 }
 
-/// The public website: GitHub Pages, built from website/ in this repository.
+/// The public website at atlas-practice.app: GitHub Pages, built from website/ in this repository.
 enum AtlasLinks {
-    // shortcut: the default Pages address of this repository; change it when the repo is renamed or gets a custom domain.
-    static let site = URL(string: "https://jkrenge.github.io/atlas-practice/")!
+    static let site = URL(string: "https://atlas-practice.app/")!
     static let support = site.appending(path: "support/")
     static let privacy = site.appending(path: "privacy/")
 }

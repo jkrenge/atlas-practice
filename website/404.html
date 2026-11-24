@@ -4,12 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- GitHub Pages serves this file for any missing path, at whatever depth was requested
-       (say /<repo>/a/b/c), so plain relative links would point into nowhere. A project site
-       lives under /<repo>/, which rules out root-relative links like /assets/site.css too. One absolute
-       <base> fixes every link and asset below at once. It is the address the app links to
-       (AtlasLinks.site in ios/Atlas/AtlasApp.swift); if the site moves, change both. A custom domain keeps
-       working, because GitHub redirects the github.io address to it. -->
-  <base href="https://jkrenge.github.io/atlas-practice/">
+       (say /a/b/c), so plain relative links would point into nowhere. One <base> fixes every
+       link and asset below at once. "/" assumes the site sits at the root of its domain
+       (atlas-practice.app); if it moves under a sub-path, set the base to that path. -->
+  <base href="/">
   <title>Off the map · Atlas</title>
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#bdded9">

@@ -1,4 +1,5 @@
-# Publishes website/ to GitHub Pages. In the repository settings, set Pages > Source to "GitHub Actions".
+# Publishes website/ to GitHub Pages. In the repository settings, set Pages > Source to "GitHub Actions"
+# and Pages > Custom domain to atlas-practice.app (deployments from a workflow ignore CNAME files).
 name: Deploy website
 
 on:

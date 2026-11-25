@@ -2,6 +2,30 @@
 
 A dated log of verification runs, newest first. Evidence paths under `build/` are local and not in the repository.
 
+## App Store build 1.0 (2) — 2026-11-25
+
+A readiness review for the App Store submission led to these changes:
+
+- **Build number:** now 2 (`CURRENT_PROJECT_VERSION`), because the 2026-10-05 TestFlight upload used 1.0 (1). The marketing version stays 1.0.
+- **Reduce Motion:** it now also stops the backdrop's scroll parallax, which the support page already claimed. Checked on an iPhone 17 Pro simulator with a scratch UI test. With Reduce Motion on, the backdrop did not move during a 296 pt scroll. With it off, it moved 0.3 times the scroll, as before. Switching the setting mid-session snaps the map to the matching position.
+- **Flag credits:** `scripts/compile_learning.py` now cleans the Wikimedia Commons Artist field. It drops hidden duplicates, `Template:` and `User:` prefixes, and template fields such as `permission=` with what follows. It also joins line breaks with semicolons. 13 of 66 credits changed, for example Florida (was "Template:Brendon Tiana"), Montana (was "N.a") and Pennsylvania (was followed by the Commons insignia notice). No other field of `content/learning.json` changed.
+- **Credits:** the Destatis licence text is now linked in the app, on the website and in `NOTICE.md`. The Wikidata credit names what Wikidata supplies, and `NOTICE.md` gained a row for the German slogans, which come from their own sources.
+
+UI test fixes. All four failures were in the tests, not the app:
+
+- The NYC test now scrolls to the city card before waiting for it. On a small iPhone, the lazy home grid has not created the card yet.
+- The area-search test taps the field again after clearing it, because on iPad clearing ends editing. It now taps the search's close button only where iPhone shows one.
+- The pan and polygon tests now find Washington from the map layout instead of iPhone-tuned fractions, and tap the numbered markers 27 pt from the map's edge.
+- The pinch test now pinches at scale 4. XCUITest's synthesized fingers start about 6 pt apart, and on iPad UIScrollView starts zooming only after about 15 to 18 pt of finger travel, so the old scale of 1.5 never zoomed there. Real two-finger pinches on the iPad simulator zoomed to 167% and 196%.
+
+Results:
+
+- **Full suite:** passed on iPhone 17e and on iPad Pro 13-inch (M5), both iOS 26.5. Each ran 63 tests: 62 passed, and the screenshot test was skipped by design. Before these fixes, one test failed on the iPhone and three on the iPad.
+- **Data checks:** `scripts/validate_data.py` and `scripts/validate_learning.py` pass.
+- **Screenshots:** `scripts/screenshots.sh` now switches each fresh simulator to Full Screen Apps (`SBMedusaMultitaskingEnabled`). On iPadOS 26 the default is Windowed Apps, and its resize grabber appeared in every iPad frame.
+
+Not verified: iOS 18 and iOS 27 at runtime (no runtime installed), iPhone Duo, iPad hardware, and VoiceOver by ear. On iPad, clearing the area search hides the keyboard; this is the standard `.searchable` behaviour and was left as is.
+
 ## Settings, support links, and release preparation — 2026-11-23
 
 The home screen ends with a Settings button (shown once the maps load). Settings holds the round settings that used to sit on each map page (questions 10/25/All, timer Off/30 s/60 s), a note that progress stays on the device, Reset progress (with a confirmation; it also clears the last map played), Help and support and Privacy policy links to the website (`AtlasLinks`), Map sources and credits, and the version and build. Each map page's Start here card now says what a round is ("10 questions · 30 s each"). New York City is a half-width card with the boroughs map, reading "2 maps". The credits gained the Natural Earth world-map line, the ODC-By notice for NYC neighborhoods, and the Destatis source note. `ios/Atlas/PrivacyInfo.xcprivacy` declares no tracking and no collected data, plus UserDefaults (CA92.1) and system boot time (35F9.1); it is in the built app.

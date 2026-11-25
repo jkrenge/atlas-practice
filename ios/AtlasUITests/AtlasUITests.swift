@@ -141,18 +141,26 @@ final class AtlasUITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["questionPrompt"].label, "Find Washington")
         XCTAssertTrue(app.buttons["show-answer"].exists)
         app.buttons["Reset map"].tap()
-        map.pinch(withScale: 1.5, velocity: 1)
+        // The synthesized fingers start 6 points apart, and iPad scroll views zoom only after about 15 points of travel.
+        map.pinch(withScale: 4, velocity: 1)
         XCTAssertNotEqual(map.value as? String, "100 percent zoom")
         XCTAssertTrue(app.buttons["show-answer"].exists)
         app.buttons["Reset map"].tap()
-        map.coordinate(withNormalizedOffset: CGVector(dx: 0.13, dy: 0.23)).tap()
+        washington(on: map).tap()
         XCTAssertTrue(feedbackLabel.hasPrefix("Correct"), feedbackLabel)
         app.buttons["Zoom in"].tap()
         XCTAssertEqual(map.value as? String, "150 percent zoom")
         tap(app.buttons["continue-session"])
         XCTAssertEqual(map.value as? String, "100 percent zoom")
-        map.coordinate(withNormalizedOffset: CGVector(dx: 0.925, dy: 0.20)).tap()
+        // Numbered markers sit 27 points in from the map's right edge (MapLayout.callouts).
+        map.coordinate(withNormalizedOffset: CGVector(dx: 1, dy: 0.20)).withOffset(CGVector(dx: -27, dy: 0)).tap()
         XCTAssertTrue(app.staticTexts["answerFeedback"].firstMatch.label.contains("You chose Rhode Island"))
+    }
+    /// Northern Washington, leaving room below for a pan's 10-point slop, as MapLayout.frames fits the lower 48 (aspect 1.58) in portrait.
+    private func washington(on map: XCUIElement) -> XCUICoordinate {
+        let width = map.frame.width - 70, height = width / 1.58
+        let top = 12 + (map.frame.height * 0.71 - height) / 2
+        return map.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 12 + width * 0.10, dy: top + height * 0.04))
     }
     func testFindCorrectAnswerAdvancesAfterThreeSeconds() {
         open("us-states", mode: "find")
@@ -240,12 +248,12 @@ final class AtlasUITests: XCTestCase {
         open("us-states", mode: "find")
         let map = app.images["geographicMap"]
         let start = map.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
-        let end = map.coordinate(withNormalizedOffset: CGVector(dx: 0.65, dy: 0.65))
+        let shift = CGVector(dx: map.frame.width * 0.15, dy: map.frame.height * 0.15)
         // Stop before release so UIScrollView momentum does not move the tap target.
-        start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
+        start.press(forDuration: 0.05, thenDragTo: start.withOffset(shift), withVelocity: .slow, thenHoldForDuration: 0.3)
         // Washington moves with the map. This point is outside Washington
         // before the drag, so it also detects a gesture that fails to pan.
-        map.coordinate(withNormalizedOffset: CGVector(dx: 0.28, dy: 0.38)).tap()
+        washington(on: map).withOffset(shift).tap()
         XCTAssertTrue(feedbackLabel.hasPrefix("Correct"), feedbackLabel)
     }
     func testNameModeCorrectWrongAndReveal() {
@@ -524,7 +532,8 @@ final class AtlasUITests: XCTestCase {
     }
     func testNYCPracticeGroupsAndNameMode() throws {
         let city = app.buttons["map-nyc"]
-        XCTAssertTrue(city.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["map-us-states"].waitForExistence(timeout: 5))
+        // The home grid is lazy: below the fold, the city card does not exist until scrolled to.
         for _ in 0..<4 where !city.isHittable { app.scrollViews.firstMatch.swipeUp() }
         capture("Home with the New York City card")
         tap(city)
@@ -644,9 +653,11 @@ final class AtlasUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["area-no-results"].firstMatch.waitForExistence(timeout: 5))
         capture("Area empty search")
         search.buttons["Clear text"].tap()
+        search.tap() // On iPad, clearing also ends editing.
         search.typeText("Washington")
         XCTAssertTrue(app.buttons["area-US-WA"].exists)
-        app.buttons["close"].tap()
+        // On iPhone, the search's close button stands in for the sheet's toolbar until tapped; iPad shows Cancel throughout.
+        if app.buttons["close"].exists { app.buttons["close"].tap() }
         app.buttons["Cancel"].firstMatch.tap()
         XCTAssertTrue(app.buttons["show-answer"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.staticTexts["answerFeedback"].firstMatch.exists)

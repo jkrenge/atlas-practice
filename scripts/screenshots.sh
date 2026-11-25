@@ -19,6 +19,8 @@ xcodebuild -project ios/Atlas.xcodeproj -scheme Atlas -destination 'generic/plat
 for device in iPhone-17-Pro iPhone-17-Pro-Max iPad-Pro-13-inch-M5-12GB; do
   id=$(xcrun simctl create "Atlas Screenshots" "com.apple.CoreSimulator.SimDeviceType.$device")
   xcrun simctl bootstatus "$id" -b >/dev/null
+  # iPadOS 26 defaults to Windowed Apps, whose resize grabber would show in the frames; iPhone ignores it.
+  xcrun simctl spawn "$id" defaults write com.apple.springboard SBMedusaMultitaskingEnabled -bool false
   xcrun simctl status_bar "$id" override --time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 \
     --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
   result="$derived/$device.xcresult"

@@ -78,7 +78,8 @@ struct AtlasBackdrop: UIViewRepresentable {
 
     func makeUIView(context: Context) -> AtlasBackdropView { AtlasBackdropView() }
     func updateUIView(_ view: AtlasBackdropView, context: Context) {
-        view.update(camera: camera, scroll: scroll, animated: !reduceMotion)
+        // Reduce Motion also turns off the scroll parallax, a depth effect Apple asks to disable.
+        view.update(camera: camera, scroll: reduceMotion ? 0 : scroll, animated: !reduceMotion)
     }
 }
 

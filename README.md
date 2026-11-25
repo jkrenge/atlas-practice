@@ -77,7 +77,7 @@ The older `data/us-cities.geojson` remains a cartographic reference with 769 Nat
 
 ### Rebuild and validate
 
-Needs Python 3.10 or later (the initial build was verified with Python 3.14) and Node.js 20.11 or later with npm, for the pinned mapshaper in `scripts/geometry/package-lock.json`. Run the diff check on a clean checkout.
+Needs Python 3.10 to 3.14 (the initial build was verified with Python 3.14; shapely 2.1.2 has no Python 3.15 build, so if `python3` is newer, create the environment with `python3.14`) and Node.js 20.11 or later with npm, for the pinned mapshaper in `scripts/geometry/package-lock.json`. Run the diff check on a clean checkout.
 
 ```sh
 python3 -m venv .venv

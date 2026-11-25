@@ -1564,13 +1564,14 @@ struct SourcesScreen: View {
                 Link("Open Data Commons Attribution License", destination: URL(string: "https://opendatacommons.org/licenses/by/1-0/")!)
             }
             AtlasListSection("Facts, flags, cities, and sights") {
-                Text("State facts and geographic points: Wikidata, CC0. Flags: Wikimedia Commons, with file-specific credits in Browse facts. Nicknames and campaign slogans are identified separately.")
+                Text("State capitals, US state nicknames, and geographic points: Wikidata, CC0. Flags: Wikimedia Commons, with file-specific credits in Browse facts. German state names and slogans link to their own sources there.")
                 Text("US city populations: U.S. Census Bureau, Vintage 2025 estimates for July 1, 2025.")
                 Text("German city populations: Statistisches Bundesamt (Destatis), as of December 31, 2024; the ten largest were selected by Atlas. Datenlizenz Deutschland – Namensnennung – Version 2.0.")
                 Text("The figures use city or municipal boundaries, not metro areas.")
                 Text("Landmarks are a curated collection of 50 US and 20 German sights. Large parks use the source reference point. Each detail page links to its source.")
                 Link("US Census population tables", destination: URL(string: "https://www.census.gov/data/tables/time-series/demo/popest/2020s-total-cities-and-towns.html")!)
                 Link("Destatis city populations", destination: URL(string: "https://service.destatis.de/DE/barchart_race/BarChartRace500k_Berlin_1955-2024.html")!)
+                Link("Datenlizenz Deutschland – Namensnennung – Version 2.0", destination: URL(string: "https://www.govdata.de/dl-de/by-2-0")!)
             }
             AtlasListSection("Map layout") {
                 Text("Alaska and Hawaii appear in separate insets at different scales. The map uses geographic coordinates. It is intended for learning, not navigation.")

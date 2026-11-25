@@ -75,7 +75,7 @@ grep -rn 'TODO(owner)\|class="todo"' website
 - [x] **German Impressum.** Not included (decided 2026-11-23). If one is needed later, add a Legal notice section to `privacy/index.html` with name, postal address and email, and link it from every footer.
 - [ ] **App Store link.** `index.html`, hero notice. Replace the "Coming soon" stamp and paragraph with a link to the App Store page. Use Apple's official badge artwork only as provided, from Apple's marketing resources.
 - [ ] **Safari App Store banner** (optional, once live). Uncomment the `apple-itunes-app` meta tag in `index.html` and fill in the app ID.
-- [ ] **Screenshots.** Run `scripts/screenshots.sh` on the release build so the pictures match what ships, then check the alt text.
+- [x] **Screenshots.** Retaken for 1.0 (2) on 2026-11-25 with `scripts/screenshots.sh`; alt text checked. Run it again after any visible change so the pictures match what ships.
 - [ ] **App Store Connect.** Use `https://atlas-practice.app/privacy/` as the Privacy Policy URL and `https://atlas-practice.app/support/` as the Support URL. The App Privacy answers should be "Data Not Collected", matching `ios/Atlas/PrivacyInfo.xcprivacy` and the privacy page.
 
 When the privacy policy changes, update its effective date (currently 2026-11-23).

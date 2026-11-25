@@ -39,6 +39,20 @@ def coordinate(entity):
     return {'longitude': point['longitude'], 'latitude': point['latitude']}
 
 
+def flag_credit(metadata):
+    """Plain-text author credit from a Commons Artist field, without wiki markup."""
+    value = metadata.get('Artist', {}).get('value', 'Wikimedia Commons contributors')
+    # Commons templates repeat the author in hidden elements for machine readers.
+    value = re.sub(r'<(\w+)[^>]*display:\s*none[^>]*>.*?</\1>', '', value, flags=re.S)
+    value = re.sub(r'<br\s*/?>|</li>|</p>|\u2002', '\n', value)
+    text = html.unescape(re.sub('<[^>]*>', '', value))
+    text = re.split(r'(?m)^\s*\w+=', text)[0]  # template fields start a line
+    text = re.sub(r'\b(?:Template|User|Benutzer):', '', text)
+    parts = [re.sub(r'\s+', ' ', part).strip(' ,;') for part in text.split('\n')]
+    text = '; '.join(part for part in parts if part)
+    return 'Unknown author' if re.fullmatch(r'(?i)(n\.?/?a\.?|unknown)?', text) else text
+
+
 def main():
     verify_sources()
     entities = {}
@@ -67,7 +81,8 @@ def main():
         assert nickname, sid
         flag = flags[sid]
         metadata = flag['extmetadata']
-        credit = html.unescape(re.sub('<[^>]*>', '', metadata.get('Artist', {}).get('value', 'Wikimedia Commons contributors'))).strip()
+        credit = flag_credit(metadata)
+        assert not re.search(r'[<>=\n]|Template:|User:', credit), (sid, credit)
         labels = capital['labels']
         states.append({
             'id': sid, 'name': names[sid],

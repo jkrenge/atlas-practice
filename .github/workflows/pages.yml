@@ -21,13 +21,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     # GitHub Free only publishes Pages from public repositories; skip quietly while private.
     if: ${{ !github.event.repository.private }}
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       # Actions are pinned to commit SHAs (tag in the comment); Dependabot proposes updates.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -38,5 +35,15 @@ jobs:
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: website
+
+  # A separate job, so the deploy starts only after the upload job has finished; in one job,
+  # deploy-pages sometimes looked up the artifact before GitHub listed it and failed.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5

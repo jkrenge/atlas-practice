@@ -10,7 +10,7 @@ The public site for the app: a home page, help and support, the privacy policy, 
 | Sources and credits | `credits/index.html` | |
 | Not found | `404.html` | GitHub Pages, for any missing path |
 
-Styles live in `assets/site.css`. The palette, paper cards, label tape, yellow title tape and picture mats follow the app (`ios/Atlas/MapView.swift`, `ios/Atlas/AtlasCollage.swift`, and `AtlasInk` in `ios/Atlas/AtlasBackdrop.swift`).
+Styles live in `assets/site.css`; the light gray phone frames around the screenshots are drawn there too, with no image. The palette, paper cards, label tape and yellow title tape follow the app (`ios/Atlas/MapView.swift`, `ios/Atlas/AtlasCollage.swift`, and `AtlasInk` in `ios/Atlas/AtlasBackdrop.swift`).
 
 ## Preview locally
 

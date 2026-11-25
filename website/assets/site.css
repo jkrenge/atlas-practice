@@ -9,7 +9,7 @@
   --ink: #1c2629;
   --muted: #4a5557;     /* opaque surfaces only */
   --blue: #1e4d66;      /* actions and links */
-  --yellow: #ffc943;    /* the title tape and picture mats: decoration only */
+  --yellow: #ffc943;    /* the title tape: decoration only */
   --red: #b83a2e;       /* the voyage line and the stamp */
   --border: #6e5b43;
   --line: rgb(28 38 41 / 0.12);
@@ -194,28 +194,68 @@ main { flex: 1; padding-bottom: clamp(3rem, 8vw, 5rem); }
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2px), 97.6% calc(100% - 3.2px), 95.3% calc(100% - 4.1px), 92.7% calc(100% - 4.3px), 89.5% calc(100% - 3.1px), 87.9% calc(100% - 3.8px), 85.4% calc(100% - 2.3px), 82.5% calc(100% - 2.7px), 80% calc(100% - 3.7px), 77% calc(100% - 2.5px), 74.8% calc(100% - 4.4px), 72.8% calc(100% - 1.9px), 70.3% calc(100% - 1.5px), 67.6% calc(100% - 1.2px), 64.5% calc(100% - 3.2px), 62.2% calc(100% - 1px), 60.5% calc(100% - 2.8px), 57.3% calc(100% - 2.9px), 55% calc(100% - 2px), 52.2% calc(100% - 2.8px), 50.2% calc(100% - 3px), 47.9% calc(100% - 1.2px), 44.9% calc(100% - 1px), 42.1% calc(100% - 0.9px), 39.8% calc(100% - 2.8px), 37% calc(100% - 3.3px), 34.8% calc(100% - 2.5px), 32.8% calc(100% - 3.2px), 29.8% calc(100% - 3.3px), 27.7% calc(100% - 2.2px), 25.5% calc(100% - 2.1px), 22.7% calc(100% - 4.5px), 19.5% calc(100% - 4.2px), 17.4% calc(100% - 3.3px), 14.5% calc(100% - 1.5px), 12.2% calc(100% - 4px), 9.7% calc(100% - 3.1px), 7.9% calc(100% - 3.4px), 4.8% calc(100% - 1.4px), 2.5% calc(100% - 2.5px), 0 calc(100% - 1px));
 }
 
-/* The exhibit frame: a thick yellow mat around a screenshot, pasted on slightly crooked. */
-.print {
+/* A screenshot in a light gray iPhone, laid on the map slightly crooked. Drawn in CSS: every size is a
+   share of the phone's width (cqw), so the proportions hold at any width. */
+.phone {
   margin: 0;
-  width: var(--print-width, 17rem); /* definite, so an auto grid track doesn't size to the photo's 644 px */
+  width: var(--phone-width, 17rem); /* definite, so an auto grid track doesn't size to the photo's 644 px */
   max-width: 100%;
-  padding: clamp(0.5rem, 2vw, 0.8rem);
-  background: var(--yellow);
-  box-shadow: var(--hard-shadow);
+  container-type: inline-size;
+  isolation: isolate; /* the side buttons sit behind the body, but above the map */
   rotate: var(--tilt, 1.5deg);
 }
-.print img {
+.device {
+  position: relative;
+  display: block;
+  padding: 2.2cqw;                /* black bezel */
+  border: 1.5cqw solid #d4d7db;   /* light gray frame */
+  border-radius: 16.5cqw;
+  background: #101213;
+  box-shadow: 0 0 0 1px rgb(28 38 41 / 0.28), var(--hard-shadow);
+}
+.device img {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 644 / 1400;
+  border-radius: 12.8cqw;         /* the frame's radius minus frame and bezel */
   background: var(--water);
-  outline: 1px solid rgb(28 38 41 / 0.18);
-  outline-offset: -1px;
 }
-.print figcaption { margin-top: 0.5rem; font: 600 0.8125rem/1.3 var(--mono); }
-.prints { display: flex; justify-content: center; align-items: flex-start; gap: clamp(0.75rem, 3vw, 1.75rem); }
-.prints .print { --print-width: 15rem; }
-.prints .print:nth-child(2) { --tilt: -2deg; margin-top: 2.5rem; }
+/* The Dynamic Island, level with the screenshot's status bar. */
+.device::before {
+  content: "";
+  position: absolute;
+  top: 4.6cqw;
+  left: 50%;
+  width: 26.3cqw;
+  height: 7.7cqw;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: #000;
+}
+/* Side buttons: a strip behind the body, 0.7cqw wider on each side. Left: action, volume up, volume down; right: side button. */
+.device::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 -2.2cqw;
+  background:
+    linear-gradient(#bfc3c8 0 0) left 0 top 38cqw / 3cqw 9cqw,
+    linear-gradient(#bfc3c8 0 0) left 0 top 54cqw / 3cqw 15cqw,
+    linear-gradient(#bfc3c8 0 0) left 0 top 73cqw / 3cqw 15cqw,
+    linear-gradient(#bfc3c8 0 0) right 0 top 60cqw / 3cqw 23cqw;
+  background-repeat: no-repeat;
+}
+.phone figcaption {
+  width: fit-content;
+  margin: 0.75rem auto 0;
+  padding: 0.12em 0.4em;
+  background: var(--surface);     /* label tape, as on the map */
+  font: 600 0.8125rem/1.3 var(--mono);
+}
+.phones { display: flex; justify-content: center; align-items: flex-start; gap: clamp(0.75rem, 3vw, 1.75rem); }
+.phones .phone { --phone-width: 15rem; }
+.phones .phone:nth-child(2) { --tilt: -2deg; margin-top: 2.5rem; }
 
 /* ---- Buttons ---- */
 
@@ -243,10 +283,10 @@ main { flex: 1; padding-bottom: clamp(3rem, 8vw, 5rem); }
 .hero-text { display: grid; gap: 1.5rem; justify-items: start; }
 .hero .card { max-width: 34rem; }
 .hero .lead { font-size: 1.1875rem; }
-.hero .print { --print-width: 18rem; --tilt: 2deg; justify-self: center; }
+.hero .phone { --phone-width: 18rem; --tilt: 2deg; justify-self: center; }
 @media (min-width: 52rem) {
   .hero { grid-template-columns: 1fr auto; }
-  .hero .print { --print-width: 19rem; margin-right: 1.5rem; }
+  .hero .phone { --phone-width: 19rem; margin-right: 1.5rem; }
 }
 
 /* "Coming soon", inked on like the results rank stamp. */
@@ -273,12 +313,12 @@ main { flex: 1; padding-bottom: clamp(3rem, 8vw, 5rem); }
 .section-head h2 .tape { padding-inline: 0.3em; }
 
 .feature { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(2rem, 5vw, 3.5rem); align-items: center; }
-.feature > .print { justify-self: center; }
+.feature > .phone { justify-self: center; }
 @media (min-width: 52rem) {
   .feature { grid-template-columns: minmax(0, 1fr) auto; }
   .feature.flip { grid-template-columns: auto minmax(0, 1fr); }
   .feature.flip > :last-child { order: -1; }
-  .feature > .prints { width: clamp(22rem, 40vw, 32rem); }
+  .feature > .phones { width: clamp(22rem, 40vw, 32rem); }
 }
 
 .maps { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); margin: 0; padding: 0; list-style: none; }

@@ -32,18 +32,28 @@ struct PlaceFact: Sendable, Decodable, Identifiable {
     var populationLabel: String { population?.formatted(.number.locale(Locale(identifier: "en_US"))) ?? "" }
 }
 
+/// A target of the timed challenge on a map without city and landmark facts.
+struct ChallengePlace: Sendable, Decodable {
+    let id: String
+    let name: String
+    let coordinate: Coordinate
+}
+
 struct LearningContent: Sendable, Decodable {
     let schemaVersion: Int
     let states: [StateFact]
     let cities: [PlaceFact]
     let landmarks: [PlaceFact]
+    /// By map ID; both New York maps share "nyc".
+    let challenge: [String: [ChallengePlace]]
 
     static func load(bundle: Bundle = .main) throws -> LearningContent {
         guard let url = bundle.resourceURL?.appendingPathComponent("content/learning.json") else {
             throw MapLoadError.invalid("The learning content is missing.")
         }
         let data = try JSONDecoder().decode(Self.self, from: Data(contentsOf: url))
-        guard data.schemaVersion == 1, data.states.count == 66, data.cities.count == 60, data.landmarks.count == 70 else {
+        guard data.schemaVersion == 1, data.states.count == 66, data.cities.count == 60, data.landmarks.count == 70,
+              data.challenge["world-countries"]?.count == 148, data.challenge["nyc"]?.count == 56 else {
             throw MapLoadError.invalid("The learning content is incomplete.")
         }
         return data
@@ -59,6 +69,8 @@ struct LearningContent: Sendable, Decodable {
         switch mode {
         case .cityLocation, .population: places(in: pack, landmarks: false).map(\.area)
         case .landmarkLocation: places(in: pack, landmarks: true).map(\.area)
+        case .challenge: challenge[pack.isNYC ? "nyc" : pack.id]?.map { Area(id: $0.id, name: $0.name) }
+            ?? (places(in: pack, landmarks: false) + places(in: pack, landmarks: true)).map(\.area)
         default: pack.areas
         }
     }
@@ -69,11 +81,15 @@ struct LearningContent: Sendable, Decodable {
         default: area.name
         }
     }
-    func location(_ area: Area, mode: PracticeMode) -> MapPin? {
+    func location(_ area: Area, mode: PracticeMode, in pack: MapPack) -> MapPin? {
         if mode == .capitalLocation, let state = state(area.id) {
             return MapPin(coordinate: state.capitalCoordinate, regionID: state.id)
         }
         if let place = place(area.id) { return MapPin(coordinate: place.coordinate, regionID: place.stateID) }
+        // Challenge lists belong to maps with a single view region, so any of its areas names it.
+        if let place = challenge.values.joined().first(where: { $0.id == area.id }), let region = pack.areas.first {
+            return MapPin(coordinate: place.coordinate, regionID: region.id)
+        }
         return nil
     }
     func prompt(_ area: Area, mode: PracticeMode, areaType: String) -> String {
@@ -83,7 +99,7 @@ struct LearningContent: Sendable, Decodable {
         case .capital: "What is the capital of \(area.name)?"
         case .flag: "Which state has this flag?"
         case .nickname: "Which state uses this name or slogan?"
-        case .cityLocation, .landmarkLocation: "Locate \(area.name)"
+        case .cityLocation, .landmarkLocation, .challenge: "Locate \(area.name)"
         case .capitalLocation: "Locate \(state(area.id)?.capital ?? area.name)"
         case .population: "How many people live in \(area.name)?"
         }

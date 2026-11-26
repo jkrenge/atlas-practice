@@ -18,8 +18,8 @@ US_STATES = set('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA 
 GERMAN_STATES = set('BB BE BW BY HB HE HH MV NI NW RP SH SL SN ST TH'.split())
 EXPECTED_COUNTS = {
     'nyc-neighborhoods-focused': 53, 'us-states': 50, 'germany-states': 16, 'nyc-boroughs': 5, 'nyc-neighborhoods': 197,
-    'world-countries': 204, 'africa-countries': 53, 'asia-countries': 48,
-    'europe-countries': 48, 'north-america-countries': 26,
+    'world-countries': 197, 'africa-countries': 52, 'asia-countries': 48,
+    'europe-countries': 45, 'north-america-countries': 23,
     'south-america-countries': 12, 'oceania-countries': 14,
 }
 GEOMETRY_COUNTS = {'nyc-neighborhoods-focused': 53, 'us-states': 51, 'germany-states': 16, 'nyc-boroughs': 5,

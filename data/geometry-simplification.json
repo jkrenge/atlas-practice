@@ -42,8 +42,8 @@
   "world-countries": {
     "originalPoints": 116775,
     "reducedPoints": 58114,
-    "originalBytes": 4318958,
-    "reducedBytes": 1797341,
+    "originalBytes": 4318965,
+    "reducedBytes": 1797348,
     "maxAreaChange": 0.01,
     "maxIntervalMeters": 12000
   }

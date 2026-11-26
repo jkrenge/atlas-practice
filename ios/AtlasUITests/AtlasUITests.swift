@@ -481,6 +481,33 @@ final class AtlasUITests: XCTestCase {
         tap(app.buttons["continue-session"])
         XCTAssertFalse(app.buttons["check-location"].isEnabled)
     }
+    func testWorldChallengeScoresPlacesAndKeepsAHighScore() {
+        open("world-countries", mode: "challenge")
+        XCTAssertEqual(app.staticTexts["questionPrompt"].label, "Locate Doha, Qatar")
+        tap(app.buttons["Enter coordinates"])
+        app.textFields["latitude-input"].tap()
+        app.textFields["latitude-input"].typeText("25.29")
+        app.textFields["longitude-input"].tap()
+        app.textFields["longitude-input"].typeText("51.53")
+        tap(app.buttons["place-coordinate-pin"])
+        tap(app.buttons["check-location"])
+        XCTAssertTrue(feedbackLabel.hasPrefix("Correct"), feedbackLabel)
+        XCTAssertTrue(feedbackLabel.contains("points"), feedbackLabel)
+        capture("World challenge feedback")
+        tap(app.buttons["continue-session"])
+        for _ in 1..<15 { // One pass: a skipped place does not come back.
+            tap(app.buttons["show-answer"])
+            tap(app.buttons["continue-session"])
+        }
+        XCTAssertTrue(app.staticTexts["highScore"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["firstAttemptScore"].label, "1 of 15")
+        let best = app.staticTexts["highScore"].label
+        XCTAssertNotEqual(best, "0")
+        capture("World challenge results")
+        tap(app.buttons["finish-practice"])
+        XCTAssertTrue(app.buttons["start-challenge"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["start-challenge"].label.contains("High score: \(best)"), app.buttons["start-challenge"].label)
+    }
     func testCoordinateEntryAndCapitalLocation() {
         open("us-states", mode: "capitalLocation")
         XCTAssertEqual(app.staticTexts["questionPrompt"].label, "Locate Olympia")

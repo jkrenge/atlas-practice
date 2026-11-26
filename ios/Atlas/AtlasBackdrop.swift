@@ -18,6 +18,7 @@ struct AtlasCamera: Equatable {
         switch id {
         case "us-states": AtlasCamera(longitude: -97, latitude: 38, span: 32)
         case "germany-states": AtlasCamera(longitude: 10.5, latitude: 51, span: 11)
+        case "world-countries": AtlasCamera(longitude: 10, latitude: 25, span: 150)
         default: AtlasCamera(longitude: -73.9, latitude: 40.7, span: 4.5)
         }
     }

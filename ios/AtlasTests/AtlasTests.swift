@@ -303,7 +303,7 @@ import UIKit
 
 @Test func everyModeHasUsableQuestionsAndUniqueAnswerLabels() throws {
     let content = try LearningContent.load()
-    for id in ["us-states", "germany-states", "nyc-neighborhoods-focused"] {
+    for id in MapLibrary.starterIDs {
         let pack = try MapLibrary().load(id)
         for mode in PracticeMode.available(in: pack) {
             let areas = content.areas(in: pack, mode: mode)
@@ -327,7 +327,7 @@ import UIKit
             let layout = MapLayout(pack: pack, size: size)
             for mode in [PracticeMode.cityLocation, .capitalLocation, .landmarkLocation] {
                 for area in content.areas(in: pack, mode: mode) {
-                    let target = try #require(content.location(area, mode: mode))
+                    let target = try #require(content.location(area, mode: mode, in: pack))
                     let viewport = MapViewport(scale: 3, offset: CGSize(width: 12, height: -31))
                     let screen = try #require(layout.screen(target.coordinate, areaID: target.regionID, viewport: viewport))
                     let result = try #require(layout.locationPin(screen, viewport: viewport), "Cannot place \(area.name)")
@@ -583,5 +583,87 @@ func nativeMapReusesTilesAndKeepsTapCoordinatesAligned(_ id: String) throws {
                 }
             }
         }
+    }
+}
+
+@Test func challengePointsRewardDistanceAndSpeed() {
+    let points = PracticeSession.challengePoints
+    #expect(points(0, 3000, 1) == 1000)
+    #expect(points(0, 3000, 0) == 700)
+    #expect(points(1500, 3000, 1) == 250)
+    #expect(points(3000, 3000, 1) == 0 && points(9000, 3000, 1) == 0)
+    #expect(points(100, 3000, 0.5) > points(200, 3000, 0.5) && points(100, 3000, 0.5) > points(100, 3000, 0.4))
+}
+
+@MainActor
+@Test func challengeIsOnePassAndKeepsTheHighScore() throws {
+    let areas = (1...20).map { Area(id: "\($0)", name: "\($0)") }
+    let here = MapPin(coordinate: Coordinate(2.35, 48.86), regionID: "")
+    func play(hits: Int) -> PracticeSession {
+        var session = PracticeSession(areas: areas, mode: .challenge, count: PracticeMode.challengeCount, ordered: true)
+        for index in 0..<PracticeMode.challengeCount {
+            if index < hits { session.submitLocation(here, target: here, toleranceKM: 300, rangeKM: 3000, timeLeft: 1) }
+            else { session.expire() }
+            session.advance()
+        }
+        return session
+    }
+    let good = play(hits: 3), weak = play(hits: 1)
+    #expect(good.isComplete && good.questions.count == 15) // A miss is not asked again.
+    #expect(good.score == 3000 && good.firstAttemptCorrect == 3 && good.missed.count == 12)
+    let suite = "AtlasTests.challenge.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    // Records saved before high scores existed still load.
+    defaults.set(Data(#"{"world-countries.find":{"sessions":1,"firstCorrect":3,"firstTotal":4,"reviewCorrect":0,"reviewTotal":1}}"#.utf8),
+                 forKey: "practiceProgress.v1")
+    let store = ProgressStore(defaults: defaults)
+    #expect(store.summary(for: "world-countries").sessions == 1 && store.summary(for: "world-countries").highScore == nil)
+    store.save(good, map: "world-countries")
+    store.save(weak, map: "world-countries")
+    let saved = ProgressStore(defaults: defaults).summary(for: "world-countries", mode: .challenge)
+    #expect(saved.highScore == 3000 && saved.sessions == 2 && saved.reviewTotal == 0)
+    #expect(ProgressStore(defaults: defaults).summary(for: "world-countries").highScore == 3000)
+}
+
+@Test func challengePlacesCanBePinnedOnEveryMap() throws {
+    let content = try LearningContent.load()
+    for id in MapLibrary.starterIDs {
+        let pack = try MapLibrary().load(id)
+        #expect(PracticeMode.available(in: pack).contains(.challenge))
+        let places = content.areas(in: pack, mode: .challenge)
+        #expect(places.count >= PracticeMode.challengeCount && Set(places.map(\.id)).count == places.count)
+        let size = CGSize(width: 390, height: 560)
+        let layout = MapLayout(pack: pack, size: size)
+        for area in places {
+            let target = try #require(content.location(area, mode: .challenge, in: pack))
+            let screen = try #require(layout.screen(target.coordinate, areaID: target.regionID, viewport: MapViewport()))
+            #expect(CGRect(origin: .zero, size: size).contains(screen), "\(area.name) is off the map")
+            let pin = try #require(layout.locationPin(screen, viewport: MapViewport()))
+            #expect(pin.coordinate.distanceKM(to: target.coordinate) < 0.001)
+        }
+    }
+}
+
+@Test func worldMapFitsItsCountriesWithoutWrapping() throws {
+    let pack = try MapLibrary().load("world-countries")
+    #expect(pack.areas.count == 197 && pack.manifest.areaTypePlural == "countries")
+    let layout = MapLayout(pack: pack, size: CGSize(width: 780, height: 400))
+    let frame = layout.regions[0].frame
+    for (name, coordinate) in [("France", Coordinate(2.35, 48.86)), ("Kazakhstan", Coordinate(71.4, 51.2)),
+                               ("New Zealand", Coordinate(174.8, -41.3)), ("United States of America", Coordinate(-149.9, 61.2)),
+                               ("Russia", Coordinate(-173, 64.5)), ("Fiji", Coordinate(178.4, -18.1))] {
+        let area = try #require(pack.areas.first { $0.name == name })
+        let point = try #require(layout.screen(coordinate, areaID: area.id, viewport: MapViewport()))
+        #expect(frame.contains(point))
+        #expect(layout.hit(point, viewport: MapViewport(), tolerance: 0) == .area(area.id), "\(name)")
+    }
+    // East is right of west all the way across: nothing is drawn through the antimeridian.
+    let anyID = pack.areas[0].id
+    let west = try #require(layout.screen(Coordinate(-179, 0), areaID: anyID, viewport: MapViewport()))
+    let east = try #require(layout.screen(Coordinate(179, 0), areaID: anyID, viewport: MapViewport()))
+    #expect(west.x < east.x && east.x - west.x > frame.width * 0.9)
+    for shape in layout.shapes where layout.eligibleIDs.contains(shape.id) && !["Russia", "Fiji", "United States of America", "Kiribati", "New Zealand"].contains(pack.area(shape.id)?.name) {
+        #expect(shape.bounds.width < frame.width / 2, "\(pack.area(shape.id)?.name ?? shape.id) spans the map")
     }
 }

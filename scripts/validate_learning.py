@@ -64,7 +64,18 @@ def main():
         point = names[name]['coordinate']
         check(abs(point['longitude'] - lon) < 0.002 and abs(point['latitude'] - lat) < 0.002, 'Requested sight coordinate changed')
     check(states['US-MN']['flagAsset'] != states['US-UT']['flagAsset'], 'Flags reused incorrectly')
-    print('PASS: 66 state capitals/names/flags, 60 ranked city populations, 70 landmarks, 196 geographic points, image headers and source hashes.')
+    # Timed-challenge places: (west, south, east, north) limits and one known point per list.
+    for key, count, box, known in [('world-countries', 148, (-180, -60, 180, 75), ('Paris, France', 2.35, 48.86)),
+                                   ('nyc', 56, (-74.3, 40.45, -73.7, 40.95), ('Times Square', -73.9858, 40.7575))]:
+        rows = data['challenge'][key]
+        check(len(rows) == len({r['id'] for r in rows}) == len({r['name'] for r in rows}) == count, f'{key}: challenge inventory')
+        for row in rows:
+            lon, lat = row['coordinate']['longitude'], row['coordinate']['latitude']
+            check(box[0] <= lon <= box[2] and box[1] <= lat <= box[3], f"Challenge point outside its map: {row['id']}")
+        point = next(r for r in rows if r['name'] == known[0])['coordinate']
+        check(abs(point['longitude'] - known[1]) < 0.05 and abs(point['latitude'] - known[2]) < 0.05, f'{key}: known point moved')
+    print('PASS: 66 state capitals/names/flags, 60 ranked city populations, 70 landmarks, 196 geographic points, '
+          '148 world and 56 New York challenge places, image headers and source hashes.')
 
 
 if __name__ == '__main__':

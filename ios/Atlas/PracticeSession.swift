@@ -2,7 +2,7 @@ import Foundation
 import Observation
 
 enum PracticeMode: String, Codable, CaseIterable, Identifiable {
-    case find, name, capital, flag, nickname, capitalLocation, cityLocation, population, landmarkLocation
+    case find, name, capital, flag, nickname, capitalLocation, cityLocation, population, landmarkLocation, challenge
     var id: String { rawValue }
     var title: String {
         switch self {
@@ -15,6 +15,7 @@ enum PracticeMode: String, Codable, CaseIterable, Identifiable {
         case .cityLocation: "Locate cities"
         case .population: "City populations"
         case .landmarkLocation: "Locate landmarks"
+        case .challenge: "Beat the clock"
         }
     }
     var instruction: String {
@@ -28,6 +29,7 @@ enum PracticeMode: String, Codable, CaseIterable, Identifiable {
         case .cityLocation: "Big cities, tiny dots."
         case .population: "Guess the headcount. Official figures."
         case .landmarkLocation: "Famous sights. Where exactly?"
+        case .challenge: "Pin each place before time runs out."
         }
     }
     var symbol: String {
@@ -41,12 +43,15 @@ enum PracticeMode: String, Codable, CaseIterable, Identifiable {
         case .cityLocation: "building.2"
         case .population: "person.3"
         case .landmarkLocation: "binoculars"
+        case .challenge: "stopwatch"
         }
     }
-    var isLocation: Bool { [.capitalLocation, .cityLocation, .landmarkLocation].contains(self) }
+    var isLocation: Bool { [.capitalLocation, .cityLocation, .landmarkLocation, .challenge].contains(self) }
+    /// The challenge ignores the round settings: always this many places, this many seconds each.
+    static let challengeCount = 15, challengeSeconds = 15
     var usesMap: Bool { self == .find || self == .name || isLocation }
     static func available(in pack: MapPack) -> [Self] {
-        ["us-states", "germany-states"].contains(pack.id) ? allCases : [.find, .name]
+        ["us-states", "germany-states"].contains(pack.id) ? allCases : [.find, .name, .challenge]
     }
 }
 
@@ -77,6 +82,7 @@ struct PracticeSession {
         var guess: MapPin? = nil
         var distanceKM: Double? = nil
         var timedOut = false
+        var points = 0
     }
     private(set) var questions: [Question]
     private(set) var index = 0
@@ -86,6 +92,8 @@ struct PracticeSession {
     private(set) var missed: [Area] = []
     /// Consecutive correct answers, review questions included.
     private(set) var streak = 0
+    /// Challenge points; zero in every other mode.
+    private(set) var score = 0
     let mode: PracticeMode
     let primaryCount: Int
     let secondsAllowed: Int
@@ -110,9 +118,19 @@ struct PracticeSession {
         record(Answer(selected: selected, correct: selected == question.area))
     }
 
-    mutating func submitLocation(_ guess: MapPin, target: MapPin, toleranceKM: Double) {
+    /// `rangeKM` turns on challenge scoring; `timeLeft` is the unused share of the clock, 0 to 1.
+    mutating func submitLocation(_ guess: MapPin, target: MapPin, toleranceKM: Double,
+                                 rangeKM: Double? = nil, timeLeft: Double = 0) {
         let distance = guess.coordinate.distanceKM(to: target.coordinate)
-        record(Answer(selected: nil, correct: distance <= toleranceKM, guess: guess, distanceKM: distance))
+        let points = rangeKM.map { Self.challengePoints(distanceKM: distance, rangeKM: $0, timeLeft: timeLeft) } ?? 0
+        record(Answer(selected: nil, correct: distance <= toleranceKM, guess: guess, distanceKM: distance, points: points))
+    }
+
+    /// Up to 1,000 per place. Accuracy falls with the square of the miss and reaches zero at `rangeKM`;
+    /// an answer on the last tick keeps 70% of it.
+    static func challengePoints(distanceKM: Double, rangeKM: Double, timeLeft: Double) -> Int {
+        let accuracy = pow(max(0, 1 - distanceKM / rangeKM), 2)
+        return Int((accuracy * (700 + 300 * min(1, max(0, timeLeft)))).rounded())
     }
 
     mutating func expire() { record(Answer(selected: nil, correct: false, timedOut: true)) }
@@ -120,6 +138,7 @@ struct PracticeSession {
     private mutating func record(_ result: Answer) {
         guard let question = current, answer == nil else { return }
         answer = result
+        score += result.points
         streak = result.correct ? streak + 1 : 0
         if question.isReview {
             if result.correct { reviewedCorrect += 1 }
@@ -127,9 +146,11 @@ struct PracticeSession {
             firstAttemptCorrect += 1
         } else {
             missed.append(question.area)
-            // Revisit once, after two other questions when the queue allows it.
-            questions.insert(Question(area: question.area, isReview: true, choices: question.choices),
-                             at: min(index + 3, questions.count))
+            // Revisit once, after two other questions when the queue allows it. The challenge is one pass.
+            if mode != .challenge {
+                questions.insert(Question(area: question.area, isReview: true, choices: question.choices),
+                                 at: min(index + 3, questions.count))
+            }
         }
     }
 
@@ -146,10 +167,13 @@ struct PracticeRecord: Codable, Equatable {
     var firstTotal = 0
     var reviewCorrect = 0
     var reviewTotal = 0
+    /// Best challenge score; nil until one is played.
+    var highScore: Int?
     var accuracy: Double? { firstTotal > 0 ? Double(firstCorrect) / Double(firstTotal) : nil }
     static func + (a: Self, b: Self) -> Self {
         Self(sessions: a.sessions + b.sessions, firstCorrect: a.firstCorrect + b.firstCorrect, firstTotal: a.firstTotal + b.firstTotal,
-             reviewCorrect: a.reviewCorrect + b.reviewCorrect, reviewTotal: a.reviewTotal + b.reviewTotal)
+             reviewCorrect: a.reviewCorrect + b.reviewCorrect, reviewTotal: a.reviewTotal + b.reviewTotal,
+             highScore: [a.highScore, b.highScore].compactMap { $0 }.max())
     }
 }
 
@@ -184,7 +208,8 @@ final class ProgressStore {
         record.firstCorrect += session.firstAttemptCorrect
         record.firstTotal += session.primaryCount
         record.reviewCorrect += session.reviewedCorrect
-        record.reviewTotal += session.missed.count
+        record.reviewTotal += session.questions.count - session.primaryCount
+        if session.mode == .challenge { record.highScore = max(record.highScore ?? 0, session.score) }
         records[key] = record
         if let data = try? JSONEncoder().encode(records) { defaults.set(data, forKey: "practiceProgress.v1") }
     }

@@ -3386,5 +3386,1699 @@
       },
       "sourceURL": "https://www.wikidata.org/wiki/Q321252"
     }
-  ]
+  ],
+  "challenge": {
+    "world-countries": [
+      {
+        "id": "city-NE-1159149469",
+        "name": "Doha, Qatar",
+        "coordinate": {
+          "longitude": 51.5329679,
+          "latitude": 25.286556
+        }
+      },
+      {
+        "id": "city-NE-1159150193",
+        "name": "Belo Horizonte, Brazil",
+        "coordinate": {
+          "longitude": -43.9169504,
+          "latitude": -19.9130802
+        }
+      },
+      {
+        "id": "city-NE-1159150469",
+        "name": "Montevideo, Uruguay",
+        "coordinate": {
+          "longitude": -56.18682337831074,
+          "latitude": -34.90537638970807
+        }
+      },
+      {
+        "id": "city-NE-1159150535",
+        "name": "Lomé, Togo",
+        "coordinate": {
+          "longitude": 1.2208113,
+          "latitude": 6.1338829
+        }
+      },
+      {
+        "id": "city-NE-1159150537",
+        "name": "Tunis, Tunisia",
+        "coordinate": {
+          "longitude": 10.1796781,
+          "latitude": 36.8027781
+        }
+      },
+      {
+        "id": "city-NE-1159150571",
+        "name": "Lusaka, Zambia",
+        "coordinate": {
+          "longitude": 28.2813817,
+          "latitude": -15.4146984
+        }
+      },
+      {
+        "id": "city-NE-1159150573",
+        "name": "Harare, Zimbabwe",
+        "coordinate": {
+          "longitude": 31.0427636,
+          "latitude": -17.8158438
+        }
+      },
+      {
+        "id": "city-NE-1159150589",
+        "name": "Port-au-Prince, Haiti",
+        "coordinate": {
+          "longitude": -72.3379804,
+          "latitude": 18.5429705
+        }
+      },
+      {
+        "id": "city-NE-1159150593",
+        "name": "Kampala, Uganda",
+        "coordinate": {
+          "longitude": 32.5813777,
+          "latitude": 0.3186048
+        }
+      },
+      {
+        "id": "city-NE-1159150609",
+        "name": "Dushanbe, Tajikistan",
+        "coordinate": {
+          "longitude": 68.7738794,
+          "latitude": 38.5600352
+        }
+      },
+      {
+        "id": "city-NE-1159150621",
+        "name": "Asunción, Paraguay",
+        "coordinate": {
+          "longitude": -57.62583375528301,
+          "latitude": -25.29067083610963
+        }
+      },
+      {
+        "id": "city-NE-1159150661",
+        "name": "Pretoria, South Africa",
+        "coordinate": {
+          "longitude": 28.2274832,
+          "latitude": -25.7049747
+        }
+      },
+      {
+        "id": "city-NE-1159150667",
+        "name": "Panama City, Panama",
+        "coordinate": {
+          "longitude": -79.534983,
+          "latitude": 8.969963
+        }
+      },
+      {
+        "id": "city-NE-1159150673",
+        "name": "Rabat, Morocco",
+        "coordinate": {
+          "longitude": -6.8364082,
+          "latitude": 34.0253073
+        }
+      },
+      {
+        "id": "city-NE-1159150683",
+        "name": "Maputo, Mozambique",
+        "coordinate": {
+          "longitude": 32.5872171,
+          "latitude": -25.9533316
+        }
+      },
+      {
+        "id": "city-NE-1159150715",
+        "name": "Mogadishu, Somalia",
+        "coordinate": {
+          "longitude": 45.3647318,
+          "latitude": 2.0686272
+        }
+      },
+      {
+        "id": "city-NE-1159150799",
+        "name": "Abuja, Nigeria",
+        "coordinate": {
+          "longitude": 7.489505042885861,
+          "latitude": 9.054620406360845
+        }
+      },
+      {
+        "id": "city-NE-1159150807",
+        "name": "Amman, Jordan",
+        "coordinate": {
+          "longitude": 35.9313541,
+          "latitude": 31.9519711
+        }
+      },
+      {
+        "id": "city-NE-1159150835",
+        "name": "Antananarivo, Madagascar",
+        "coordinate": {
+          "longitude": 47.514678,
+          "latitude": -18.9146915
+        }
+      },
+      {
+        "id": "city-NE-1159150847",
+        "name": "Quito, Ecuador",
+        "coordinate": {
+          "longitude": -78.501997,
+          "latitude": -0.2130423
+        }
+      },
+      {
+        "id": "city-NE-1159150849",
+        "name": "San José, Costa Rica",
+        "coordinate": {
+          "longitude": -84.07881396964633,
+          "latitude": 9.930370727948475
+        }
+      },
+      {
+        "id": "city-NE-1159150853",
+        "name": "San Salvador, El Salvador",
+        "coordinate": {
+          "longitude": -89.2155758045276,
+          "latitude": 13.703280259193864
+        }
+      },
+      {
+        "id": "city-NE-1159150909",
+        "name": "Guatemala City, Guatemala",
+        "coordinate": {
+          "longitude": -90.5289114,
+          "latitude": 14.6230805
+        }
+      },
+      {
+        "id": "city-NE-1159150945",
+        "name": "Bamako, Mali",
+        "coordinate": {
+          "longitude": -8.001985,
+          "latitude": 12.6519605
+        }
+      },
+      {
+        "id": "city-NE-1159150957",
+        "name": "Beirut, Lebanon",
+        "coordinate": {
+          "longitude": 35.5077624,
+          "latitude": 33.873921
+        }
+      },
+      {
+        "id": "city-NE-1159150961",
+        "name": "Tbilisi, Georgia",
+        "coordinate": {
+          "longitude": 44.7888496,
+          "latitude": 41.7269558
+        }
+      },
+      {
+        "id": "city-NE-1159150993",
+        "name": "Brazzaville, Congo (Brazzaville)",
+        "coordinate": {
+          "longitude": 15.2827436,
+          "latitude": -4.2572399
+        }
+      },
+      {
+        "id": "city-NE-1159150997",
+        "name": "Conakry, Guinea",
+        "coordinate": {
+          "longitude": -13.6821809,
+          "latitude": 9.5334687
+        }
+      },
+      {
+        "id": "city-NE-1159151059",
+        "name": "Ottawa, Canada",
+        "coordinate": {
+          "longitude": -75.7019612,
+          "latitude": 45.4186427
+        }
+      },
+      {
+        "id": "city-NE-1159151079",
+        "name": "Belgrade, Serbia",
+        "coordinate": {
+          "longitude": 20.4660448,
+          "latitude": 44.8205913
+        }
+      },
+      {
+        "id": "city-NE-1159151115",
+        "name": "Yaoundé, Cameroon",
+        "coordinate": {
+          "longitude": 11.5147049,
+          "latitude": 3.8686465
+        }
+      },
+      {
+        "id": "city-NE-1159151119",
+        "name": "Yerevan, Armenia",
+        "coordinate": {
+          "longitude": 44.5116055,
+          "latitude": 40.1830966
+        }
+      },
+      {
+        "id": "city-NE-1159151123",
+        "name": "Baku, Azerbaijan",
+        "coordinate": {
+          "longitude": 49.8602713,
+          "latitude": 40.3972179
+        }
+      },
+      {
+        "id": "city-NE-1159151127",
+        "name": "Phnom Penh, Cambodia",
+        "coordinate": {
+          "longitude": 104.9146886,
+          "latitude": 11.551976
+        }
+      },
+      {
+        "id": "city-NE-1159151133",
+        "name": "La Paz, Bolivia",
+        "coordinate": {
+          "longitude": -68.151931,
+          "latitude": -16.4960278
+        }
+      },
+      {
+        "id": "city-NE-1159151147",
+        "name": "Sofia, Bulgaria",
+        "coordinate": {
+          "longitude": 23.3147082,
+          "latitude": 42.6852953
+        }
+      },
+      {
+        "id": "city-NE-1159151149",
+        "name": "Minsk, Belarus",
+        "coordinate": {
+          "longitude": 27.5646813,
+          "latitude": 53.9019233
+        }
+      },
+      {
+        "id": "city-NE-1159151173",
+        "name": "Ouagadougou, Burkina Faso",
+        "coordinate": {
+          "longitude": -1.5266696,
+          "latitude": 12.3722618
+        }
+      },
+      {
+        "id": "city-NE-1159151203",
+        "name": "Jerusalem, Israel",
+        "coordinate": {
+          "longitude": 35.2066259,
+          "latitude": 31.7784078
+        }
+      },
+      {
+        "id": "city-NE-1159151215",
+        "name": "Shenzhen, China",
+        "coordinate": {
+          "longitude": 114.06115351896277,
+          "latitude": 22.54809707412332
+        }
+      },
+      {
+        "id": "city-NE-1159151243",
+        "name": "Philadelphia, United States of America",
+        "coordinate": {
+          "longitude": -75.1798412402816,
+          "latitude": 39.94594243742075
+        }
+      },
+      {
+        "id": "city-NE-1159151251",
+        "name": "Hanoi, Vietnam",
+        "coordinate": {
+          "longitude": 105.8480683,
+          "latitude": 21.0352731
+        }
+      },
+      {
+        "id": "city-NE-1159151253",
+        "name": "Ho Chi Minh City, Vietnam",
+        "coordinate": {
+          "longitude": 106.70298470218748,
+          "latitude": 10.762124565177512
+        }
+      },
+      {
+        "id": "city-NE-1159151255",
+        "name": "Ankara, Turkey",
+        "coordinate": {
+          "longitude": 32.8624458,
+          "latitude": 39.9291844
+        }
+      },
+      {
+        "id": "city-NE-1159151257",
+        "name": "Budapest, Hungary",
+        "coordinate": {
+          "longitude": 19.0813748,
+          "latitude": 47.5019522
+        }
+      },
+      {
+        "id": "city-NE-1159151259",
+        "name": "Sanaa, Yemen",
+        "coordinate": {
+          "longitude": 44.2046475,
+          "latitude": 15.3566792
+        }
+      },
+      {
+        "id": "city-NE-1159151263",
+        "name": "Bucharest, Romania",
+        "coordinate": {
+          "longitude": 26.0980008,
+          "latitude": 44.4353177
+        }
+      },
+      {
+        "id": "city-NE-1159151269",
+        "name": "Damascus, Syria",
+        "coordinate": {
+          "longitude": 36.29805,
+          "latitude": 33.5019799
+        }
+      },
+      {
+        "id": "city-NE-1159151273",
+        "name": "Lisbon, Portugal",
+        "coordinate": {
+          "longitude": -9.1468122,
+          "latitude": 38.7246687
+        }
+      },
+      {
+        "id": "city-NE-1159151275",
+        "name": "Khartoum, Sudan",
+        "coordinate": {
+          "longitude": 32.5322334,
+          "latitude": 15.5900241
+        }
+      },
+      {
+        "id": "city-NE-1159151285",
+        "name": "Lahore, Pakistan",
+        "coordinate": {
+          "longitude": 74.3480789,
+          "latitude": 31.5619174
+        }
+      },
+      {
+        "id": "city-NE-1159151287",
+        "name": "Karachi, Pakistan",
+        "coordinate": {
+          "longitude": 66.9880631,
+          "latitude": 24.8719381
+        }
+      },
+      {
+        "id": "city-NE-1159151299",
+        "name": "Warsaw, Poland",
+        "coordinate": {
+          "longitude": 21.005346737742283,
+          "latitude": 52.23087197353951
+        }
+      },
+      {
+        "id": "city-NE-1159151303",
+        "name": "Pyongyang, North Korea",
+        "coordinate": {
+          "longitude": 125.7527449,
+          "latitude": 39.0213846
+        }
+      },
+      {
+        "id": "city-NE-1159151305",
+        "name": "Dar es Salaam, Tanzania",
+        "coordinate": {
+          "longitude": 39.266396,
+          "latitude": -6.7980667
+        }
+      },
+      {
+        "id": "city-NE-1159151309",
+        "name": "Dublin, Ireland",
+        "coordinate": {
+          "longitude": -6.256979517281132,
+          "latitude": 53.34673124898314
+        }
+      },
+      {
+        "id": "city-NE-1159151311",
+        "name": "Monrovia, Liberia",
+        "coordinate": {
+          "longitude": -10.7996604,
+          "latitude": 6.3145816
+        }
+      },
+      {
+        "id": "city-NE-1159151317",
+        "name": "Kuala Lumpur, Malaysia",
+        "coordinate": {
+          "longitude": 101.68869929106194,
+          "latitude": 3.1397969439352504
+        }
+      },
+      {
+        "id": "city-NE-1159151327",
+        "name": "Chongqing, China",
+        "coordinate": {
+          "longitude": 106.5930358,
+          "latitude": 29.5669229
+        }
+      },
+      {
+        "id": "city-NE-1159151331",
+        "name": "Guangzhou, China",
+        "coordinate": {
+          "longitude": 113.26178516712943,
+          "latitude": 23.12472343296695
+        }
+      },
+      {
+        "id": "city-NE-1159151347",
+        "name": "Havana, Cuba",
+        "coordinate": {
+          "longitude": -82.366128,
+          "latitude": 23.1339047
+        }
+      },
+      {
+        "id": "city-NE-1159151359",
+        "name": "Prague, Czechia",
+        "coordinate": {
+          "longitude": 14.422939486203868,
+          "latitude": 50.0869665373215
+        }
+      },
+      {
+        "id": "city-NE-1159151361",
+        "name": "Kuwait City, Kuwait",
+        "coordinate": {
+          "longitude": 47.9763553,
+          "latitude": 29.3716635
+        }
+      },
+      {
+        "id": "city-NE-1159151367",
+        "name": "Wuhan, China",
+        "coordinate": {
+          "longitude": 114.2680712,
+          "latitude": 30.5819772
+        }
+      },
+      {
+        "id": "city-NE-1159151381",
+        "name": "Tianjin, China",
+        "coordinate": {
+          "longitude": 117.19660728208831,
+          "latitude": 39.08277176197969
+        }
+      },
+      {
+        "id": "city-NE-1159151401",
+        "name": "Santo Domingo, Dominican Republic",
+        "coordinate": {
+          "longitude": -69.92974231579055,
+          "latitude": 18.470745058048376
+        }
+      },
+      {
+        "id": "city-NE-1159151403",
+        "name": "Accra, Ghana",
+        "coordinate": {
+          "longitude": -0.2186616,
+          "latitude": 5.5519805
+        }
+      },
+      {
+        "id": "city-NE-1159151405",
+        "name": "Delhi, India",
+        "coordinate": {
+          "longitude": 77.2280582,
+          "latitude": 28.6719388
+        }
+      },
+      {
+        "id": "city-NE-1159151407",
+        "name": "Hyderabad, India",
+        "coordinate": {
+          "longitude": 78.4780077,
+          "latitude": 17.401929
+        }
+      },
+      {
+        "id": "city-NE-1159151415",
+        "name": "Tripoli, Libya",
+        "coordinate": {
+          "longitude": 13.1800118,
+          "latitude": 32.8925
+        }
+      },
+      {
+        "id": "city-NE-1159151419",
+        "name": "Helsinki, Finland",
+        "coordinate": {
+          "longitude": 24.932456915043964,
+          "latitude": 60.16380384948568
+        }
+      },
+      {
+        "id": "city-NE-1159151431",
+        "name": "Chennai, India",
+        "coordinate": {
+          "longitude": 80.2780529,
+          "latitude": 13.0919337
+        }
+      },
+      {
+        "id": "city-NE-1159151433",
+        "name": "Ahmedabad, India",
+        "coordinate": {
+          "longitude": 72.5780578,
+          "latitude": 23.0319988
+        }
+      },
+      {
+        "id": "city-NE-1159151437",
+        "name": "Copenhagen, Denmark",
+        "coordinate": {
+          "longitude": 12.5615399,
+          "latitude": 55.68051
+        }
+      },
+      {
+        "id": "city-NE-1159151439",
+        "name": "Abidjan, Ivory Coast",
+        "coordinate": {
+          "longitude": -4.020206835187587,
+          "latitude": 5.3231260722445715
+        }
+      },
+      {
+        "id": "city-NE-1159151443",
+        "name": "Brasília, Brazil",
+        "coordinate": {
+          "longitude": -47.9179981,
+          "latitude": -15.7813944
+        }
+      },
+      {
+        "id": "city-NE-1159151465",
+        "name": "Brussels, Belgium",
+        "coordinate": {
+          "longitude": 4.3313707,
+          "latitude": 50.8352629
+        }
+      },
+      {
+        "id": "city-NE-1159151467",
+        "name": "Dhaka, Bangladesh",
+        "coordinate": {
+          "longitude": 90.4066336,
+          "latitude": 23.7250056
+        }
+      },
+      {
+        "id": "city-NE-1159151469",
+        "name": "Luanda, Angola",
+        "coordinate": {
+          "longitude": 13.2324812,
+          "latitude": -8.8363403
+        }
+      },
+      {
+        "id": "city-NE-1159151471",
+        "name": "Algiers, Algeria",
+        "coordinate": {
+          "longitude": 3.0486067,
+          "latitude": 36.7650107
+        }
+      },
+      {
+        "id": "city-NE-1159151479",
+        "name": "San Francisco, United States of America",
+        "coordinate": {
+          "longitude": -122.39959956304557,
+          "latitude": 37.784262651527904
+        }
+      },
+      {
+        "id": "city-NE-1159151483",
+        "name": "Denver, United States of America",
+        "coordinate": {
+          "longitude": -104.9859618,
+          "latitude": 39.7411339
+        }
+      },
+      {
+        "id": "city-NE-1159151485",
+        "name": "Houston, United States of America",
+        "coordinate": {
+          "longitude": -95.34843625672217,
+          "latitude": 29.741272831862542
+        }
+      },
+      {
+        "id": "city-NE-1159151487",
+        "name": "Miami, United States of America",
+        "coordinate": {
+          "longitude": -80.2260519,
+          "latitude": 25.7895566
+        }
+      },
+      {
+        "id": "city-NE-1159151489",
+        "name": "Atlanta, United States of America",
+        "coordinate": {
+          "longitude": -84.36764186571386,
+          "latitude": 33.73945728378348
+        }
+      },
+      {
+        "id": "city-NE-1159151491",
+        "name": "Chicago, United States of America",
+        "coordinate": {
+          "longitude": -87.63523655322338,
+          "latitude": 41.847961283364114
+        }
+      },
+      {
+        "id": "city-NE-1159151493",
+        "name": "Caracas, Venezuela",
+        "coordinate": {
+          "longitude": -66.9189831,
+          "latitude": 10.5029444
+        }
+      },
+      {
+        "id": "city-NE-1159151495",
+        "name": "Kyiv, Ukraine",
+        "coordinate": {
+          "longitude": 30.5146821,
+          "latitude": 50.4353132
+        }
+      },
+      {
+        "id": "city-NE-1159151497",
+        "name": "Dubai, United Arab Emirates",
+        "coordinate": {
+          "longitude": 55.28694561354246,
+          "latitude": 25.21491189371225
+        }
+      },
+      {
+        "id": "city-NE-1159151501",
+        "name": "Tashkent, Uzbekistan",
+        "coordinate": {
+          "longitude": 69.26882294266261,
+          "latitude": 41.30382822156198
+        }
+      },
+      {
+        "id": "city-NE-1159151503",
+        "name": "Madrid, Spain",
+        "coordinate": {
+          "longitude": -3.6852975,
+          "latitude": 40.4019721
+        }
+      },
+      {
+        "id": "city-NE-1159151505",
+        "name": "Geneva, Switzerland",
+        "coordinate": {
+          "longitude": 6.140028,
+          "latitude": 46.2100075
+        }
+      },
+      {
+        "id": "city-NE-1159151507",
+        "name": "Stockholm, Sweden",
+        "coordinate": {
+          "longitude": 18.066300168534497,
+          "latitude": 59.324127204007475
+        }
+      },
+      {
+        "id": "city-NE-1159151509",
+        "name": "Bangkok, Thailand",
+        "coordinate": {
+          "longitude": 100.5146988,
+          "latitude": 13.7519451
+        }
+      },
+      {
+        "id": "city-NE-1159151511",
+        "name": "Lima, Peru",
+        "coordinate": {
+          "longitude": -77.052008,
+          "latitude": -12.0460668
+        }
+      },
+      {
+        "id": "city-NE-1159151513",
+        "name": "Dakar, Senegal",
+        "coordinate": {
+          "longitude": -17.475076,
+          "latitude": 14.7177776
+        }
+      },
+      {
+        "id": "city-NE-1159151515",
+        "name": "Johannesburg, South Africa",
+        "coordinate": {
+          "longitude": 28.0280639,
+          "latitude": -26.1680989
+        }
+      },
+      {
+        "id": "city-NE-1159151519",
+        "name": "Amsterdam, Netherlands",
+        "coordinate": {
+          "longitude": 4.9146943,
+          "latitude": 52.3519145
+        }
+      },
+      {
+        "id": "city-NE-1159151521",
+        "name": "Casablanca, Morocco",
+        "coordinate": {
+          "longitude": -7.6183133,
+          "latitude": 33.6019221
+        }
+      },
+      {
+        "id": "city-NE-1159151523",
+        "name": "Seoul, South Korea",
+        "coordinate": {
+          "longitude": 126.9977851,
+          "latitude": 37.568295
+        }
+      },
+      {
+        "id": "city-NE-1159151525",
+        "name": "Manila, Philippines",
+        "coordinate": {
+          "longitude": 120.9802713,
+          "latitude": 14.6061048
+        }
+      },
+      {
+        "id": "city-NE-1159151527",
+        "name": "Monterrey, Mexico",
+        "coordinate": {
+          "longitude": -100.3319306,
+          "latitude": 25.671941
+        }
+      },
+      {
+        "id": "city-NE-1159151529",
+        "name": "Berlin, Germany",
+        "coordinate": {
+          "longitude": 13.3996028,
+          "latitude": 52.5237645
+        }
+      },
+      {
+        "id": "city-NE-1159151531",
+        "name": "Ürümqi, China",
+        "coordinate": {
+          "longitude": 87.5730598,
+          "latitude": 43.8069581
+        }
+      },
+      {
+        "id": "city-NE-1159151533",
+        "name": "Chengdu, China",
+        "coordinate": {
+          "longitude": 104.0680736,
+          "latitude": 30.6719459
+        }
+      },
+      {
+        "id": "city-NE-1159151537",
+        "name": "Osaka, Japan",
+        "coordinate": {
+          "longitude": 135.50375419006232,
+          "latitude": 34.691095244477914
+        }
+      },
+      {
+        "id": "city-NE-1159151539",
+        "name": "Kinshasa, Congo (Kinshasa)",
+        "coordinate": {
+          "longitude": 15.313026,
+          "latitude": -4.3277782
+        }
+      },
+      {
+        "id": "city-NE-1159151541",
+        "name": "New Delhi, India",
+        "coordinate": {
+          "longitude": 77.19998,
+          "latitude": 28.600023
+        }
+      },
+      {
+        "id": "city-NE-1159151543",
+        "name": "Bengaluru, India",
+        "coordinate": {
+          "longitude": 77.5580639,
+          "latitude": 12.971941
+        }
+      },
+      {
+        "id": "city-NE-1159151545",
+        "name": "Athens, Greece",
+        "coordinate": {
+          "longitude": 23.7313752,
+          "latitude": 37.9852721
+        }
+      },
+      {
+        "id": "city-NE-1159151547",
+        "name": "Baghdad, Iraq",
+        "coordinate": {
+          "longitude": 44.3919229,
+          "latitude": 33.3405944
+        }
+      },
+      {
+        "id": "city-NE-1159151549",
+        "name": "Addis Ababa, Ethiopia",
+        "coordinate": {
+          "longitude": 38.6980586,
+          "latitude": 9.0352562
+        }
+      },
+      {
+        "id": "city-NE-1159151551",
+        "name": "Tehran, Iran",
+        "coordinate": {
+          "longitude": 51.4223982,
+          "latitude": 35.6738886
+        }
+      },
+      {
+        "id": "city-NE-1159151555",
+        "name": "Vancouver, Canada",
+        "coordinate": {
+          "longitude": -123.1235901,
+          "latitude": 49.2753624
+        }
+      },
+      {
+        "id": "city-NE-1159151557",
+        "name": "Toronto, Canada",
+        "coordinate": {
+          "longitude": -79.38945855491194,
+          "latitude": 43.66464454743429
+        }
+      },
+      {
+        "id": "city-NE-1159151559",
+        "name": "Buenos Aires, Argentina",
+        "coordinate": {
+          "longitude": -58.43251268766426,
+          "latitude": -34.61071459139255
+        }
+      },
+      {
+        "id": "city-NE-1159151561",
+        "name": "Kabul, Afghanistan",
+        "coordinate": {
+          "longitude": 69.1813142,
+          "latitude": 34.5186361
+        }
+      },
+      {
+        "id": "city-NE-1159151563",
+        "name": "Vienna, Austria",
+        "coordinate": {
+          "longitude": 16.3646931,
+          "latitude": 48.2019611
+        }
+      },
+      {
+        "id": "city-NE-1159151565",
+        "name": "Melbourne, Australia",
+        "coordinate": {
+          "longitude": 144.9730704,
+          "latitude": -37.8180855
+        }
+      },
+      {
+        "id": "city-NE-1159151567",
+        "name": "Taipei, Taiwan",
+        "coordinate": {
+          "longitude": 121.5683333,
+          "latitude": 25.0358333
+        }
+      },
+      {
+        "id": "city-NE-1159151569",
+        "name": "Los Angeles, United States of America",
+        "coordinate": {
+          "longitude": -118.23198647223317,
+          "latitude": 34.049219260337075
+        }
+      },
+      {
+        "id": "city-NE-1159151573",
+        "name": "Washington, United States of America",
+        "coordinate": {
+          "longitude": -77.0113644,
+          "latitude": 38.9014952
+        }
+      },
+      {
+        "id": "city-NE-1159151575",
+        "name": "New York City, United States of America",
+        "coordinate": {
+          "longitude": -73.99571754361698,
+          "latitude": 40.72156174972766
+        }
+      },
+      {
+        "id": "city-NE-1159151577",
+        "name": "London, United Kingdom",
+        "coordinate": {
+          "longitude": -0.1186677,
+          "latitude": 51.5019406
+        }
+      },
+      {
+        "id": "city-NE-1159151579",
+        "name": "Istanbul, Turkey",
+        "coordinate": {
+          "longitude": 28.97427681675554,
+          "latitude": 41.01760173507249
+        }
+      },
+      {
+        "id": "city-NE-1159151581",
+        "name": "Riyadh, Saudi Arabia",
+        "coordinate": {
+          "longitude": 46.720487024887696,
+          "latitude": 24.634497474837755
+        }
+      },
+      {
+        "id": "city-NE-1159151583",
+        "name": "Cape Town, South Africa",
+        "coordinate": {
+          "longitude": 18.4330423,
+          "latitude": -33.9180651
+        }
+      },
+      {
+        "id": "city-NE-1159151585",
+        "name": "Moscow, Russia",
+        "coordinate": {
+          "longitude": 37.613577,
+          "latitude": 55.75411
+        }
+      },
+      {
+        "id": "city-NE-1159151587",
+        "name": "Mexico City, Mexico",
+        "coordinate": {
+          "longitude": -99.1329341,
+          "latitude": 19.4443883
+        }
+      },
+      {
+        "id": "city-NE-1159151591",
+        "name": "Lagos, Nigeria",
+        "coordinate": {
+          "longitude": 3.3895852,
+          "latitude": 6.4452075
+        }
+      },
+      {
+        "id": "city-NE-1159151593",
+        "name": "Rome, Italy",
+        "coordinate": {
+          "longitude": 12.4813126,
+          "latitude": 41.8979015
+        }
+      },
+      {
+        "id": "city-NE-1159151595",
+        "name": "Beijing, China",
+        "coordinate": {
+          "longitude": 116.39420089260611,
+          "latitude": 39.901720309862675
+        }
+      },
+      {
+        "id": "city-NE-1159151597",
+        "name": "Nairobi, Kenya",
+        "coordinate": {
+          "longitude": 36.814711,
+          "latitude": -1.2814009
+        }
+      },
+      {
+        "id": "city-NE-1159151599",
+        "name": "Jakarta, Indonesia",
+        "coordinate": {
+          "longitude": 106.8274918,
+          "latitude": -6.1724718
+        }
+      },
+      {
+        "id": "city-NE-1159151601",
+        "name": "Bogotá, Colombia",
+        "coordinate": {
+          "longitude": -74.0852898,
+          "latitude": 4.5983694
+        }
+      },
+      {
+        "id": "city-NE-1159151603",
+        "name": "Cairo, Egypt",
+        "coordinate": {
+          "longitude": 31.2480224,
+          "latitude": 30.0519062
+        }
+      },
+      {
+        "id": "city-NE-1159151605",
+        "name": "Shanghai, China",
+        "coordinate": {
+          "longitude": 121.4345588,
+          "latitude": 31.2183983
+        }
+      },
+      {
+        "id": "city-NE-1159151609",
+        "name": "Tokyo, Japan",
+        "coordinate": {
+          "longitude": 139.7494616,
+          "latitude": 35.6869628
+        }
+      },
+      {
+        "id": "city-NE-1159151611",
+        "name": "Mumbai, India",
+        "coordinate": {
+          "longitude": 72.8758393972653,
+          "latitude": 19.06840847529168
+        }
+      },
+      {
+        "id": "city-NE-1159151613",
+        "name": "Paris, France",
+        "coordinate": {
+          "longitude": 2.3529924615392135,
+          "latitude": 48.85809231626911
+        }
+      },
+      {
+        "id": "city-NE-1159151615",
+        "name": "Santiago, Chile",
+        "coordinate": {
+          "longitude": -70.65050407285783,
+          "latitude": -33.44020506918074
+        }
+      },
+      {
+        "id": "city-NE-1159151617",
+        "name": "Kolkata, India",
+        "coordinate": {
+          "longitude": 88.36912550443886,
+          "latitude": 22.569578883795778
+        }
+      },
+      {
+        "id": "city-NE-1159151619",
+        "name": "Rio de Janeiro, Brazil",
+        "coordinate": {
+          "longitude": -43.212117466834385,
+          "latitude": -22.907308056882364
+        }
+      },
+      {
+        "id": "city-NE-1159151621",
+        "name": "São Paulo, Brazil",
+        "coordinate": {
+          "longitude": -46.6269658,
+          "latitude": -23.5567337
+        }
+      },
+      {
+        "id": "city-NE-1159151623",
+        "name": "Sydney, Australia",
+        "coordinate": {
+          "longitude": 151.2125477744749,
+          "latitude": -33.87137339218338
+        }
+      },
+      {
+        "id": "city-NE-1159151627",
+        "name": "Singapore, Singapore",
+        "coordinate": {
+          "longitude": 103.8538748,
+          "latitude": 1.2949793
+        }
+      },
+      {
+        "id": "city-NE-1159151703",
+        "name": "Auckland, New Zealand",
+        "coordinate": {
+          "longitude": 174.763027,
+          "latitude": -36.8480549
+        }
+      },
+      {
+        "id": "city-NE-1730025037",
+        "name": "Amaravati, India",
+        "coordinate": {
+          "longitude": 80.52432001010749,
+          "latitude": 16.533657954485985
+        }
+      }
+    ],
+    "nyc": [
+      {
+        "id": "nyc-sight-statue-of-liberty",
+        "name": "Statue of Liberty",
+        "coordinate": {
+          "longitude": -74.044425277778,
+          "latitude": 40.689209166667
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q9202"
+      },
+      {
+        "id": "nyc-sight-empire-state-building",
+        "name": "Empire State Building",
+        "coordinate": {
+          "longitude": -73.98555555555555,
+          "latitude": 40.748333333333335
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q9188"
+      },
+      {
+        "id": "nyc-sight-times-square",
+        "name": "Times Square",
+        "coordinate": {
+          "longitude": -73.98583333333333,
+          "latitude": 40.7575
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q11259"
+      },
+      {
+        "id": "nyc-sight-central-park",
+        "name": "Central Park",
+        "coordinate": {
+          "longitude": -73.966111111111,
+          "latitude": 40.7825
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q160409"
+      },
+      {
+        "id": "nyc-sight-grand-central-terminal",
+        "name": "Grand Central Terminal",
+        "coordinate": {
+          "longitude": -73.977222,
+          "latitude": 40.752778
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q11290"
+      },
+      {
+        "id": "nyc-sight-rockefeller-center",
+        "name": "Rockefeller Center",
+        "coordinate": {
+          "longitude": -73.979194444444,
+          "latitude": 40.758611111111
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q11277"
+      },
+      {
+        "id": "nyc-sight-one-world-trade-center",
+        "name": "One World Trade Center",
+        "coordinate": {
+          "longitude": -74.0135,
+          "latitude": 40.713
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q11245"
+      },
+      {
+        "id": "nyc-sight-wall-street",
+        "name": "Wall Street",
+        "coordinate": {
+          "longitude": -74.009107,
+          "latitude": 40.706185
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q11690"
+      },
+      {
+        "id": "nyc-sight-flatiron-building",
+        "name": "Flatiron Building",
+        "coordinate": {
+          "longitude": -73.989722,
+          "latitude": 40.741111
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q220728"
+      },
+      {
+        "id": "nyc-sight-chrysler-building",
+        "name": "Chrysler Building",
+        "coordinate": {
+          "longitude": -73.975719444444,
+          "latitude": 40.751430555556
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q11274"
+      },
+      {
+        "id": "nyc-sight-united-nations-headquarters",
+        "name": "United Nations Headquarters",
+        "coordinate": {
+          "longitude": -73.96739,
+          "latitude": 40.749629166666665
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q11297"
+      },
+      {
+        "id": "nyc-sight-metropolitan-museum-of-art",
+        "name": "Metropolitan Museum of Art",
+        "coordinate": {
+          "longitude": -73.96333333333334,
+          "latitude": 40.779444444444444
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q160236"
+      },
+      {
+        "id": "nyc-sight-museum-of-modern-art",
+        "name": "Museum of Modern Art",
+        "coordinate": {
+          "longitude": -73.9775,
+          "latitude": 40.76166666666667
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q188740"
+      },
+      {
+        "id": "nyc-sight-solomon-r-guggenheim-museum",
+        "name": "Solomon R. Guggenheim Museum",
+        "coordinate": {
+          "longitude": -73.9588888888889,
+          "latitude": 40.783055555555556
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q201469"
+      },
+      {
+        "id": "nyc-sight-american-museum-of-natural-history",
+        "name": "American Museum of Natural History",
+        "coordinate": {
+          "longitude": -73.97444444444444,
+          "latitude": 40.780833333333334
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q217717"
+      },
+      {
+        "id": "nyc-sight-madison-square-garden",
+        "name": "Madison Square Garden",
+        "coordinate": {
+          "longitude": -73.993453,
+          "latitude": 40.750501
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q186125"
+      },
+      {
+        "id": "nyc-sight-columbus-circle",
+        "name": "Columbus Circle",
+        "coordinate": {
+          "longitude": -73.981944444444,
+          "latitude": 40.768055555556
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q109968"
+      },
+      {
+        "id": "nyc-sight-washington-square-park",
+        "name": "Washington Square Park",
+        "coordinate": {
+          "longitude": -73.997777777778,
+          "latitude": 40.730833333333
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q909592"
+      },
+      {
+        "id": "nyc-sight-union-square",
+        "name": "Union Square",
+        "coordinate": {
+          "longitude": -73.990556,
+          "latitude": 40.735556
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q110007"
+      },
+      {
+        "id": "nyc-sight-bryant-park",
+        "name": "Bryant Park",
+        "coordinate": {
+          "longitude": -73.983611111111,
+          "latitude": 40.753805555556
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q995174"
+      },
+      {
+        "id": "nyc-sight-lincoln-center",
+        "name": "Lincoln Center",
+        "coordinate": {
+          "longitude": -73.98388888888888,
+          "latitude": 40.7725
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q581044"
+      },
+      {
+        "id": "nyc-sight-carnegie-hall",
+        "name": "Carnegie Hall",
+        "coordinate": {
+          "longitude": -73.98,
+          "latitude": 40.765
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q200959"
+      },
+      {
+        "id": "nyc-sight-apollo-theater",
+        "name": "Apollo Theater",
+        "coordinate": {
+          "longitude": -73.950113,
+          "latitude": 40.809932
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q619124"
+      },
+      {
+        "id": "nyc-sight-columbia-university",
+        "name": "Columbia University",
+        "coordinate": {
+          "longitude": -73.961944444444,
+          "latitude": 40.8075
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q49088"
+      },
+      {
+        "id": "nyc-sight-the-cloisters",
+        "name": "The Cloisters",
+        "coordinate": {
+          "longitude": -73.931727,
+          "latitude": 40.864863
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q1138030"
+      },
+      {
+        "id": "nyc-sight-the-battery",
+        "name": "The Battery",
+        "coordinate": {
+          "longitude": -74.01611111111112,
+          "latitude": 40.70361111111111
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q13689"
+      },
+      {
+        "id": "nyc-sight-chelsea-market",
+        "name": "Chelsea Market",
+        "coordinate": {
+          "longitude": -74.0061,
+          "latitude": 40.7425
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q5090112"
+      },
+      {
+        "id": "nyc-sight-stonewall-inn",
+        "name": "Stonewall Inn",
+        "coordinate": {
+          "longitude": -74.00216666666667,
+          "latitude": 40.73383333333334
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q1261362"
+      },
+      {
+        "id": "nyc-sight-new-york-public-library-main-branch",
+        "name": "New York Public Library Main Branch",
+        "coordinate": {
+          "longitude": -73.982222,
+          "latitude": 40.753333
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q7013887"
+      },
+      {
+        "id": "nyc-sight-ellis-island",
+        "name": "Ellis Island",
+        "coordinate": {
+          "longitude": -74.03972222222222,
+          "latitude": 40.699444444444445
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q202175"
+      },
+      {
+        "id": "nyc-sight-governors-island",
+        "name": "Governors Island",
+        "coordinate": {
+          "longitude": -74.0190287,
+          "latitude": 40.6889918
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q1190547"
+      },
+      {
+        "id": "nyc-sight-roosevelt-island",
+        "name": "Roosevelt Island",
+        "coordinate": {
+          "longitude": -73.9493046,
+          "latitude": 40.7626016
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q909777"
+      },
+      {
+        "id": "nyc-sight-brooklyn-bridge",
+        "name": "Brooklyn Bridge",
+        "coordinate": {
+          "longitude": -73.99633333333334,
+          "latitude": 40.705666666666666
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q125006"
+      },
+      {
+        "id": "nyc-sight-george-washington-bridge",
+        "name": "George Washington Bridge",
+        "coordinate": {
+          "longitude": -73.9525,
+          "latitude": 40.85166666666667
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q125821"
+      },
+      {
+        "id": "nyc-sight-grant-s-tomb",
+        "name": "Grant's Tomb",
+        "coordinate": {
+          "longitude": -73.963011111111,
+          "latitude": 40.813441666667
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q1025105"
+      },
+      {
+        "id": "nyc-sight-tompkins-square-park",
+        "name": "Tompkins Square Park",
+        "coordinate": {
+          "longitude": -73.981388888889,
+          "latitude": 40.726111111111
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q1310674"
+      },
+      {
+        "id": "nyc-sight-herald-square",
+        "name": "Herald Square",
+        "coordinate": {
+          "longitude": -73.987744444444,
+          "latitude": 40.750122222222
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q109982"
+      },
+      {
+        "id": "nyc-sight-vessel-hudson-yards",
+        "name": "Vessel, Hudson Yards",
+        "coordinate": {
+          "longitude": -74.00216666666667,
+          "latitude": 40.75380555555556
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q27988215"
+      },
+      {
+        "id": "nyc-sight-prospect-park",
+        "name": "Prospect Park",
+        "coordinate": {
+          "longitude": -73.97035,
+          "latitude": 40.66143
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q1049632"
+      },
+      {
+        "id": "nyc-sight-brooklyn-museum",
+        "name": "Brooklyn Museum",
+        "coordinate": {
+          "longitude": -73.963631,
+          "latitude": 40.671206
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q632682"
+      },
+      {
+        "id": "nyc-sight-barclays-center",
+        "name": "Barclays Center",
+        "coordinate": {
+          "longitude": -73.974689,
+          "latitude": 40.68265
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q807966"
+      },
+      {
+        "id": "nyc-sight-coney-island",
+        "name": "Coney Island",
+        "coordinate": {
+          "longitude": -73.9825,
+          "latitude": 40.575
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q628201"
+      },
+      {
+        "id": "nyc-sight-green-wood-cemetery",
+        "name": "Green-Wood Cemetery",
+        "coordinate": {
+          "longitude": -73.99024,
+          "latitude": 40.65241
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q239043"
+      },
+      {
+        "id": "nyc-sight-brooklyn-botanic-garden",
+        "name": "Brooklyn Botanic Garden",
+        "coordinate": {
+          "longitude": -73.963888888889,
+          "latitude": 40.668055555556
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q1360424"
+      },
+      {
+        "id": "nyc-sight-brooklyn-navy-yard",
+        "name": "Brooklyn Navy Yard",
+        "coordinate": {
+          "longitude": -73.973436111111,
+          "latitude": 40.702763888889
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q524435"
+      },
+      {
+        "id": "nyc-sight-citi-field",
+        "name": "Citi Field",
+        "coordinate": {
+          "longitude": -73.845783,
+          "latitude": 40.756986
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q1072882"
+      },
+      {
+        "id": "nyc-sight-unisphere",
+        "name": "Unisphere",
+        "coordinate": {
+          "longitude": -73.845,
+          "latitude": 40.74638888888889
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q717956"
+      },
+      {
+        "id": "nyc-sight-john-f-kennedy-international-airport",
+        "name": "John F. Kennedy International Airport",
+        "coordinate": {
+          "longitude": -73.78,
+          "latitude": 40.64
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q8685"
+      },
+      {
+        "id": "nyc-sight-laguardia-airport",
+        "name": "LaGuardia Airport",
+        "coordinate": {
+          "longitude": -73.875,
+          "latitude": 40.775
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q319654"
+      },
+      {
+        "id": "nyc-sight-arthur-ashe-stadium",
+        "name": "Arthur Ashe Stadium",
+        "coordinate": {
+          "longitude": -73.847033333333,
+          "latitude": 40.749886111111
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q609551"
+      },
+      {
+        "id": "nyc-sight-yankee-stadium",
+        "name": "Yankee Stadium",
+        "coordinate": {
+          "longitude": -73.926392,
+          "latitude": 40.829569
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q753529"
+      },
+      {
+        "id": "nyc-sight-bronx-zoo",
+        "name": "Bronx Zoo",
+        "coordinate": {
+          "longitude": -73.87833333333333,
+          "latitude": 40.85027777777778
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q739792"
+      },
+      {
+        "id": "nyc-sight-new-york-botanical-garden",
+        "name": "New York Botanical Garden",
+        "coordinate": {
+          "longitude": -73.878333,
+          "latitude": 40.863611
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q636275"
+      },
+      {
+        "id": "nyc-sight-city-island",
+        "name": "City Island",
+        "coordinate": {
+          "longitude": -73.78611111111111,
+          "latitude": 40.84721944444444
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q5123248"
+      },
+      {
+        "id": "nyc-sight-st-george-terminal",
+        "name": "St. George Terminal",
+        "coordinate": {
+          "longitude": -74.0742,
+          "latitude": 40.6433
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q5927015"
+      },
+      {
+        "id": "nyc-sight-staten-island-zoo",
+        "name": "Staten Island Zoo",
+        "coordinate": {
+          "longitude": -74.1157,
+          "latitude": 40.6251
+        },
+        "sourceURL": "https://www.wikidata.org/wiki/Q4193914"
+      }
+    ]
+  }
 }

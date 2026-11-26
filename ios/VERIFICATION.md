@@ -2,6 +2,17 @@
 
 A dated log of verification runs, newest first. Evidence paths under `build/` are local and not in the repository.
 
+## World map and Beat the clock — 2026-11-25
+
+The stored world pack is now a playable map, and every map has a tenth mode, Beat the clock: 15 places, 15 seconds each, scored by distance and speed, with a high score per map.
+
+- **World map:** the question rule in `scripts/compile_maps.py` changed from Natural Earth's `TYPE` to a fixed list: the 193 UN member states, the two UN observer states, Kosovo and Taiwan (197). Recompiling changed only the world pack, four continent manifests, the catalog and the simplification report. The layout uses an equirectangular projection centered on 0° and is fitted to the question areas.
+- **Places:** `content/learning.json` gained 148 world cities from the pinned Natural Earth populated places and 56 New York City sights from two new Wikidata snapshots. Existing facts are unchanged. Both data validators pass.
+- **Tests:** on an iPhone 17 simulator with iOS 26.5, `scripts/ios.sh test` passed 35 unit tests and 32 UI tests, with `testStoreScreenshots` skipped as intended. New unit tests cover the points formula, the one-pass session and stored high score, reading progress saved before high scores existed, pin round trips for every challenge place on all five maps, and the world layout across ±180°. The existing per-map tests now also run on the world map. A new UI test plays a world round by coordinate entry and checks the high score on the results and map screens.
+- **Checked by hand in the simulator:** the home and World screens, a world round (pin, answer marker, distance and points) and a New York neighborhoods round.
+
+Not checked: a physical device, iPad, landscape and the largest text sizes in the new mode, VoiceOver, and how long the world map takes to draw on older phones. The App Store screenshots and the website screenshots were not regenerated.
+
 ## App Store build 1.0 (2) — 2026-11-25
 
 A readiness review for the App Store submission led to these changes:

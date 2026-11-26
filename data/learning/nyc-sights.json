@@ -1,0 +1,338 @@
+[
+  {
+    "id": "nyc-sight-statue-of-liberty",
+    "name": "Statue of Liberty",
+    "wiki": "Statue of Liberty",
+    "qid": "Q9202"
+  },
+  {
+    "id": "nyc-sight-empire-state-building",
+    "name": "Empire State Building",
+    "wiki": "Empire State Building",
+    "qid": "Q9188"
+  },
+  {
+    "id": "nyc-sight-times-square",
+    "name": "Times Square",
+    "wiki": "Times Square",
+    "qid": "Q11259"
+  },
+  {
+    "id": "nyc-sight-central-park",
+    "name": "Central Park",
+    "wiki": "Central Park",
+    "qid": "Q160409"
+  },
+  {
+    "id": "nyc-sight-grand-central-terminal",
+    "name": "Grand Central Terminal",
+    "wiki": "Grand Central Terminal",
+    "qid": "Q11290"
+  },
+  {
+    "id": "nyc-sight-rockefeller-center",
+    "name": "Rockefeller Center",
+    "wiki": "Rockefeller Center",
+    "qid": "Q11277"
+  },
+  {
+    "id": "nyc-sight-one-world-trade-center",
+    "name": "One World Trade Center",
+    "wiki": "One World Trade Center",
+    "qid": "Q11245"
+  },
+  {
+    "id": "nyc-sight-wall-street",
+    "name": "Wall Street",
+    "wiki": "Wall Street",
+    "qid": "Q11690"
+  },
+  {
+    "id": "nyc-sight-flatiron-building",
+    "name": "Flatiron Building",
+    "wiki": "Flatiron Building",
+    "qid": "Q220728"
+  },
+  {
+    "id": "nyc-sight-chrysler-building",
+    "name": "Chrysler Building",
+    "wiki": "Chrysler Building",
+    "qid": "Q11274"
+  },
+  {
+    "id": "nyc-sight-united-nations-headquarters",
+    "name": "United Nations Headquarters",
+    "wiki": "Headquarters of the United Nations",
+    "qid": "Q11297"
+  },
+  {
+    "id": "nyc-sight-metropolitan-museum-of-art",
+    "name": "Metropolitan Museum of Art",
+    "wiki": "Metropolitan Museum of Art",
+    "qid": "Q160236"
+  },
+  {
+    "id": "nyc-sight-museum-of-modern-art",
+    "name": "Museum of Modern Art",
+    "wiki": "Museum of Modern Art",
+    "qid": "Q188740"
+  },
+  {
+    "id": "nyc-sight-solomon-r-guggenheim-museum",
+    "name": "Solomon R. Guggenheim Museum",
+    "wiki": "Solomon R. Guggenheim Museum",
+    "qid": "Q201469"
+  },
+  {
+    "id": "nyc-sight-american-museum-of-natural-history",
+    "name": "American Museum of Natural History",
+    "wiki": "American Museum of Natural History",
+    "qid": "Q217717"
+  },
+  {
+    "id": "nyc-sight-madison-square-garden",
+    "name": "Madison Square Garden",
+    "wiki": "Madison Square Garden",
+    "qid": "Q186125"
+  },
+  {
+    "id": "nyc-sight-columbus-circle",
+    "name": "Columbus Circle",
+    "wiki": "Columbus Circle",
+    "qid": "Q109968"
+  },
+  {
+    "id": "nyc-sight-washington-square-park",
+    "name": "Washington Square Park",
+    "wiki": "Washington Square Park",
+    "qid": "Q909592"
+  },
+  {
+    "id": "nyc-sight-union-square",
+    "name": "Union Square",
+    "wiki": "Union Square, Manhattan",
+    "qid": "Q110007"
+  },
+  {
+    "id": "nyc-sight-bryant-park",
+    "name": "Bryant Park",
+    "wiki": "Bryant Park",
+    "qid": "Q995174"
+  },
+  {
+    "id": "nyc-sight-lincoln-center",
+    "name": "Lincoln Center",
+    "wiki": "Lincoln Center",
+    "qid": "Q581044"
+  },
+  {
+    "id": "nyc-sight-carnegie-hall",
+    "name": "Carnegie Hall",
+    "wiki": "Carnegie Hall",
+    "qid": "Q200959"
+  },
+  {
+    "id": "nyc-sight-apollo-theater",
+    "name": "Apollo Theater",
+    "wiki": "Apollo Theater",
+    "qid": "Q619124"
+  },
+  {
+    "id": "nyc-sight-columbia-university",
+    "name": "Columbia University",
+    "wiki": "Columbia University",
+    "qid": "Q49088"
+  },
+  {
+    "id": "nyc-sight-the-cloisters",
+    "name": "The Cloisters",
+    "wiki": "The Cloisters",
+    "qid": "Q1138030"
+  },
+  {
+    "id": "nyc-sight-the-battery",
+    "name": "The Battery",
+    "wiki": "The Battery (Manhattan)",
+    "qid": "Q13689"
+  },
+  {
+    "id": "nyc-sight-chelsea-market",
+    "name": "Chelsea Market",
+    "wiki": "Chelsea Market",
+    "qid": "Q5090112"
+  },
+  {
+    "id": "nyc-sight-stonewall-inn",
+    "name": "Stonewall Inn",
+    "wiki": "Stonewall Inn",
+    "qid": "Q1261362"
+  },
+  {
+    "id": "nyc-sight-new-york-public-library-main-branch",
+    "name": "New York Public Library Main Branch",
+    "wiki": "New York Public Library Main Branch",
+    "qid": "Q7013887"
+  },
+  {
+    "id": "nyc-sight-ellis-island",
+    "name": "Ellis Island",
+    "wiki": "Ellis Island",
+    "qid": "Q202175"
+  },
+  {
+    "id": "nyc-sight-governors-island",
+    "name": "Governors Island",
+    "wiki": "Governors Island",
+    "qid": "Q1190547"
+  },
+  {
+    "id": "nyc-sight-roosevelt-island",
+    "name": "Roosevelt Island",
+    "wiki": "Roosevelt Island",
+    "qid": "Q909777"
+  },
+  {
+    "id": "nyc-sight-brooklyn-bridge",
+    "name": "Brooklyn Bridge",
+    "wiki": "Brooklyn Bridge",
+    "qid": "Q125006"
+  },
+  {
+    "id": "nyc-sight-george-washington-bridge",
+    "name": "George Washington Bridge",
+    "wiki": "George Washington Bridge",
+    "qid": "Q125821"
+  },
+  {
+    "id": "nyc-sight-grant-s-tomb",
+    "name": "Grant's Tomb",
+    "wiki": "Grant's Tomb",
+    "qid": "Q1025105"
+  },
+  {
+    "id": "nyc-sight-tompkins-square-park",
+    "name": "Tompkins Square Park",
+    "wiki": "Tompkins Square Park",
+    "qid": "Q1310674"
+  },
+  {
+    "id": "nyc-sight-herald-square",
+    "name": "Herald Square",
+    "wiki": "Herald Square",
+    "qid": "Q109982"
+  },
+  {
+    "id": "nyc-sight-vessel-hudson-yards",
+    "name": "Vessel, Hudson Yards",
+    "wiki": "Vessel (structure)",
+    "qid": "Q27988215"
+  },
+  {
+    "id": "nyc-sight-prospect-park",
+    "name": "Prospect Park",
+    "wiki": "Prospect Park (Brooklyn)",
+    "qid": "Q1049632"
+  },
+  {
+    "id": "nyc-sight-brooklyn-museum",
+    "name": "Brooklyn Museum",
+    "wiki": "Brooklyn Museum",
+    "qid": "Q632682"
+  },
+  {
+    "id": "nyc-sight-barclays-center",
+    "name": "Barclays Center",
+    "wiki": "Barclays Center",
+    "qid": "Q807966"
+  },
+  {
+    "id": "nyc-sight-coney-island",
+    "name": "Coney Island",
+    "wiki": "Coney Island",
+    "qid": "Q628201"
+  },
+  {
+    "id": "nyc-sight-green-wood-cemetery",
+    "name": "Green-Wood Cemetery",
+    "wiki": "Green-Wood Cemetery",
+    "qid": "Q239043"
+  },
+  {
+    "id": "nyc-sight-brooklyn-botanic-garden",
+    "name": "Brooklyn Botanic Garden",
+    "wiki": "Brooklyn Botanic Garden",
+    "qid": "Q1360424"
+  },
+  {
+    "id": "nyc-sight-brooklyn-navy-yard",
+    "name": "Brooklyn Navy Yard",
+    "wiki": "Brooklyn Navy Yard",
+    "qid": "Q524435"
+  },
+  {
+    "id": "nyc-sight-citi-field",
+    "name": "Citi Field",
+    "wiki": "Citi Field",
+    "qid": "Q1072882"
+  },
+  {
+    "id": "nyc-sight-unisphere",
+    "name": "Unisphere",
+    "wiki": "Unisphere",
+    "qid": "Q717956"
+  },
+  {
+    "id": "nyc-sight-john-f-kennedy-international-airport",
+    "name": "John F. Kennedy International Airport",
+    "wiki": "John F. Kennedy International Airport",
+    "qid": "Q8685"
+  },
+  {
+    "id": "nyc-sight-laguardia-airport",
+    "name": "LaGuardia Airport",
+    "wiki": "LaGuardia Airport",
+    "qid": "Q319654"
+  },
+  {
+    "id": "nyc-sight-arthur-ashe-stadium",
+    "name": "Arthur Ashe Stadium",
+    "wiki": "Arthur Ashe Stadium",
+    "qid": "Q609551"
+  },
+  {
+    "id": "nyc-sight-yankee-stadium",
+    "name": "Yankee Stadium",
+    "wiki": "Yankee Stadium",
+    "qid": "Q753529"
+  },
+  {
+    "id": "nyc-sight-bronx-zoo",
+    "name": "Bronx Zoo",
+    "wiki": "Bronx Zoo",
+    "qid": "Q739792"
+  },
+  {
+    "id": "nyc-sight-new-york-botanical-garden",
+    "name": "New York Botanical Garden",
+    "wiki": "New York Botanical Garden",
+    "qid": "Q636275"
+  },
+  {
+    "id": "nyc-sight-city-island",
+    "name": "City Island",
+    "wiki": "City Island, Bronx",
+    "qid": "Q5123248"
+  },
+  {
+    "id": "nyc-sight-st-george-terminal",
+    "name": "St. George Terminal",
+    "wiki": "St. George Terminal",
+    "qid": "Q5927015"
+  },
+  {
+    "id": "nyc-sight-staten-island-zoo",
+    "name": "Staten Island Zoo",
+    "wiki": "Staten Island Zoo",
+    "qid": "Q4193914"
+  }
+]

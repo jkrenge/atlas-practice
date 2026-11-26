@@ -24,6 +24,8 @@ struct MapManifest: Sendable, Decodable {
     let coordinateSystem: String
     let geometryAsset: String
     let areas: [Area]
+    /// "states", "countries".
+    var areaTypePlural: String { areaType == "country" ? "countries" : areaType + "s" }
 }
 
 struct Coordinate: Sendable, Equatable, Decodable {
@@ -96,7 +98,7 @@ enum MapLoadError: LocalizedError {
 struct MapLibrary {
     let root: URL
     let catalog: MapCatalog
-    static let starterIDs = ["us-states", "germany-states", "nyc-boroughs", "nyc-neighborhoods-focused"]
+    static let starterIDs = ["us-states", "germany-states", "world-countries", "nyc-boroughs", "nyc-neighborhoods-focused"]
 
     init(bundle: Bundle = .main) throws {
         guard let root = bundle.resourceURL?.appendingPathComponent("maps", isDirectory: true) else {

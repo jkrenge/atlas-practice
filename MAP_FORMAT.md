@@ -49,7 +49,7 @@ IDs are stable within the pinned source snapshots. Check source ID changes when 
 
 The manifest's `areas` list controls eligibility for the active map. A shared world feature can have `quizEligible: true` and still be outside a continent's question list. Features outside that list are background. The renderer can crop the view, but it must retain complete answer geometry. Full overseas geometry is preserved. Do not assume each country lies in one compact bounding box.
 
-Only US states, German states, NYC boroughs, and the focused NYC areas are exposed in the app. NTA, world, and continent packs are stored references. Continent manifests share complete world geometry; their camera bounds and global antimeridian rendering must be reviewed before exposure.
+US states, German states, the world, NYC boroughs, and the focused NYC areas are exposed in the app. The NTA and continent packs are stored references. Continent manifests share complete world geometry; their camera bounds must be reviewed before exposure.
 
 The data contains antimeridian geometry, including Alaska's Aleutian Islands. A naive longitude minimum and maximum can span most of the world. Handle wrapping, polygon splitting, and clipping explicitly in the renderer.
 
@@ -57,11 +57,11 @@ The data contains antimeridian geometry, including Alaska's Aleutian Islands. A 
 
 `data/us-cities.geojson` is a separate FeatureCollection of `Point` features in the same longitude, latitude order. Its feature IDs use `NE-` plus `NE_ID`. Properties are `name`, `stateName`, `sourceId`, `sourcePopulationMax`, and `sourceScaleRank`. The last two are source metadata, not current population facts or a final difficulty ranking.
 
-Use the Point geometry as the city's position. Do not substitute the source's separate `LATITUDE` or `LONGITUDE` fields: they can differ from the actual geometry. These legacy points are reference data. Current city, capital, and landmark questions instead use the sourced points in `content/learning.json`.
+Use the Point geometry as the city's position. Do not substitute the source's separate `LATITUDE` or `LONGITUDE` fields: they can differ from the actual geometry. These legacy points are reference data. Current city, capital, and landmark questions instead use the sourced points in `content/learning.json`. Its `challenge` object holds the timed-challenge places of the maps without such facts, keyed by map ID (`world-countries`, and `nyc` for both New York City maps); each entry has an `id`, a `name`, and a `coordinate` with `longitude` and `latitude`.
 
 ## Required rendering and tap pipeline
 
-The native renderer implements this pipeline for the four playable packs:
+The native renderer implements this pipeline for the five playable packs:
 
 ```text
 longitude/latitude -> projection -> optional inset transform -> viewport/zoom/pan -> screen
@@ -74,4 +74,4 @@ The US map uses separate lower-48, Alaska, and Hawaii view regions. Each region 
 
 All maps must support pinch zoom and pan. Drawing, shape selection, leader lines, and callout anchors must use the same current transforms. Callout boxes for small states, including Delaware and Rhode Island, must visibly link to their actual shapes. A callout and its shape select the same area ID. A callout tap has no unique geographic coordinate and must not be used as a city-distance guess.
 
-For city mode, convert a map tap to longitude and latitude, then calculate a geodesic distance in meters to the city's Point. Test the result against known coordinate pairs. Zoom, pan, screen size, and inset scale must not change the result. Current location questions use haversine distance and fixed thresholds of 50 km for US maps and 20 km for Germany. Water is a valid location guess inside a geographic map region.
+For city mode, convert a map tap to longitude and latitude, then calculate a geodesic distance in meters to the city's Point. Test the result against known coordinate pairs. Zoom, pan, screen size, and inset scale must not change the result. Current location questions use haversine distance and fixed thresholds of 50 km for US maps and 20 km for Germany. Water is a valid location guess inside a geographic map region. The timed challenge scores the same distance against a range per map; [README.md](README.md) gives the formula.

@@ -157,6 +157,9 @@ private struct ResumeCard: View {
     }
 
     private var detail: String {
+        if launch.mode == .challenge, let best = record.highScore {
+            return "\(launch.pack.displayName) · High score: \(best.formatted())"
+        }
         guard let accuracy = record.accuracy else { return "\(launch.pack.displayName) · \(launch.mode.instruction)" }
         return "\(launch.pack.displayName) · \(accuracy.formatted(.percent.precision(.fractionLength(0)))) on the first try"
     }
@@ -299,9 +302,10 @@ struct PackScreen: View {
             VStack(alignment: .leading, spacing: 28) {
                 hero
                 featured(.find)
+                modeSection("Against the clock", modes: modes.filter { $0 == .challenge })
                 modeSection("On the map", modes: modes.filter { $0.usesMap && !$0.isLocation && $0 != .find })
                 modeSection("Names & facts", modes: modes.filter { !$0.usesMap })
-                modeSection("Place a pin", modes: modes.filter(\.isLocation))
+                modeSection("Place a pin", modes: modes.filter { $0.isLocation && $0 != .challenge })
                 if pack.id == "nyc-neighborhoods-focused" {
                     Text("53 areas: 38 in Manhattan and 15 across the other boroughs. The larger groups are practice areas. Neighborhood boundaries are approximate.")
                         .font(.footnote.monospaced()).foregroundStyle(Color.atlasInk).labelTape()
@@ -352,7 +356,7 @@ struct PackScreen: View {
     }
 
     @ViewBuilder private var stats: some View {
-        stat("\(pack.areas.count)", "\(pack.manifest.areaType)s")
+        stat("\(pack.areas.count)", pack.manifest.areaTypePlural)
         stat("\(modes.count)", "ways to play")
         if let accuracy = progress.summary(for: pack.id).accuracy {
             stat(accuracy.formatted(.percent.precision(.fractionLength(0))), "first try")
@@ -427,7 +431,10 @@ struct PackScreen: View {
                 VStack(alignment: .leading, spacing: 3) {
                     Text(mode.title).font(.system(.headline, design: .serif, weight: .bold))
                     Text(mode.instruction).font(.subheadline).foregroundStyle(Color.atlasMuted)
-                    if let accuracy = record.accuracy {
+                    if mode == .challenge, let best = record.highScore {
+                        Text("High score: \(best.formatted())")
+                            .font(.caption.weight(.semibold)).foregroundStyle(Color.atlasGreen)
+                    } else if let accuracy = record.accuracy {
                         Text("\(accuracy.formatted(.percent.precision(.fractionLength(0)))) correct on the first try")
                             .font(.caption.weight(.semibold)).foregroundStyle(Color.atlasGreen)
                     }
@@ -457,7 +464,16 @@ extension MapPack {
     var displayName: String { id == "nyc-boroughs" ? "NYC boroughs" : manifest.name }
     var isNYC: Bool { id.hasPrefix("nyc-") }
     /// "50 states", "53 areas".
-    var countLabel: String { "\(areas.count) \(manifest.areaType)s" }
+    var countLabel: String { "\(areas.count) \(manifest.areaTypePlural)" }
+    /// Challenge scoring: a miss this far out scores nothing, and a tenth of it counts as on target.
+    var challengeRangeKM: Double {
+        switch id {
+        case "world-countries": 3000
+        case "us-states": 1000
+        case "germany-states": 300
+        default: 10 // New York City
+        }
+    }
 }
 
 // MARK: - Shared presentation
@@ -469,6 +485,7 @@ struct PracticeLaunch: Identifiable {
 
     /// Says what one tap starts: how many questions and whether they are timed.
     func summary(content: LearningContent?, entityCount: Int, secondsAllowed: Int) -> String {
+        if mode == .challenge { return "\(PracticeMode.challengeCount) places · \(PracticeMode.challengeSeconds) s each" }
         let total = content?.areas(in: pack, mode: mode).count ?? pack.areas.count
         let count = entityCount == 0 ? total : min(entityCount, total)
         return "\(count) questions · " + (secondsAllowed == 0 ? "No timer" : "\(secondsAllowed) s each")
@@ -644,9 +661,10 @@ struct PracticeScreen: View {
     init(pack: MapPack, content: LearningContent, mode: PracticeMode, secondsAllowed: Int, entityCount: Int) {
         self.pack = pack
         self.content = content
+        let entityCount = mode == .challenge ? PracticeMode.challengeCount : entityCount
         self.entityCount = entityCount
         var ordered = false
-        var seconds = secondsAllowed
+        var seconds = mode == .challenge ? PracticeMode.challengeSeconds : secondsAllowed
         #if DEBUG
         ordered = ProcessInfo.processInfo.arguments.contains("--ui-testing")
         if ordered { seconds = ProcessInfo.processInfo.arguments.contains("--timer-test") ? 2 : 0 }
@@ -669,7 +687,19 @@ struct PracticeScreen: View {
         round += 1
     }
 
-    private var tolerance: Double { pack.id == "us-states" ? 50 : 20 }
+    private var tolerance: Double {
+        session.mode == .challenge ? pack.challengeRangeKM / 10 : pack.id == "us-states" ? 50 : 20
+    }
+
+    private func lockIn() {
+        guard let guess, let area = session.current?.area,
+              let target = content.location(area, mode: session.mode, in: pack) else { return }
+        var clock = timer // The stored timer only changes once a second.
+        clock.tick(now: now)
+        session.submitLocation(guess, target: target, toleranceKM: tolerance,
+                               rangeKM: session.mode == .challenge ? pack.challengeRangeKM : nil,
+                               timeLeft: session.secondsAllowed > 0 ? clock.remaining / Double(session.secondsAllowed) : 0)
+    }
     private var now: TimeInterval { ProcessInfo.processInfo.systemUptime }
     private var answering: Bool { session.answer == nil && !paused && !session.isComplete }
     private var answerName: String {
@@ -691,7 +721,7 @@ struct PracticeScreen: View {
                                     selected: session.answer?.selected?.id,
                                     acceptsAnswers: answering && (session.mode == .find || session.mode.isLocation),
                                     guess: guess,
-                                    target: session.answer != nil && session.mode.isLocation ? content.location(question.area, mode: session.mode) : nil,
+                                    target: session.answer != nil && session.mode.isLocation ? content.location(question.area, mode: session.mode, in: pack) : nil,
                                     onLocation: session.mode.isLocation ? { guess = $0 } : nil) { id in
                                 if let area = pack.area(id) { session.submit(area) }
                             }
@@ -761,7 +791,8 @@ struct PracticeScreen: View {
                     var updated = timer
                     updated.tick(now: now)
                     if ceil(updated.remaining) != ceil(timer.remaining) || updated.expired { timer = updated }
-                    if updated.expired { session.expire() }
+                    // In the challenge a dropped pin still counts when the clock runs out.
+                    if updated.expired { if session.mode == .challenge && guess != nil { lockIn() } else { session.expire() } }
                 }
             }
         }
@@ -1014,8 +1045,9 @@ struct PracticeScreen: View {
                             feedback(answer, question: question)
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
                         } else if session.mode.isLocation {
-                            Label(guess == nil ? "Drop a pin. Anywhere within \(Int(tolerance)) km counts."
-                                               : "Pin dropped. Tap again to move it.",
+                            Label(guess != nil ? "Pin dropped. Tap again to move it."
+                                  : session.mode == .challenge ? "Drop a pin. Closer and faster scores more."
+                                  : "Drop a pin. Anywhere within \(Int(tolerance)) km counts.",
                                   systemImage: guess == nil ? "hand.tap" : "mappin.and.ellipse")
                                 .font(.subheadline).foregroundStyle(Color.atlasMuted)
                                 .accessibilityIdentifier("guess-coordinate")
@@ -1057,11 +1089,7 @@ struct PracticeScreen: View {
                 .accessibilityIdentifier("continue-session")
             } else {
                 if session.mode.isLocation {
-                    Button("Lock it in") {
-                        if let guess, let area = session.current?.area, let target = content.location(area, mode: session.mode) {
-                            session.submitLocation(guess, target: target, toleranceKM: tolerance)
-                        }
-                    }
+                    Button("Lock it in", action: lockIn)
                     .buttonStyle(PrimaryButtonStyle()).disabled(guess == nil || !answering)
                     .accessibilityHint("Checks how close your pin is")
                     .accessibilityIdentifier("check-location")
@@ -1114,6 +1142,10 @@ struct PracticeScreen: View {
                     } else {
                         Text(answerName).font(.title3.weight(.bold))
                     }
+                    if session.mode == .challenge {
+                        Text("+\(answer.points.formatted()) points · \(session.score.formatted()) so far").fontWeight(.semibold)
+                            .accessibilityIdentifier("challenge-points")
+                    }
                     if answer.guess != nil { Text("A marks the answer · G marks your guess").foregroundStyle(Color.atlasMuted) }
                 } else if session.mode.usesMap {
                     Text(question.area.name).font(.title3.weight(.bold))
@@ -1142,14 +1174,23 @@ struct PracticeScreen: View {
 
     // MARK: Results
 
+    /// Includes the round on screen, which is saved just after the results first appear.
+    private var highScore: Int {
+        max(session.score, progress.summary(for: pack.id, mode: .challenge).highScore ?? 0)
+    }
+
     private var results: some View {
-        let ratio = session.primaryCount == 0 ? 0 : Double(session.firstAttemptCorrect) / Double(session.primaryCount)
+        let challenge = session.mode == .challenge
+        let ratio = session.primaryCount == 0 ? 0 : challenge ? Double(session.score) / Double(session.primaryCount * 1000)
+            : Double(session.firstAttemptCorrect) / Double(session.primaryCount)
         let rank = ResultRank(firstTry: ratio)
-        let headline = Voice.pick(rank.headlines, Voice.seed(session.questions.first?.area.id ?? "") &+ round)
+        let headline = challenge && session.score > 0 && session.score == highScore ? "New high score."
+            : Voice.pick(rank.headlines, Voice.seed(session.questions.first?.area.id ?? "") &+ round)
         return VStack(spacing: 28) {
             VStack(spacing: 22) {
                 VStack(spacing: -10) {
-                    ScoreRing(progress: ratio).frame(width: 172, height: 172)
+                    ScoreRing(progress: ratio, value: challenge ? session.score.formatted() : nil,
+                              caption: challenge ? "points" : "first try").frame(width: 172, height: 172)
                     RankStamp(rank: rank).zIndex(1)
                 }
                 VStack(spacing: 8) {
@@ -1201,8 +1242,12 @@ struct PracticeScreen: View {
     }
 
     @ViewBuilder private func resultStats(divided: Bool) -> some View {
-        resultStat("First try", value: "\(session.firstAttemptCorrect) of \(session.primaryCount)", id: "firstAttemptScore")
-        if !session.missed.isEmpty {
+        resultStat(session.mode == .challenge ? "On target" : "First try",
+                   value: "\(session.firstAttemptCorrect) of \(session.primaryCount)", id: "firstAttemptScore")
+        if session.mode == .challenge {
+            if divided { Divider().frame(height: 36) }
+            resultStat("High score", value: highScore.formatted(), id: "highScore")
+        } else if !session.missed.isEmpty {
             if divided { Divider().frame(height: 36) }
             resultStat("On review", value: "\(session.reviewedCorrect) of \(session.missed.count)")
         }
@@ -1297,6 +1342,9 @@ private struct TapedIf: ViewModifier {
 
 private struct ScoreRing: View {
     let progress: Double
+    /// Replaces the percentage, for a points total.
+    var value: String? = nil
+    var caption = "first try"
     @State private var shown = 0.0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     var body: some View {
@@ -1306,9 +1354,10 @@ private struct ScoreRing: View {
                 .stroke(progress == 1 ? Color.atlasGreen : Color.atlasBlue, style: StrokeStyle(lineWidth: 14, lineCap: .round))
                 .rotationEffect(.degrees(-90))
             VStack(spacing: 0) {
-                Text(progress, format: .percent.precision(.fractionLength(0)))
+                Text(value ?? progress.formatted(.percent.precision(.fractionLength(0))))
                     .font(.system(size: 42, weight: .black, design: .serif)).monospacedDigit()
-                Text("first try").font(.subheadline).foregroundStyle(Color.atlasMuted)
+                    .lineLimit(1).minimumScaleFactor(0.6).padding(.horizontal, 18)
+                Text(caption).font(.subheadline).foregroundStyle(Color.atlasMuted)
             }
             .dynamicTypeSize(...DynamicTypeSize.xxxLarge) // Keeps the label inside the fixed-size ring.
         }
@@ -1350,7 +1399,7 @@ struct CoordinateEntry: View {
                     guard let coordinate else { return }
                     let region = pack.id == "us-states" ?
                         (coordinate.latitude > 50 && (coordinate.longitude < -130 || coordinate.longitude > 0) ? "US-AK" :
-                         coordinate.latitude < 25 && coordinate.longitude < -140 ? "US-HI" : "US-AL") : "DE-BY"
+                         coordinate.latitude < 25 && coordinate.longitude < -140 ? "US-HI" : "US-AL") : (pack.areas.first?.id ?? "")
                     onSelect(MapPin(coordinate: coordinate, regionID: region))
                 }
                 .buttonStyle(PrimaryButtonStyle()).disabled(coordinate == nil)
@@ -1384,7 +1433,7 @@ struct StudyScreen: View {
                             Text(selected?.name ?? "Pick a shape, any shape.")
                                 .font(.system(.title2, design: .serif, weight: .bold)).labelTape()
                                 .accessibilityIdentifier("study-selection")
-                            if let selected, !pack.id.hasPrefix("nyc-") {
+                            if let selected, pack.id.hasSuffix("-states") {
                                 Text("Map label \(selected.id.suffix(2))").font(.footnote.monospaced())
                                     .foregroundStyle(Color.atlasInk).labelTape()
                             }
@@ -1392,7 +1441,7 @@ struct StudyScreen: View {
                         if let selected, let state = content.state(selected.id) {
                             StateFactCard(state: state, torn: true)
                         }
-                        AtlasSectionHeader(title: "All \(pack.manifest.areaType)s", detail: "\(pack.areas.count)")
+                        AtlasSectionHeader(title: "All \(pack.manifest.areaTypePlural)", detail: "\(pack.areas.count)")
                         VStack(spacing: 0) {
                             ForEach(sortedAreas) { area in
                                 if area != sortedAreas.first { Divider().padding(.leading, 16) }
@@ -1403,7 +1452,7 @@ struct StudyScreen: View {
                                     HStack {
                                         Text(area.name)
                                         Spacer()
-                                        if !pack.id.hasPrefix("nyc-") {
+                                        if pack.id.hasSuffix("-states") {
                                             Text(String(area.id.suffix(2))).font(.subheadline.monospaced()).foregroundStyle(Color.atlasMuted)
                                         }
                                         if selected == area {
@@ -1546,9 +1595,9 @@ struct SettingsScreen: View {
 struct SourcesScreen: View {
     var body: some View {
         List {
-            AtlasListSection("United States and Germany") {
+            AtlasListSection("United States, Germany, and the world") {
                 Text("Boundaries: Natural Earth, Admin 1 states and provinces, version 5.1.1. State maps exclude mapped lakes using Natural Earth Lakes, version 5.0.0. Public domain. Boundaries are simplified for learning.")
-                Text("World map behind every screen and the app icon: Natural Earth Admin 0 countries, 1:50m, version 5.1.1, with 1:50m lakes. Public domain.")
+                Text("World map, the map behind every screen, and the app icon: Natural Earth Admin 0 countries, 1:50m, version 5.1.1, with 1:50m lakes. Public domain. The World map asks for the 193 UN member states, the two UN observer states, Kosovo and Taiwan.")
                 Link("Natural Earth", destination: URL(string: "https://www.naturalearthdata.com")!)
             }
             AtlasListSection("New York City") {
@@ -1568,6 +1617,7 @@ struct SourcesScreen: View {
                 Text("US city populations: U.S. Census Bureau, Vintage 2025 estimates for July 1, 2025.")
                 Text("German city populations: Statistisches Bundesamt (Destatis), as of December 31, 2024; the ten largest were selected by Atlas. Datenlizenz Deutschland – Namensnennung – Version 2.0.")
                 Text("The figures use city or municipal boundaries, not metro areas.")
+                Text("Beat the clock: on the World map, 148 major cities from Natural Earth populated places, version 5.1.2, public domain. In New York City, 56 curated sights with coordinates from Wikidata, CC0. On the US and German maps, the cities and landmarks listed here.")
                 Text("Landmarks are a curated collection of 50 US and 20 German sights. Large parks use the source reference point. Each detail page links to its source.")
                 Link("US Census population tables", destination: URL(string: "https://www.census.gov/data/tables/time-series/demo/popest/2020s-total-cities-and-towns.html")!)
                 Link("Destatis city populations", destination: URL(string: "https://service.destatis.de/DE/barchart_race/BarChartRace500k_Berlin_1955-2024.html")!)

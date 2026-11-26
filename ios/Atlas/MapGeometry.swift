@@ -143,7 +143,8 @@ struct MapLayout {
     init(manifest: MapManifest, features: [GeoFeature]) {
         let size = CGSize(width: 1000, height: 1000)
         self.size = size
-        eligibleIDs = Set(manifest.areas.map(\.id))
+        let eligibleIDs = Set(manifest.areas.map(\.id))
+        self.eligibleIDs = eligibleIDs
         let us = manifest.id == "us-states"
         let smallIDs = us ? ["US-RI", "US-CT", "US-NJ", "US-DE"] :
             (manifest.id == "germany-states" ? ["DE-HH", "DE-HB", "DE-BE"] : [])
@@ -155,6 +156,9 @@ struct MapLayout {
                 (features.filter { $0.id == "US-AK" }, .equirectangular(longitude: -154, latitude: 64), frames[1]),
                 (features.filter { $0.id == "US-HI" }, .equirectangular(longitude: -157, latitude: 20), frames[2])
             ]
+        } else if manifest.id == "world-countries" {
+            // Centered on Greenwich: the source cuts polygons at ±180°, so no edge wraps across the map.
+            groups = [(features, .equirectangular(longitude: 0, latitude: 40), frames[0])]
         } else {
             let coordinates = features.flatMap { $0.geometry.polygons.flatMap { $0.flatMap { $0 } } }
             let longitude = coordinates.map(\.longitude).reduce(0, +) / Double(coordinates.count)
@@ -164,7 +168,10 @@ struct MapLayout {
         var regions: [MapRegion] = []
         var shapes: [MapShape] = []
         for group in groups where !group.features.isEmpty {
-            let points = group.features.flatMap { $0.geometry.polygons.flatMap { $0.flatMap { $0.map(group.projection.forward) } } }
+            // Fit the question areas; background such as Antarctica may run off the edge.
+            let framed = group.features.filter { eligibleIDs.contains($0.id) }
+            let points = (framed.isEmpty ? group.features : framed)
+                .flatMap { $0.geometry.polygons.flatMap { $0.flatMap { $0.map(group.projection.forward) } } }
             let x = points.map(\.x), y = points.map(\.y)
             let bounds = CGRect(x: x.min()!, y: y.min()!, width: x.max()! - x.min()!, height: y.max()! - y.min()!)
             let region = MapRegion(projection: group.projection, bounds: bounds, frame: group.frame)

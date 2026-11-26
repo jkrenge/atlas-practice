@@ -53,6 +53,28 @@ def flag_credit(metadata):
     return 'Unknown author' if re.fullmatch(r'(?i)(n\.?/?a\.?|unknown)?', text) else text
 
 
+def challenge_places(entities):
+    """Timed-challenge targets for the maps that have no city and landmark facts of their own."""
+    from compile_maps import records
+    countries = {f['properties']['adminCode'] for f in read(ROOT / 'maps/world-countries/areas.geojson')['features']
+                 if f['properties']['quizEligible']}
+    world = []
+    for row in records('ne_10m_populated_places.zip'):
+        p = row.record.as_dict()
+        # Well-known cities only: the source's two top label ranks, capitals above
+        # one million people, and any city above five million.
+        if p['ADM0_A3'] in countries and (p['SCALERANK'] <= 1 or p['POP_MAX'] >= 5_000_000
+                                          or (p['ADM0CAP'] == 1 and p['POP_MAX'] >= 1_000_000)):
+            longitude, latitude = row.shape.points[0]
+            world.append({'id': f"city-NE-{p['NE_ID']}",
+                          'name': ' '.join(f"{p['NAME_EN'] or p['NAME']}, {p['ADM0NAME']}".split()),
+                          'coordinate': {'longitude': longitude, 'latitude': latitude}})
+    sights = [{'id': row['id'], 'name': row['name'], 'coordinate': coordinate(entities[row['qid']]),
+               'sourceURL': 'https://www.wikidata.org/wiki/' + row['qid']}
+              for row in read(CURATION / 'nyc-sights.json')]
+    return {'world-countries': world, 'nyc': sights}
+
+
 def main():
     verify_sources()
     entities = {}
@@ -117,9 +139,11 @@ def main():
                     assert row['name'] == source['Name'], row['id']
                     row.update(population=int(source['2024']), populationDate='2024-12-31', populationSource='destatis-2024')
         sets[kind] = rows
-    result = {'schemaVersion': 1, 'retrievedAt': '2026-09-14', 'states': states, **sets}
+    result = {'schemaVersion': 1, 'retrievedAt': '2026-09-14', 'states': states, **sets,
+              'challenge': challenge_places(entities)}
     (ROOT / 'content/learning.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
-    print(f"Compiled {len(states)} states, {len(sets['cities'])} cities, {len(sets['landmarks'])} landmarks.")
+    print(f"Compiled {len(states)} states, {len(sets['cities'])} cities, {len(sets['landmarks'])} landmarks, "
+          + ', '.join(f'{len(v)} {k} challenge places' for k, v in result['challenge'].items()) + '.')
 
 
 if __name__ == '__main__':

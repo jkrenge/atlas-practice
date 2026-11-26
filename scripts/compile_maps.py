@@ -156,7 +156,10 @@ def main():
         countries.append(feature('NE-' + str(p['NE_ID']), p['NAME_EN'] or p['NAME'],
                                  row.shape.__geo_interface__, continent=p['CONTINENT'],
                                  sourceType=p['TYPE'], adminCode=p['ADM0_A3'],
-                                 quizEligible=p['TYPE'] in ('Sovereign country', 'Country')))
+                                 # UN member and observer states, plus Kosovo and Taiwan.
+                                 quizEligible=p['ADM0_A3'] == 'PSX' or (
+                                     p['ADMIN'] == p['SOVEREIGNT'] and p['TYPE'] != 'Indeterminate'
+                                     and p['ADM0_A3'] not in ('SOL', 'CYN'))))
     remove_lakes(countries, 'ne_50m_lakes.zip')
     catalog.append(pack('world-countries', 'World', 'country', countries, 'natural-earth-countries-land'))
     for continent in ['Africa', 'Asia', 'Europe', 'North America', 'South America', 'Oceania']:

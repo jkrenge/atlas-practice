@@ -1,6 +1,6 @@
-# Map review — 2026-09-14, updated 2026-11-23
+# Map review — 2026-09-14, updated 2026-11-25
 
-Reviewed all 12 catalog entries, their six unique geometry collections, source versions, question lists, and the four native map layouts exposed in the app. The playable packs contain 124 question areas. All 629 catalog area features pass geometry validation.
+Reviewed all 12 catalog entries, their six unique geometry collections, source versions, question lists, and the five native map layouts exposed in the app. The playable packs contain 321 question areas. All 629 catalog area features pass geometry validation.
 
 ## Map decisions
 
@@ -11,11 +11,11 @@ Reviewed all 12 catalog entries, their six unique geometry collections, source v
 | NYC boroughs | 5 / 5 | Official NYC DCP shoreline boundaries, version 26b. All geometry matches the original snapshot exactly. No correction needed. | Playable; source and native checks pass. |
 | NYC practice areas | 53 / 53 | Historical Pediacities/Ontodia neighborhood divisions plus a hand-drawn Seaport, grouped as defined in `nyc-learning-groups.json`, then clipped to their own official DCP borough shoreline. Corrects extensions at DUMBO and along Newtown Creek. | Playable; approximate neighborhood divisions. |
 | NYC 2020 NTAs | 262 / 197 | Official DCP statistical areas, version 26b. All geometry matches the original snapshot exactly. These are not definitive neighborhood boundaries. | Stored reference. |
-| World countries | 242 / 204 | Natural Earth Admin 0 5.1.1, minus the matching 50m physical lake mask 5.0.0. Removes mapped lakes, including Baikal and Victoria, from country fill. | Stored reference; camera and curriculum review required. |
-| Africa countries | Shared world / 53 | Same corrected country geometry; source continent filter verified. | Stored reference. |
+| World countries | 242 / 197 | Natural Earth Admin 0 5.1.1, minus the matching 50m physical lake mask 5.0.0. Removes mapped lakes, including Baikal and Victoria, from country fill. | Playable since 2026-11-25. Questions: the 193 UN member states, the two UN observer states, Kosovo and Taiwan. |
+| Africa countries | Shared world / 52 | Same corrected country geometry; source continent filter verified. | Stored reference. |
 | Asia countries | Shared world / 48 | Same corrected country geometry; source continent filter verified. | Stored reference. |
-| Europe countries | Shared world / 48 | Same corrected country geometry; source continent filter verified. | Stored reference. |
-| North America countries | Shared world / 26 | Same corrected country geometry; source continent filter verified. | Stored reference. |
+| Europe countries | Shared world / 45 | Same corrected country geometry; source continent filter verified. | Stored reference. |
+| North America countries | Shared world / 23 | Same corrected country geometry; source continent filter verified. | Stored reference. |
 | South America countries | Shared world / 12 | Same corrected country geometry; source continent filter verified. | Stored reference. |
 | Oceania countries | Shared world / 14 | Same corrected country geometry; source continent filter verified. | Stored reference. |
 
@@ -37,7 +37,7 @@ Live DCP metadata was checked again on 2026-09-14. Both borough and NTA datasets
 - All 267 official borough and NTA features match their saved source geometry exactly.
 - All 53 practice areas match their source members (Seaport and the Financial District: their source cut by the hand-drawn outline) after repair, grouping, and intersection with the correct borough land. Every area records its shoreline source and borough ID.
 - All 12 map IDs are unchanged. The original neighborhood candidate, repair report, and game facts are unchanged.
-- Nine geographic source hashes pass. Compilation writes 29 files: 22 from `scripts/compile_maps.py` (12 manifests, 6 full geometry files, the catalog, the city points, the neighborhood candidate, and the repair report) and 7 from `scripts/simplify_maps.py` (6 simplified geometry files and the simplification report). On 2026-11-23 every file outside the focused NYC pack, the catalog, and the simplification report recompiled byte for byte.
+- Nine geographic source hashes pass. Compilation writes 29 files: 22 from `scripts/compile_maps.py` (12 manifests, 6 full geometry files, the catalog, the city points, the neighborhood candidate, and the repair report) and 7 from `scripts/simplify_maps.py` (6 simplified geometry files and the simplification report). On 2026-11-23 every file outside the focused NYC pack, the catalog, and the simplification report recompiled byte for byte. On 2026-11-25 the country question rule changed; only the world pack, the Africa, Asia, Europe and North America manifests, the catalog, and the simplification report changed.
 - All 196 capital, city, and landmark points still pass the learning validator and native projection/inverse checks. Point questions can accept water; area questions cannot select it.
 
 The native app renders GeoJSON. Its decorative US SVG is not used for rendering, map taps, or geographic distance.
@@ -50,6 +50,6 @@ A separate iPhone 17 Simulator inspection confirmed the US overview and insets, 
 
 ## Limits before enabling stored country maps
 
-Each continent manifest filters answer eligibility but still loads the full world geometry. The current generic layout fits all those features. Continent camera bounds and global antimeridian handling need separate runtime verification before those entries can be enabled. This review validates their source data; it does not certify them as finished game modes.
+Each continent manifest filters answer eligibility but still loads the full world geometry. The current generic layout fits all those features. Continent camera bounds need separate runtime verification before those entries can be enabled. This review validates their source data; it does not certify them as finished game modes.
 
-The 204 World records follow provisional Natural Earth classifications, not a final sovereign-country count. The six continent lists contain 201 records; Seychelles, Mauritius, and Maldives appear only in World because their source continent is `Seven seas (open ocean)`. Disputed boundaries, dependent territories, and transcontinental assignments need an explicit curriculum decision before release.
+The 197 World questions are the 193 UN member states, the two UN observer states, Kosovo and Taiwan; this is a practice list, not a statement on sovereignty, and boundaries follow Natural Earth. The six continent lists contain 194 records; Seychelles, Mauritius, and Maldives appear only in World because their source continent is `Seven seas (open ocean)`. Transcontinental assignments need an explicit decision before the continent packs are released.

@@ -1,0 +1,33 @@
+{
+  "originHash" : "17cd4095ca2abab0a34550592b542cef60f52b4a0abc2f8aca61bba1c0835a35",
+  "pins" : [
+    {
+      "identity" : "aptabase-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/aptabase/aptabase-swift.git",
+      "state" : {
+        "revision" : "a1ee53e99478921cd166c40f59f2e41271032776",
+        "version" : "0.4.0"
+      }
+    },
+    {
+      "identity" : "boring-ass-app-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jkrenge/boring-ass-app-kit",
+      "state" : {
+        "revision" : "14b77dcf06a20cecd189c5e9ba765daf185a9a62",
+        "version" : "0.2.1"
+      }
+    },
+    {
+      "identity" : "kscrash",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kstenerud/KSCrash.git",
+      "state" : {
+        "revision" : "c3882b4db5e810a8ed4148b79cab29a173d4c5c5",
+        "version" : "2.6.1"
+      }
+    }
+  ],
+  "version" : 3
+}

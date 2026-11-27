@@ -11,7 +11,7 @@
 - Untimed, 30-second, or 60-second questions; manual pause/resume of timed questions; automatic pause while inactive and during feedback; timeout feedback and one review per miss.
 - Adjustable map pins and distance feedback. A location within 50 km on US maps or 20 km in Germany is correct. Coordinate entry offers an accessible alternative to a map tap.
 - Each round asks 10 or 25 places, or all of them (Settings → Questions; default 10). One spaced review per miss, explicit feedback, separate first/review scores, and a first-try rank on the results screen. Local progress is stored by map, mode, and timer setting; the app shows the combined score.
-- Settings: round length, timer, reset progress, help and privacy links, map sources and credits, version. The privacy manifest declares no tracking and no collected data. The public website is in `website/`.
+- Settings: round length, timer, reset progress, help and privacy links, map sources and credits, version. Crash reports, usage events, feedback and the update prompt go through BoringKit to the Worker at `api.atlas-practice.app`; the privacy manifest declares no tracking and the data types this collects, none linked to the user. The public website is in `website/`.
 - State and country maps exclude mapped lakes at the matching source scale. NYC practice areas are clipped to official borough shorelines. Map IDs are stable; Park Slope, Prospect Heights, Downtown Brooklyn, Crown Heights, Prospect Park and Seaport left their former groups in 2026-11. See [map review](data/MAP_REVIEW.md).
 - Original NYC geometry retained. Two self-intersections repaired only in the active pack. Approximate boundaries and the source-download equivalence limit are documented in the app and data notes.
 

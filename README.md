@@ -144,7 +144,7 @@ The SVG is decorative reference material. It has no verified registration to geo
 - `ios/Atlas/PracticeSession.swift`: question queue, spaced review, scoring, feedback lines, ranks, and local progress.
 - `ios/Atlas/LearningContent.swift`: fact database loading and geographic distance.
 - `ios/Atlas/ReferenceScreen.swift`: Browse facts.
-- `ios/Atlas/PrivacyInfo.xcprivacy`: privacy manifest (no tracking, no collected data).
+- `ios/Atlas/PrivacyInfo.xcprivacy`: privacy manifest (no tracking; crash, diagnostic and usage data and feedback, not linked to the user).
 - `ios/AtlasTests` and `ios/AtlasUITests`: geometry/session checks and Simulator interaction tests.
 
 The lower 48 use Albers equal-area with standard parallels 29.5°/45.5°, central longitude −96°, and origin latitude 37.5°. Alaska and Hawaii use separate equirectangular view regions centered at −154°/64° and −157°/20°. Longitude wrapping around Alaska preserves the Aleutian Islands across ±180°. Germany and NYC use an equirectangular projection centered on their geometry. The world uses an equirectangular projection centered on 0° with standard parallels at 40°; the source cuts polygons at ±180°, so nothing wraps. Every view is fitted to its question areas, so on the world map Antarctica runs off the lower edge. Each region has an explicit inverse; uniform fitting preserves aspect ratio. The five exposed map layouts are tested. The continent views need a separate camera review before exposure.

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy policy · Atlas</title>
-  <meta name="description" content="Atlas collects no data. No account, no tracking, no analytics. Your progress stays on your device.">
+  <meta name="description" content="No account, no ads, no tracking. Atlas sends crash reports and usage figures to our own server, not linked to you. Your progress stays on your device.">
   <meta name="theme-color" content="#bdded9">
   <link rel="icon" href="../assets/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
@@ -30,8 +30,8 @@
     <div class="wrap">
       <div class="page-head">
         <h1 class="title-tape">Privacy policy</h1>
-        <p class="on-map mono"><span class="tape">The short version: Atlas collects nothing. Your progress stays on your device.</span></p>
-        <p class="on-map mono muted"><span class="tape">Effective 23 November 2026</span></p>
+        <p class="on-map mono"><span class="tape">The short version: no account, no ads, no tracking. Atlas sends crash reports and usage figures to our own server, not linked to you. Your progress stays on your device.</span></p>
+        <p class="on-map mono muted"><span class="tape">Effective 26 November 2026</span></p>
       </div>
 
       <section class="list-section" aria-labelledby="who">
@@ -45,14 +45,29 @@
       <section class="list-section" aria-labelledby="app">
         <h2 id="app"><span class="tape">The app</span></h2>
         <div class="card prose">
-          <h3>We collect no data</h3>
-          <p>Atlas doesn't collect, send, sell or share any personal data. There is no account and no sign-in. We never see your answers or your scores.</p>
+          <h3>What the app sends us</h3>
+          <p>Atlas sends three kinds of information to our own server, so we can fix crashes and see what is worth improving:</p>
+          <ul>
+            <li><strong>Crash and error reports:</strong> what the app was doing when it crashed, froze or hit an unexpected error, with the device model, the iOS or iPadOS version and the app version.</li>
+            <li><strong>Usage events:</strong> that the app was opened, which map and way to play a round used, and how the round ended, such as the number of correct answers. Each event carries the device model, the system version, the language and region setting, and the app version. You can switch these events off under Settings › Share usage data.</li>
+            <li><strong>Feedback:</strong> the message you write under Settings › Send feedback, and your email address if you add one to get a reply. Nothing is sent until you tap Send.</li>
+          </ul>
+          <p>There is no account and no sign-in. We don't sell this information or share it with anyone else.</p>
 
-          <h3>No tracking, no analytics, no ads</h3>
-          <p>The app contains no analytics, advertising or tracking code, and no third-party code that could do it for us. It doesn't track you across other apps or websites.</p>
+          <h3>Not linked to you</h3>
+          <p>Each copy of the app gets a random token, kept on your device, so the server can tell one copy from another. The server stores only a fingerprint (a hash) of that token. It has no name, no account and no advertising ID to go with it. Feedback with an email address is the one thing that can point to a person, and only because you typed the address.</p>
+          <p>The first time it runs, the app asks Apple's DeviceCheck service for proof that it is running on a genuine Apple device, and our server checks that proof with Apple. Apple handles this under its own privacy policy.</p>
+          <p>The server uses your IP address to limit how many requests one device can send. It doesn't write the address to its database. The request logs of our hosting provider keep technical details of each request for a few days.</p>
 
-          <h3>No network</h3>
-          <p>Everything the app needs, maps, facts and flags included, ships inside it. Atlas works offline and doesn't connect to any server. Links in the app, such as fact sources, help, and this policy, open in your browser; the site you land on then handles your visit under its own privacy policy.</p>
+          <h3>Where it is kept</h3>
+          <p>The server at api.atlas-practice.app runs on Cloudflare Workers, and its database is Cloudflare D1, located in the USA. Both are services of Cloudflare, Inc., which processes this data on our behalf. Cloudflare, Inc. is based in the USA and receives the data under the EU-U.S. Data Privacy Framework; see <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's privacy policy</a>.</p>
+          <p>Legal basis: our legitimate interest in keeping the app working and improving it (Art. 6(1)(f) GDPR). We keep the reports for as long as they are useful for that.</p>
+
+          <h3>No tracking, no ads</h3>
+          <p>The app contains no advertising and doesn't track you across other apps or websites. Two open-source libraries, KSCrash and the Aptabase Swift client, collect the crash reports and usage events. They send them only to our server, never to their makers.</p>
+
+          <h3>Network</h3>
+          <p>Everything the app needs, maps, facts and flags included, ships inside it, and Atlas works offline. When your device is online, the app connects to our server to send what is described above and to ask whether a newer version is available. Links in the app, such as fact sources, help, and this policy, open in your browser; the site you land on then handles your visit under its own privacy policy.</p>
 
           <h3>No permissions</h3>
           <p>Atlas doesn't ask for your location, contacts, photos, camera or microphone. Pin questions use the pin you place on the map, not where you are.</p>
@@ -64,13 +79,13 @@
             <li>your practice scores for each map and way to play;</li>
             <li>the map and mode you played last, so the home screen can offer it again.</li>
           </ul>
-          <p>This stays on the device. Like other app data, it can be part of the device backups you make with iCloud or your computer; those are between you and Apple. To delete your scores, open Settings and tap Reset progress. Deleting the app removes everything it stored.</p>
+          <p>This stays on the device. A usage event reports how a single round ended, as described above; your saved scores and settings are not sent. Like other app data, it can be part of the device backups you make with iCloud or your computer; those are between you and Apple. To delete your scores, open Settings and tap Reset progress. Deleting the app removes everything it stored.</p>
 
           <h3>Apple and the App Store</h3>
           <p>Apple handles downloads and updates under its own privacy policy. If you have chosen to share analytics with app developers in your device settings, Apple may give us aggregated usage figures and crash reports. They don't identify you, and we can't link them to you.</p>
 
           <h3>Children</h3>
-          <p>Atlas collects no data from anyone, children included.</p>
+          <p>Atlas treats every user the same. The reports described above are not linked to a person, and we don't knowingly collect personal data from children. The feedback form is the only place where anyone can type something that is sent to us.</p>
         </div>
       </section>
 
@@ -78,8 +93,8 @@
         <h2 id="site"><span class="tape">This website</span></h2>
         <div class="card prose">
           <h3>Hosting</h3>
-          <p>This site is a set of static pages hosted on GitHub Pages, a service of GitHub, Inc. When you visit, GitHub processes technical data such as your IP address to deliver the pages and keep the service secure. GitHub logs and stores visitors' IP addresses for security purposes, whether or not they are signed in to GitHub. See <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#data-collection">GitHub Pages data collection</a> and the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>.</p>
-          <p>Legal basis: our legitimate interest in delivering this site reliably and securely (Art. 6(1)(f) GDPR). GitHub, Inc. is based in the USA and receives this data under the EU-U.S. Data Privacy Framework; see the Data Privacy Framework section of GitHub's privacy statement.</p>
+          <p>This site is a set of static pages hosted on GitHub Pages, a service of GitHub, Inc., and delivered through the network of Cloudflare, Inc. When you visit, Cloudflare and GitHub process technical data such as your IP address to deliver the pages and keep the service secure; see <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's privacy policy</a>. GitHub logs and stores visitors' IP addresses for security purposes, whether or not they are signed in to GitHub. See <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#data-collection">GitHub Pages data collection</a> and the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>.</p>
+          <p>Legal basis: our legitimate interest in delivering this site reliably and securely (Art. 6(1)(f) GDPR). GitHub, Inc. and Cloudflare, Inc. are based in the USA and receive this data under the EU-U.S. Data Privacy Framework; see the Data Privacy Framework section of GitHub's privacy statement.</p>
           <h3>No cookies, no analytics</h3>
           <p>The site sets no cookies and uses no analytics, trackers, external fonts or third-party scripts. Every file comes from the same place.</p>
           <h3>Links</h3>
@@ -91,14 +106,14 @@
         <h2 id="email"><span class="tape">If you contact us</span></h2>
         <div class="card prose">
           <p>Support runs through GitHub issues. Whatever you post there, including your GitHub username, is public and is processed by GitHub under <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>. We read it only to answer you and to fix the app. You can edit or delete your own comments; ask us in the issue and we'll remove or lock an issue you opened. Legal basis: Art. 6(1)(f) GDPR, or Art. 6(1)(b) where your message concerns using the app.</p>
-          <p>If you live in the EU, the EEA or the UK, you have the right to access, correct and delete personal data we hold about you, to restrict or object to its use, to data portability, and to complain to a data protection authority. Since the app and this site give us no data about you, what you post in an issue is the only thing we could hold.</p>
+          <p>If you live in the EU, the EEA or the UK, you have the right to access, correct and delete personal data we hold about you, to restrict or object to its use, to data portability, and to complain to a data protection authority. The reports the app sends are not linked to you, so we can't look up or delete the ones that came from your device. Feedback you sent with an email address, and what you post in an issue, we can find: ask us and we'll delete it.</p>
         </div>
       </section>
 
       <section class="list-section" aria-labelledby="changes">
         <h2 id="changes"><span class="tape">Changes</span></h2>
         <div class="card prose">
-          <p>If this policy changes, we'll update it here and change the effective date at the top. If Atlas ever starts collecting data, this page will say so before the app does.</p>
+          <p>If this policy changes, we'll update it here and change the effective date at the top. If what Atlas collects changes, this page will say so before the app does.</p>
         </div>
       </section>
 

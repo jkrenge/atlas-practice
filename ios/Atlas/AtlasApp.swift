@@ -1,12 +1,16 @@
+import BoringKit
 import SwiftUI
 import UIKit
 
 @main
 struct AtlasApp: App {
     @State private var progress = ProgressStore()
+    // First thing at launch: this installs the crash reporter.
+    init() { BoringKit.start(api: AtlasLinks.api) }
     var body: some Scene {
         WindowGroup {
             LibraryScreen()
+                .updatePrompt()
                 .environment(progress)
                 .tint(.atlasBlue)
                 .preferredColorScheme(.light)
@@ -760,7 +764,13 @@ struct PracticeScreen: View {
         .foregroundStyle(Color.atlasInk)
         .sensoryFeedback(.selection, trigger: guess) { _, new in new != nil }
         .onAppear { lastPractice = "\(pack.id)|\(session.mode.rawValue)" }
-        .onChange(of: session.isComplete) { _, complete in if complete { progress.save(session, map: pack.id) } }
+        .onChange(of: session.isComplete) { _, complete in
+            guard complete else { return }
+            progress.save(session, map: pack.id)
+            Usage.track("practice_finished", [
+                "map": pack.id, "mode": session.mode.rawValue,
+                "correct": session.firstAttemptCorrect, "total": session.primaryCount])
+        }
         .onChange(of: session.current?.id) { _, _ in
             guess = nil; paused = false; autoAdvanceSeconds = 3
             timer = QuestionTimer(seconds: session.secondsAllowed)
@@ -783,6 +793,7 @@ struct PracticeScreen: View {
         }
         .onDisappear { timer.pause(now: now) }
         .task(id: round) {
+            Usage.track("practice_started", ["map": pack.id, "mode": session.mode.rawValue])
             guard session.secondsAllowed > 0 else { return }
             if scenePhase == .active && answering { timer.resume(now: now) }
             while !Task.isCancelled && !session.isComplete {
@@ -1514,6 +1525,17 @@ enum AtlasLinks {
     static let site = URL(string: "https://atlas-practice.app/")!
     static let support = site.appending(path: "support/")
     static let privacy = site.appending(path: "privacy/")
+    /// The Worker that receives crash reports, usage events and feedback (BoringKit).
+    static let api = URL(string: "https://api.atlas-practice.app")!
+}
+
+/// Usage events, unless the user switched them off in Settings. Crash reports and feedback don't pass through here.
+enum Usage {
+    static let key = "shareUsageData"
+    @MainActor static func track(_ name: String, _ props: [String: Any]) {
+        guard UserDefaults.standard.object(forKey: key) as? Bool ?? true else { return }
+        Aptabase.shared.trackEvent(name, with: props)
+    }
 }
 
 /// Round settings for every map, how progress is kept, help, and where the maps come from.
@@ -1523,6 +1545,8 @@ struct SettingsScreen: View {
     @AppStorage("lastPractice") private var lastPractice = ""
     @Environment(ProgressStore.self) private var progress
     @State private var confirmingReset = false
+    @State private var showingFeedback = false
+    @AppStorage(Usage.key) private var shareUsage = true
 
     var body: some View {
         List {
@@ -1550,9 +1574,16 @@ struct SettingsScreen: View {
                     .foregroundStyle(Color.atlasRed) // The screen's ink style would otherwise hide the role.
                     .accessibilityIdentifier("reset-progress")
             }
+            AtlasListSection("Privacy") {
+                Toggle("Share usage data", isOn: $shareUsage).accessibilityIdentifier("share-usage-data")
+                Text("Which maps and modes you practice and how rounds end. Not linked to you. Crash reports are always sent.")
+                    .font(.footnote).foregroundStyle(Color.atlasMuted)
+            }
             AtlasListSection("Help") {
                 Link(destination: AtlasLinks.support) { Label("Help and support", systemImage: "questionmark.circle") }
                 Link(destination: AtlasLinks.privacy) { Label("Privacy policy", systemImage: "hand.raised") }
+                Button { showingFeedback = true } label: { Label("Send feedback", systemImage: "envelope") }
+                    .accessibilityIdentifier("send-feedback")
             }
             AtlasListSection("About") {
                 NavigationLink { SourcesScreen() } label: { Label("Map sources and credits", systemImage: "info.circle") }
@@ -1564,6 +1595,7 @@ struct SettingsScreen: View {
             } message: {
                 Text("Scores for every map and mode are deleted from this device. This can’t be undone.")
             }
+            .sheet(isPresented: $showingFeedback) { FeedbackView() }
             .atlasParallax()
             .atlasScreen(.settings)
             .foregroundStyle(Color.atlasInk)
@@ -1625,6 +1657,12 @@ struct SourcesScreen: View {
             }
             AtlasListSection("Map layout") {
                 Text("Alaska and Hawaii appear in separate insets at different scales. The map uses geographic coordinates. It is intended for learning, not navigation.")
+            }
+            AtlasListSection("Software") {
+                Text("Crash reports, usage figures and feedback use three open-source packages under the MIT License: BoringKit, KSCrash (Copyright (c) 2012 Karl Stenerud) and aptabase-swift (Copyright (c) 2023 Sumbit Labs Ltd.).")
+                Link("BoringKit", destination: URL(string: "https://github.com/jkrenge/boring-ass-app-kit")!)
+                Link("KSCrash", destination: URL(string: "https://github.com/kstenerud/KSCrash")!)
+                Link("aptabase-swift", destination: URL(string: "https://github.com/aptabase/aptabase-swift")!)
             }
             AtlasListSection("Your progress") {
                 Text("Practice results are saved only on this device. Scores are kept for each mode and combine all timer settings. First attempts and review answers are counted separately.")

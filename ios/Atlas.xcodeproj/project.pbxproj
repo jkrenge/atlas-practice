@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		07D5BAA416905911E522C297 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE29AF65D993E2F58BC602F /* MapView.swift */; };
+		0AAF8EEA58074547751EEC43 /* BoringKit in Frameworks */ = {isa = PBXBuildFile; productRef = BB13E96A921EF2E96CDD602B /* BoringKit */; };
 		4384F7914715154909A3CBC4 /* AtlasBackdrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F6A6B232F4C03299040E1D /* AtlasBackdrop.swift */; };
 		4D6903CE28043A76B1A94CA5 /* PracticeSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E06878A3ADF78709117E4 /* PracticeSession.swift */; };
-		59EE1EB91B32B262D97043A4 /* maps in Resources */ = {isa = PBXBuildFile; fileRef = 8F9B38C1CCB032C26E29F177 /* maps */; };
+		511E4257E5F83D92A4860730 /* content in Resources */ = {isa = PBXBuildFile; fileRef = CFB4A9E4AA2D0FE559CCD5D0 /* content */; };
+		6C238DAE4CDD2B5D02780D9F /* maps in Resources */ = {isa = PBXBuildFile; fileRef = 7A49537AE3765B19BD3CCCA4 /* maps */; };
 		8070BFC00D3B1D9CADF33CDB /* MapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D412A935C90EEBEB6BB11A2 /* MapData.swift */; };
 		898743BBB9B292EBE47E0478 /* AtlasUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DF13257DDCAA13F34C37FA /* AtlasUITests.swift */; };
 		8D28FE030C7EE76B688E65BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA986E23356244005C7DA505 /* Assets.xcassets */; };
@@ -21,7 +23,6 @@
 		E1073772EBD22297DAD663A2 /* LearningContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72F71F27F06A67E960EA21D /* LearningContent.swift */; };
 		E3DEEE9A1D665CC9E7870123 /* MapGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE7CF3FE9829B3C9A291B84 /* MapGeometry.swift */; };
 		E73663AB86D235E915DC254F /* ReferenceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A375F4398251EF76ECF46 /* ReferenceScreen.swift */; };
-		F968D8B48A68419B6716A5AB /* content in Resources */ = {isa = PBXBuildFile; fileRef = E9252D6DFD829F6E699A1375 /* content */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,21 +47,32 @@
 		413A56C9FFE04C7BBD65B964 /* Atlas.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CAFA8A4B31EB0A34156C781 /* AtlasTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AtlasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7805FF9C57EBD9F5977D7D06 /* AtlasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasTests.swift; sourceTree = "<group>"; };
+		7A49537AE3765B19BD3CCCA4 /* maps */ = {isa = PBXFileReference; lastKnownFileType = folder; name = maps; path = ../maps; sourceTree = SOURCE_ROOT; };
 		7FE7CF3FE9829B3C9A291B84 /* MapGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGeometry.swift; sourceTree = "<group>"; };
 		812E06878A3ADF78709117E4 /* PracticeSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSession.swift; sourceTree = "<group>"; };
 		8B5B49D3DB3CC4E5FD940D16 /* AtlasCollage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasCollage.swift; sourceTree = "<group>"; };
 		8D412A935C90EEBEB6BB11A2 /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
-		8F9B38C1CCB032C26E29F177 /* maps */ = {isa = PBXFileReference; lastKnownFileType = folder; name = maps; path = ../maps; sourceTree = SOURCE_ROOT; };
 		A8DF13257DDCAA13F34C37FA /* AtlasUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasUITests.swift; sourceTree = "<group>"; };
 		AA986E23356244005C7DA505 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B039968FC134F8A1AC6E2337 /* AtlasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasApp.swift; sourceTree = "<group>"; };
+		CFB4A9E4AA2D0FE559CCD5D0 /* content */ = {isa = PBXFileReference; lastKnownFileType = folder; name = content; path = ../content; sourceTree = SOURCE_ROOT; };
 		D22F876F1DE9D1ABBCA827F0 /* AtlasUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AtlasUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD1A375F4398251EF76ECF46 /* ReferenceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceScreen.swift; sourceTree = "<group>"; };
 		E3F6A6B232F4C03299040E1D /* AtlasBackdrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasBackdrop.swift; sourceTree = "<group>"; };
-		E9252D6DFD829F6E699A1375 /* content */ = {isa = PBXFileReference; lastKnownFileType = folder; name = content; path = ../content; sourceTree = SOURCE_ROOT; };
 		EAE29AF65D993E2F58BC602F /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		F72F71F27F06A67E960EA21D /* LearningContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningContent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3089F3CC24F02E74734F05DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AAF8EEA58074547751EEC43 /* BoringKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		022765E89C79B0BDF64FAD82 /* AtlasUITests */ = {
@@ -97,23 +109,13 @@
 			path = Atlas;
 			sourceTree = "<group>";
 		};
-		5DC2A9CF30ED173BA33337CA /* atlas-practice */ = {
-			isa = PBXGroup;
-			children = (
-				E9252D6DFD829F6E699A1375 /* content */,
-				8F9B38C1CCB032C26E29F177 /* maps */,
-			);
-			name = "atlas-practice";
-			path = ..;
-			sourceTree = "<group>";
-		};
 		70A20106B8807AFCC4851B2C = {
 			isa = PBXGroup;
 			children = (
 				071B3FB99E139970DF18CBA2 /* Atlas */,
-				5DC2A9CF30ED173BA33337CA /* atlas-practice */,
 				04207D0AEDD3E6FFD62F40E2 /* AtlasTests */,
 				022765E89C79B0BDF64FAD82 /* AtlasUITests */,
+				9D0FEEA5E8B9C2D6765DD0DD /* timed-city-finding-mode-a2cbd3 */,
 				8BC05A2DCB0F814BEC46CBFF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -126,6 +128,16 @@
 				D22F876F1DE9D1ABBCA827F0 /* AtlasUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9D0FEEA5E8B9C2D6765DD0DD /* timed-city-finding-mode-a2cbd3 */ = {
+			isa = PBXGroup;
+			children = (
+				CFB4A9E4AA2D0FE559CCD5D0 /* content */,
+				7A49537AE3765B19BD3CCCA4 /* maps */,
+			);
+			name = "timed-city-finding-mode-a2cbd3";
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,6 +167,7 @@
 			buildPhases = (
 				5F00E980EC462CB5A8421B1C /* Sources */,
 				AEB035FE95E36701E46D468A /* Resources */,
+				3089F3CC24F02E74734F05DE /* Frameworks */,
 				757D752587E1E0D73176FD01 /* Exclude detailed source geometry */,
 			);
 			buildRules = (
@@ -163,6 +176,7 @@
 			);
 			name = Atlas;
 			packageProductDependencies = (
+				BB13E96A921EF2E96CDD602B /* BoringKit */,
 			);
 			productName = Atlas;
 			productReference = 413A56C9FFE04C7BBD65B964 /* Atlas.app */;
@@ -196,7 +210,7 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					BEE0910772920D84B133CC47 = {
-						DevelopmentTeam = 8433V6NWHP;
+						DevelopmentTeam = W7QGTVUD84;
 					};
 					DF91EF7465771BFBBB2DA9AE = {
 						TestTargetID = BEE0910772920D84B133CC47;
@@ -212,6 +226,9 @@
 			);
 			mainGroup = 70A20106B8807AFCC4851B2C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				295C8E7CF9FC5D8F84B50E82 /* XCRemoteSwiftPackageReference "boring-ass-app-kit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8BC05A2DCB0F814BEC46CBFF /* Products */;
 			projectDirPath = "";
@@ -231,8 +248,8 @@
 			files = (
 				8D28FE030C7EE76B688E65BB /* Assets.xcassets in Resources */,
 				AACB9FA19EC4E24FD4DDD3FA /* PrivacyInfo.xcprivacy in Resources */,
-				F968D8B48A68419B6716A5AB /* content in Resources */,
-				59EE1EB91B32B262D97043A4 /* maps in Resources */,
+				511E4257E5F83D92A4860730 /* content in Resources */,
+				6C238DAE4CDD2B5D02780D9F /* maps in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,8 +331,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 8433V6NWHP;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = W7QGTVUD84;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Atlas Practice";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
@@ -328,7 +345,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jkrenge.geography;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.atlas-practice.atlas";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -345,7 +362,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jkrenge.AtlasTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.atlas-practice.AtlasTests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Atlas.app/Atlas";
@@ -362,7 +379,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jkrenge.AtlasUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.atlas-practice.AtlasUITests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Atlas;
@@ -379,7 +396,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jkrenge.AtlasTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.atlas-practice.AtlasTests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Atlas.app/Atlas";
@@ -449,8 +466,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 8433V6NWHP;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = W7QGTVUD84;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Atlas Practice";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
@@ -463,7 +480,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jkrenge.geography;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.atlas-practice.atlas";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -545,7 +562,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jkrenge.AtlasUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.atlas-practice.AtlasUITests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Atlas;
@@ -592,6 +609,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		295C8E7CF9FC5D8F84B50E82 /* XCRemoteSwiftPackageReference "boring-ass-app-kit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jkrenge/boring-ass-app-kit";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.2.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BB13E96A921EF2E96CDD602B /* BoringKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 295C8E7CF9FC5D8F84B50E82 /* XCRemoteSwiftPackageReference "boring-ass-app-kit" */;
+			productName = BoringKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 43D55555CA7BCC7C87E44A39 /* Project object */;
 }

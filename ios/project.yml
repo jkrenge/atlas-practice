@@ -1,6 +1,6 @@
 name: Atlas
 options:
-  bundleIdPrefix: com.jkrenge
+  bundleIdPrefix: app.atlas-practice
   deploymentTarget:
     iOS: '18.0'
   createIntermediateGroups: true
@@ -10,10 +10,17 @@ settings:
     SWIFT_STRICT_CONCURRENCY: complete
     IPHONEOS_DEPLOYMENT_TARGET: '18.0'
     TARGETED_DEVICE_FAMILY: '1,2'
+packages:
+  # Crash reports, usage events, feedback and the update prompt, sent to the Worker at AtlasLinks.api.
+  BoringKit:
+    url: https://github.com/jkrenge/boring-ass-app-kit
+    minorVersion: 0.2.1
 targets:
   Atlas:
     type: application
     platform: iOS
+    dependencies:
+      - package: BoringKit
     sources:
       - path: Atlas
       - path: ../maps
@@ -33,10 +40,10 @@ targets:
           done
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.jkrenge.geography
-        DEVELOPMENT_TEAM: 8433V6NWHP
+        PRODUCT_BUNDLE_IDENTIFIER: app.atlas-practice.atlas
+        DEVELOPMENT_TEAM: W7QGTVUD84
         MARKETING_VERSION: '1.0'
-        CURRENT_PROJECT_VERSION: '2'
+        CURRENT_PROJECT_VERSION: '3'
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: Atlas Practice

@@ -22,7 +22,8 @@ import UIKit
         (.equirectangular(longitude: -154, latitude: 64), Coordinate(179.7, 51.8)),
         (.equirectangular(longitude: -154, latitude: 64), Coordinate(-150, 64)),
         (.equirectangular(longitude: -157, latitude: 20), Coordinate(-155.5, 19.7)),
-        (.equirectangular(longitude: 10, latitude: 51), Coordinate(13.4, 52.5))
+        (.equirectangular(longitude: 10, latitude: 51), Coordinate(13.4, 52.5)),
+        (.mercator, Coordinate(179.7, 71.2)), (.mercator, Coordinate(-70.6, -55.9))
     ]
     for (projection, coordinate) in cases {
         let result = projection.inverse(projection.forward(coordinate))
@@ -662,7 +663,12 @@ func nativeMapReusesTilesAndKeepsTapCoordinatesAligned(_ id: String) throws {
     let anyID = pack.areas[0].id
     let west = try #require(layout.screen(Coordinate(-179, 0), areaID: anyID, viewport: MapViewport()))
     let east = try #require(layout.screen(Coordinate(179, 0), areaID: anyID, viewport: MapViewport()))
-    #expect(west.x < east.x && east.x - west.x > frame.width * 0.9)
+    let region = layout.regions[0]
+    #expect(west.x < east.x && east.x - west.x > region.bounds.width * region.factor * 0.9)
+    // Mercator keeps shapes true near the equator: one degree is as wide as it is tall there.
+    let north = try #require(layout.screen(Coordinate(0, 1), areaID: anyID, viewport: MapViewport()))
+    let south = try #require(layout.screen(Coordinate(0, -1), areaID: anyID, viewport: MapViewport()))
+    #expect(abs((south.y - north.y) - (east.x - west.x) / 179) < 0.01)
     for shape in layout.shapes where layout.eligibleIDs.contains(shape.id) && !["Russia", "Fiji", "United States of America", "Kiribati", "New Zealand"].contains(pack.area(shape.id)?.name) {
         #expect(shape.bounds.width < frame.width / 2, "\(pack.area(shape.id)?.name ?? shape.id) spans the map")
     }

@@ -4,6 +4,7 @@ import CoreGraphics
 // All rendering starts from longitude/latitude. Insets only affect presentation.
 enum MapProjection {
     case equirectangular(longitude: Double, latitude: Double)
+    case mercator
     case albers
 
     func forward(_ coordinate: Coordinate) -> CGPoint {
@@ -11,6 +12,11 @@ enum MapProjection {
         case .equirectangular(let longitude, let latitude):
             let delta = Self.wrap(coordinate.longitude - longitude)
             return CGPoint(x: delta * cos(latitude * .pi / 180), y: coordinate.latitude - latitude)
+        case .mercator:
+            // Mercator has no poles: clamp at 85°N, as web maps do, and at 76°S, so Antarctica
+            // is a strip along the lower edge instead of the largest shape on the map.
+            let latitude = min(85, max(-76, coordinate.latitude)) * .pi / 180
+            return CGPoint(x: coordinate.longitude, y: log(tan(.pi / 4 + latitude / 2)) * 180 / .pi)
         case .albers:
             let (n, c, rho0) = Self.albersConstants
             let theta = n * Self.wrap(coordinate.longitude + 96) * .pi / 180
@@ -23,6 +29,8 @@ enum MapProjection {
         switch self {
         case .equirectangular(let longitude, let latitude):
             return Coordinate(Self.wrap(point.x / cos(latitude * .pi / 180) + longitude), point.y + latitude)
+        case .mercator:
+            return Coordinate(point.x, (2 * atan(exp(point.y * .pi / 180)) - .pi / 2) * 180 / .pi)
         case .albers:
             let (n, c, rho0) = Self.albersConstants
             let rho = hypot(point.x, rho0 - point.y)
@@ -158,7 +166,7 @@ struct MapLayout {
             ]
         } else if manifest.id == "world-countries" {
             // Centered on Greenwich: the source cuts polygons at ±180°, so no edge wraps across the map.
-            groups = [(features, .equirectangular(longitude: 0, latitude: 40), frames[0])]
+            groups = [(features, .mercator, frames[0])]
         } else {
             let coordinates = features.flatMap { $0.geometry.polygons.flatMap { $0.flatMap { $0 } } }
             let longitude = coordinates.map(\.longitude).reduce(0, +) / Double(coordinates.count)

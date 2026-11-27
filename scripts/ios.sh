@@ -32,7 +32,7 @@ case "$action" in
       # bootstatus -b boots a shut-down device and waits until it is ready.
       xcrun simctl bootstatus "$simulator_id" -b
       xcrun simctl install "$simulator_id" "$derived/Build/Products/Debug-iphonesimulator/Atlas.app"
-      xcrun simctl launch "$simulator_id" com.jkrenge.geography
+      xcrun simctl launch "$simulator_id" app.atlas-practice.atlas
     fi
     ;;
   *)

@@ -21,6 +21,7 @@ Write for a stranger reading the repository: neutral, factual, ISO dates (2026-1
 - **Data:** `scripts/*.py` build `maps/` and `content/` from the pinned snapshots in `data/sources/`; run them with `.venv/bin/python` and check with `scripts/validate_data.py` and `scripts/validate_learning.py`. Formats: [MAP_FORMAT.md](MAP_FORMAT.md); sources: [data/SOURCES.md](data/SOURCES.md).
 - **Website:** `website/`, deployed to GitHub Pages by `.github/workflows/pages.yml` on pushes to `main`. Its address also lives in the app (`AtlasLinks`); [website/README.md](website/README.md) lists every place to change together.
 - **Screenshots:** `scripts/screenshots.sh` (App Store sizes into `build/screenshots/`, web copies into `website/assets/screens/`).
+- **Analytics and crash reports:** [BoringKit](https://github.com/jkrenge/boring-ass-app-kit), started in `AtlasApp.init` and sent to the Worker at `AtlasLinks.api`. Events: `Usage.track`, which honours the Share usage data switch in Settings, with no personal data in props. Unexpected errors: `Aptabase.shared.trackError`. Feedback: `FeedbackView`. Don't add a second crash reporter. When what the app sends changes, change `ios/Atlas/PrivacyInfo.xcprivacy`, `website/privacy/` and the App Store privacy answers together, and publish the website first.
 - **Licences:** code under MIT ([LICENSE](LICENSE)); third-party data under its own terms ([NOTICE.md](NOTICE.md)).
 
 ## Before you commit

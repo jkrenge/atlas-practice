@@ -14,4 +14,8 @@ The code in this repository is under the MIT License (see [LICENSE](LICENSE)). T
 | Statistisches Bundesamt (Destatis), city populations as of 2024-12-31 | German city population questions | [Datenlizenz Deutschland – Namensnennung – Version 2.0](https://www.govdata.de/dl-de/by-2-0) | Source: Statistisches Bundesamt (Destatis), [city populations](https://service.destatis.de/DE/barchart_race/BarChartRace500k_Berlin_1955-2024.html). The ten largest cities were selected by Atlas. |
 | Blank US map SVG by Heitordp (`assets/us-states.svg`) | Decorative reference only | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | None required. |
 
+## Third-party code
+
+The app links three Swift packages, each under the MIT License: [BoringKit](https://github.com/jkrenge/boring-ass-app-kit) (Copyright (c) 2026 Julian Krenge), [KSCrash](https://github.com/kstenerud/KSCrash) (Copyright (c) 2012 Karl Stenerud) and [aptabase-swift](https://github.com/aptabase/aptabase-swift) (Copyright (c) 2023 Sumbit Labs Ltd.). The licence text is in each repository's `LICENSE` file.
+
 Atlas Practice is not affiliated with or endorsed by any government, agency, or data provider named here. iPhone and iPad are trademarks of Apple Inc. All other trademarks belong to their owners.

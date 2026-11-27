@@ -36,7 +36,7 @@ The site is served at `https://atlas-practice.app/`. Because it deploys from a G
    - apex: `A` 185.199.108.153, 185.199.109.153, 185.199.110.153 and 185.199.111.153; `AAAA` 2606:50c0:8000::153, 2606:50c0:8001::153, 2606:50c0:8002::153 and 2606:50c0:8003::153;
    - `www`: `CNAME` to `<user>.github.io`, without the repository name. GitHub then redirects `www` to the apex.
 
-   Don't point a wildcard record at GitHub Pages. Don't put a proxy or CDN in front either: the privacy policy says GitHub Pages serves every file.
+   Don't point a wildcard record at GitHub Pages. The domain's DNS is on Cloudflare and the records are proxied, which the privacy policy states (This website, Hosting). Keep Cloudflare features that add scripts or cookies to the pages switched off, such as Web Analytics and Bot Fight Mode: the policy says the site has no cookies, analytics or third-party scripts, and Bot Fight Mode also blocks the app's API at `api.atlas-practice.app`.
 4. Once GitHub has issued the certificate, tick **Enforce HTTPS**. `.app` is on the HSTS preload list, so browsers only load the site over HTTPS, and it is unreachable until the certificate exists.
 
 ## Regenerate the pictures
@@ -76,6 +76,6 @@ grep -rn 'TODO(owner)\|class="todo"' website
 - [ ] **App Store link.** `index.html`, hero notice. Replace the "Coming soon" stamp and paragraph with a link to the App Store page. Use Apple's official badge artwork only as provided, from Apple's marketing resources.
 - [ ] **Safari App Store banner** (optional, once live). Uncomment the `apple-itunes-app` meta tag in `index.html` and fill in the app ID.
 - [x] **Screenshots.** Retaken for 1.0 (2) on 2026-11-25 with `scripts/screenshots.sh`; alt text checked. Run it again after any visible change so the pictures match what ships.
-- [ ] **App Store Connect.** Use `https://atlas-practice.app/privacy/` as the Privacy Policy URL and `https://atlas-practice.app/support/` as the Support URL. The App Privacy answers should be "Data Not Collected", matching `ios/Atlas/PrivacyInfo.xcprivacy` and the privacy page.
+- [ ] **App Store Connect.** Use `https://atlas-practice.app/privacy/` as the Privacy Policy URL and `https://atlas-practice.app/support/` as the Support URL. The App Privacy answers must match `ios/Atlas/PrivacyInfo.xcprivacy` and the privacy page: Crash Data, Performance Data, Other Diagnostic Data, Product Interaction, Email Address and Customer Support, none linked to the user and none used for tracking.
 
-When the privacy policy changes, update its effective date (currently 2026-11-23).
+When the privacy policy changes, update its effective date (currently 2026-11-26).
